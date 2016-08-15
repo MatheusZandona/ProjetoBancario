@@ -1,6 +1,6 @@
 package classes;
 
-public class Pessoa {
+public class Cliente {
 	
 	private String nome;
 
