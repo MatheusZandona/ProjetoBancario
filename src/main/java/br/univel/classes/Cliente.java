@@ -1,4 +1,4 @@
-package classes;
+package br.univel.classes;
 
 public class Cliente {
 	
