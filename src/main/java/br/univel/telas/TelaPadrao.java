@@ -10,8 +10,13 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Color;
+import java.awt.CardLayout;
 
 public class TelaPadrao extends JFrame{
+	
+	 public void show(){
+		 
+	 };
 		
 	public TelaPadrao() {
 		setTitle("Banco Tads");
@@ -42,12 +47,17 @@ public class TelaPadrao extends JFrame{
 		lblBt.setBackground(Color.LIGHT_GRAY);
 		lblBt.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBt.setFont(new Font("Copperplate Gothic Bold", Font.BOLD, 33));
+		
+		JPanel pnlPrincipal = new JPanel();
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(pnlPrincipal, GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
+							.addContainerGap())
 						.addComponent(pnlSeparador, GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblBt, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
@@ -97,8 +107,11 @@ public class TelaPadrao extends JFrame{
 						.addComponent(lblNewLabel))
 					.addGap(8)
 					.addComponent(pnlSeparador, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(344, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(pnlPrincipal, GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
+					.addContainerGap())
 		);
+		pnlPrincipal.setLayout(new CardLayout(0, 0));
 		getContentPane().setLayout(groupLayout);
 	}
 }
