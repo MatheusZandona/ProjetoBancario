@@ -17,7 +17,7 @@ import javax.swing.JButton;
 public class DepositoCliente extends JPanel{
 	private JTextField txtAgencia;
 	private JTextField txtConta;
-	private JTextField Titular;
+	private JTextField txtTitular;
 	public DepositoCliente() {
 		
 		JLabel lblNewLabel = new JLabel("Informe o valor a ser depositado:");
@@ -54,8 +54,8 @@ public class DepositoCliente extends JPanel{
 		
 		JLabel lblTitular = new JLabel("Titular");
 		
-		Titular = new JTextField();
-		Titular.setColumns(10);
+		txtTitular = new JTextField();
+		txtTitular.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -79,7 +79,7 @@ public class DepositoCliente extends JPanel{
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(Titular, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+								.addComponent(txtTitular, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
 								.addGroup(groupLayout.createSequentialGroup()
 									.addComponent(txtValor, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
@@ -108,7 +108,7 @@ public class DepositoCliente extends JPanel{
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtAgencia, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(txtConta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(Titular, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(txtTitular, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblTipoConta)
 					.addPreferredGap(ComponentPlacement.RELATED)

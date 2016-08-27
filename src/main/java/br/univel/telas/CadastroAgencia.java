@@ -10,9 +10,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 
 public class CadastroAgencia extends JPanel{
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField txtNome;
+	private JTextField txtNumero;
+	private JTextField txtCidade;
 	public CadastroAgencia() {
 		
 		JButton btnConfirme = new JButton("Confirme");
@@ -20,16 +20,16 @@ public class CadastroAgencia extends JPanel{
 		
 		JLabel lblNome = new JLabel("Nome:");
 		
-		textField = new JTextField();
-		textField.setColumns(10);
+		txtNome = new JTextField();
+		txtNome.setColumns(10);
 		
 		JLabel lblNumero = new JLabel("N\u00FAmero");
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
+		txtNumero = new JTextField();
+		txtNumero.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
+		txtCidade = new JTextField();
+		txtCidade.setColumns(10);
 		
 		JLabel lblCidade = new JLabel("Cidade");
 		GroupLayout groupLayout = new GroupLayout(this);
@@ -47,13 +47,13 @@ public class CadastroAgencia extends JPanel{
 									.addComponent(lblNome)
 									.addPreferredGap(ComponentPlacement.RELATED, 273, GroupLayout.PREFERRED_SIZE))
 								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-									.addComponent(textField, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE)
+									.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE)
 									.addComponent(btnConfirme)
 									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 										.addComponent(lblCidade, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-										.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)))))
+										.addComponent(txtCidade, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)))))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(txtNumero, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED, 218, GroupLayout.PREFERRED_SIZE)))
 					.addGap(69))
 		);
@@ -63,15 +63,15 @@ public class CadastroAgencia extends JPanel{
 					.addContainerGap(49, Short.MAX_VALUE)
 					.addComponent(lblNome)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNumero)
 						.addComponent(lblCidade))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(txtNumero, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtCidade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnConfirme)
 					.addGap(33))

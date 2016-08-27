@@ -18,18 +18,22 @@ public class ConfirmaOperacao extends JPanel{
 		lblValor.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		JButton btnRetornar = new JButton("Retornar");
+		
+		JButton btnImprimir = new JButton("Imprimir");
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(33)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addGroup(groupLayout.createSequentialGroup()
+						.addComponent(lblOperacao)
+						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 							.addComponent(lblValor)
 							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(btnRetornar))
-						.addComponent(lblOperacao))
-					.addContainerGap(237, Short.MAX_VALUE))
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(btnImprimir, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(btnRetornar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+					.addContainerGap(148, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -40,9 +44,10 @@ public class ConfirmaOperacao extends JPanel{
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addComponent(lblValor)
 						.addComponent(btnRetornar))
-					.addContainerGap(128, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnImprimir)
+					.addContainerGap(34, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
 	}
-
 }

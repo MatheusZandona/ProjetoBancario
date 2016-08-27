@@ -49,15 +49,15 @@ public class TransferenciaCliente extends JPanel{
 		
 		JLabel lblValor = new JLabel("Valor");
 		
-		JButton button = new JButton("Confirme");
-		button.setFont(new Font("Tahoma", Font.BOLD, 12));
+		JButton btnConfirme = new JButton("Confirme");
+		btnConfirme.setFont(new Font("Tahoma", Font.BOLD, 12));
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(22)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(button, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnConfirme, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(label, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
 							.addGap(74)
@@ -108,7 +108,7 @@ public class TransferenciaCliente extends JPanel{
 						.addComponent(cbbTipoConta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(txtValor, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
-					.addComponent(button)
+					.addComponent(btnConfirme)
 					.addContainerGap(53, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
