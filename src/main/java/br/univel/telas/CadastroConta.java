@@ -10,6 +10,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class CadastroConta extends JPanel{
 	private JTextField txtNome;
@@ -44,6 +45,7 @@ public class CadastroConta extends JPanel{
 		JLabel label_1 = new JLabel("Tipo Conta");
 		
 		JComboBox cbbTipoConta = new JComboBox();
+		cbbTipoConta.setModel(new DefaultComboBoxModel(new String[] {"Conta Corrente", "Conta Poupan\u00E7a", "Conta Eletr\u00F4nica"}));
 		cbbTipoConta.setSelectedIndex(0);
 		cbbTipoConta.setMaximumRowCount(3);
 		

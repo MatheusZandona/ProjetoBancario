@@ -6,10 +6,13 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Font;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ConfirmaOperacao extends JPanel{
-	public ConfirmaOperacao() {
+	public ConfirmaOperacao(JFrame frame) {
 		
 		JLabel lblOperacao = new JLabel("Opera\u00E7\u00E3o $opera\u00E7\u00E3o realizada com sucesso!");
 		lblOperacao.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -18,6 +21,11 @@ public class ConfirmaOperacao extends JPanel{
 		lblValor.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		JButton btnRetornar = new JButton("Retornar");
+		btnRetornar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+		});
 		
 		JButton btnImprimir = new JButton("Imprimir");
 		GroupLayout groupLayout = new GroupLayout(this);

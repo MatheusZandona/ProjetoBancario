@@ -5,37 +5,86 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import java.awt.Font;
+import java.math.BigDecimal;
+
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JLabel;
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class SaqueCliente extends JPanel{
+	
+	
+	private void Sacar( BigDecimal valor ){
+		TelaPadrao telaSaldo = null;
+		telaSaldo = new TelaPadrao(new ConfirmaOperacao(telaSaldo));
+		telaSaldo.setSize(600, 400);
+		telaSaldo.setLocationRelativeTo(null);
+		telaSaldo.setVisible(true);				
+		
+	}
+	
+	
+	
 	public SaqueCliente() {
 		
 		JButton btn50reais = new JButton("R$ 50,00");
+		btn50reais.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Sacar(new BigDecimal(50.00));
+			}
+		});
 		btn50reais.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
 		JButton btn100reais = new JButton("R$ 100,00");
+		btn100reais.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Sacar(new BigDecimal(100.00));				
+			}
+		});
 		btn100reais.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
 		JButton btn500reais = new JButton("R$ 500,00");
+		btn500reais.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Sacar(new BigDecimal(500.00));				
+			}
+		});
 		btn500reais.setFont(new Font("Tahoma", Font.BOLD, 14));
-		
-		JButton btnConfirme = new JButton("Confirme");
-		btnConfirme.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		JButton btn300reais = new JButton("R$ 300,00");
-		btn300reais.setFont(new Font("Tahoma", Font.BOLD, 14));
-		
-		JButton btn200reais = new JButton("R$ 200,00");
-		btn200reais.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
 		JLabel lblInformeOutroValor = new JLabel("Informe outro valor");
 		
 		JFormattedTextField txtValor = new JFormattedTextField();
 		txtValor.setHorizontalAlignment(SwingConstants.RIGHT);
-		txtValor.setText("R$ 0,00");
+		txtValor.setText("R$ 0,00");		
+		
+		JButton btnConfirme = new JButton("Confirme");
+		btnConfirme.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Sacar(new BigDecimal(txtValor.getText()));				
+			}
+		});
+		btnConfirme.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		JButton btn300reais = new JButton("R$ 300,00");
+		btn300reais.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Sacar(new BigDecimal(300.00));				
+			}
+		});
+		btn300reais.setFont(new Font("Tahoma", Font.BOLD, 14));
+		
+		JButton btn200reais = new JButton("R$ 200,00");
+		btn200reais.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Sacar(new BigDecimal(200.00));								
+			}
+		});
+		btn200reais.setFont(new Font("Tahoma", Font.BOLD, 14));
+		
+
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)

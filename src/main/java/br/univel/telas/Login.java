@@ -12,6 +12,8 @@ import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JLabel;
 import java.awt.Window.Type;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Login extends JFrame{
 	private JTextField txtUsername;
@@ -28,9 +30,28 @@ public class Login extends JFrame{
 		txtSenha.setToolTipText("");
 		
 		JButton btnLogin = new JButton("Login");
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaPadrao painelCliente = new TelaPadrao(new PrincipalCliente());
+				painelCliente.setSize(600, 500);
+				painelCliente.setLocationRelativeTo(null);
+				painelCliente.setVisible(true);				
+
+				TelaPadrao painelBancario = new TelaPadrao(new PrincipalBancario());
+				painelBancario.setSize(600, 500);
+				painelBancario.setLocationRelativeTo(null);
+				painelBancario.setVisible(true);				
+			
+			}
+		});
 		btnLogin.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		
 		JButton btnFechar = new JButton("Fechar");
+		btnFechar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
 		btnFechar.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		
 		JLabel lblUsurio = new JLabel("Usu\u00E1rio");

@@ -14,11 +14,7 @@ import java.awt.CardLayout;
 
 public class TelaPadrao extends JFrame{
 	
-	 public void show(){
-		 
-	 };
-		
-	public TelaPadrao() {
+	public TelaPadrao(JPanel panel) {
 		setTitle("Banco Tads");
 		
 		JLabel lblBancoTads = new JLabel("BANCO TADS");
@@ -112,6 +108,7 @@ public class TelaPadrao extends JFrame{
 					.addContainerGap())
 		);
 		pnlPrincipal.setLayout(new CardLayout(0, 0));
+		pnlPrincipal.add(panel);
 		getContentPane().setLayout(groupLayout);
 	}
 }
