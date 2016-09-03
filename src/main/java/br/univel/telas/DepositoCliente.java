@@ -13,6 +13,8 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class DepositoCliente extends JPanel{
 	private JTextField txtAgencia;
@@ -50,6 +52,14 @@ public class DepositoCliente extends JPanel{
 		cbbTipoConta.setSelectedIndex(0);
 		
 		JButton btnConfirme = new JButton("Confirme");
+		btnConfirme.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaPadrao cadProfissional = new TelaPadrao(new CadastroProfissional());
+				cadProfissional.setSize(550, 450);
+				cadProfissional.setLocationRelativeTo(null);
+				cadProfissional.setVisible(true);					
+			}
+		});
 		btnConfirme.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		JLabel lblTitular = new JLabel("Titular");

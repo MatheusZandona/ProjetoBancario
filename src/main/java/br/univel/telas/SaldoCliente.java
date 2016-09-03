@@ -1,34 +1,34 @@
 package br.univel.telas;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import br.univel.modelos.ModeloSaldoCliente;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
 public class SaldoCliente extends JPanel{
-	private JTable table;
+	private JTable tbGrid;
 	private JTextField txtDataIini;
 	private JTextField txtDataFinal;
+	
+	
 	public SaldoCliente() {
-		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null},
-			},
-			new String[] {
-				"Opera\u00E7\u00E3o", "Data", "Valor"
-			}
-		));
-		table.getColumnModel().getColumn(0).setMinWidth(75);
+			
+		JScrollPane scrollPane = new JScrollPane();
+		tbGrid = new JTable();
+		tbGrid.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scrollPane.setViewportView(tbGrid);		
 		
 		JLabel lblSaldo = new JLabel("Saldo do Cliente");
 		lblSaldo.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -64,13 +64,14 @@ public class SaldoCliente extends JPanel{
 		txtDataFinal.setEditable(false);
 		txtDataFinal.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(this);
+		
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblSaldo)
 					.addContainerGap(546, Short.MAX_VALUE))
-				.addComponent(table, GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
+				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
 				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -97,13 +98,14 @@ public class SaldoCliente extends JPanel{
 						.addComponent(lblVlrSaldo, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE))
 					.addGap(109))
 		);
+		
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblSaldo)
 					.addGap(19)
-					.addComponent(table, GroupLayout.PREFERRED_SIZE, 220, GroupLayout.PREFERRED_SIZE)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 220, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
@@ -125,5 +127,20 @@ public class SaldoCliente extends JPanel{
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
+		
+		
+		// $hide>>$
+		montarConsulta();
+		// $hide<<$				
 	}
+	
+	public void montarConsulta(){	
+		//lista.clear();
+		//lista = dp.listarTodos();		
+		ModeloSaldoCliente modelo = new ModeloSaldoCliente();//instancia um modelo de tabela
+		
+		tbGrid.setRowSorter(null);
+		tbGrid.setModel(modelo);//seta a tabela			
+	}
+		
 }

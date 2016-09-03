@@ -18,6 +18,14 @@ public class SaqueCliente extends JPanel{
 	
 	
 	private void Sacar( BigDecimal valor ){
+		
+		TecladoSenhaCliente teclado = null;
+		teclado = new TecladoSenhaCliente();
+		teclado.setSize(515, 200);
+		teclado.setLocationRelativeTo(null);
+		teclado.setVisible(true);	
+		
+		
 		TelaPadrao telaSaldo = null;
 		telaSaldo = new TelaPadrao(new ConfirmaOperacao(telaSaldo));
 		telaSaldo.setSize(600, 400);

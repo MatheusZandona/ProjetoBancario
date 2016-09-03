@@ -48,7 +48,7 @@ public class PrincipalBancario extends JPanel{
 		btnAgncias.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TelaPadrao telaAgencias = new TelaPadrao(new PsqAgencias());
-				telaAgencias.setSize(600, 500);
+				telaAgencias.setSize(700, 450);
 				telaAgencias.setLocationRelativeTo(null);
 				telaAgencias.setVisible(true);					
 			}
@@ -59,7 +59,7 @@ public class PrincipalBancario extends JPanel{
 		btnBalanos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TelaPadrao telaBalanco = new TelaPadrao(new Balanco());
-				telaBalanco.setSize(600, 500);
+				telaBalanco.setSize(800, 600);
 				telaBalanco.setLocationRelativeTo(null);
 				telaBalanco.setVisible(true);					
 				
@@ -70,7 +70,7 @@ public class PrincipalBancario extends JPanel{
 		JButton btnProfissionais = new JButton("4 - Profissionais");
 		btnProfissionais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaBancarios = new TelaPadrao(new PsqUsuarios());
+				TelaPadrao telaBancarios = new TelaPadrao(new PsqProfissionais());
 				telaBancarios.setSize(600, 500);
 				telaBancarios.setLocationRelativeTo(null);
 				telaBancarios.setVisible(true);			

@@ -1,15 +1,18 @@
 package br.univel.telas;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import br.univel.modelos.ModeloBalanco;
 import javax.swing.JComboBox;
 
 public class Balanco extends JPanel{
@@ -49,7 +52,10 @@ public class Balanco extends JPanel{
 		lblSaldo.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblSaldo.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
+		JScrollPane scrollPane = new JScrollPane();
 		tbGrid = new JTable();
+		tbGrid.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scrollPane.setViewportView(tbGrid);
 		
 		JLabel lblTotalDepositos = new JLabel("0,00");
 		lblTotalDepositos.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -73,13 +79,11 @@ public class Balanco extends JPanel{
 		JLabel lblAg = new JLabel("AG:");
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(tbGrid, GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
-							.addContainerGap())
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addGroup(groupLayout.createSequentialGroup()
@@ -103,8 +107,8 @@ public class Balanco extends JPanel{
 									.addComponent(btnAvancaMes, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
 									.addGap(6)
 									.addComponent(btnAvancaAno, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
-									.addGap(24)
-									.addComponent(btnImprimir, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
+									.addGap(35)
+									.addComponent(btnImprimir, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE))
 								.addGroup(groupLayout.createSequentialGroup()
 									.addPreferredGap(ComponentPlacement.UNRELATED)
 									.addComponent(lblTotalDepositos, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE))
@@ -113,31 +117,27 @@ public class Balanco extends JPanel{
 									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 										.addComponent(lblSaldo, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
 										.addComponent(lblTotalSaques, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE))))
-							.addContainerGap(124, Short.MAX_VALUE))
+							.addGap(76))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblNewLabel)
-							.addPreferredGap(ComponentPlacement.RELATED, 463, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 491, Short.MAX_VALUE)
 							.addComponent(lblAg)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(cbbAgencia, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())))
+							.addComponent(cbbAgencia, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
 		);
+		
 		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(lblNewLabel)
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(cbbAgencia, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblAg))
-							.addPreferredGap(ComponentPlacement.RELATED)))
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblNewLabel)
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+							.addComponent(cbbAgencia, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblAg)))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(tbGrid, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(btnRegressaAno)
@@ -151,8 +151,9 @@ public class Balanco extends JPanel{
 							.addComponent(txtDataFim, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addComponent(btnAvancaDia)
 						.addComponent(btnAvancaMes)
-						.addComponent(btnAvancaAno)
-						.addComponent(btnImprimir))
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+							.addComponent(btnAvancaAno)
+							.addComponent(btnImprimir)))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblTotalDepsitos, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
@@ -168,5 +169,20 @@ public class Balanco extends JPanel{
 					.addGap(10))
 		);
 		setLayout(groupLayout);
+	
+		// $hide>>$
+		montarConsulta();
+		// $hide<<$			
+	}
+	
+	private void montarConsulta() {
+		//lista.clear();
+		//lista = dp.listarTodos();
+		//ModeloProduto modelo = new ModeloProduto(lista);//instancia um modelo de tabela
+		ModeloBalanco modelo = new ModeloBalanco();
+		
+		tbGrid.setRowSorter(null);
+		tbGrid.setModel(modelo);//seta a tabela			
+		
 	}
 }
