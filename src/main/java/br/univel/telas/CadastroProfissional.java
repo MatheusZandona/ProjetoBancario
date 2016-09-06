@@ -34,7 +34,7 @@ public class CadastroProfissional extends JPanel{
 		
 		txtSenhaConta = new JPasswordField();
 		
-		JLabel label_3 = new JLabel("Senha Conta");
+		JLabel lblSenhaAcesso = new JLabel("Senha Acesso");
 		
 		JButton button = new JButton("Confirme");
 		button.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -57,7 +57,7 @@ public class CadastroProfissional extends JPanel{
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(button, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)
 								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-									.addComponent(label_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(lblSenhaAcesso, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 									.addComponent(txtSenhaConta, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE))))
 						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 							.addComponent(lblUsername)
@@ -86,7 +86,7 @@ public class CadastroProfissional extends JPanel{
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label_2)
-						.addComponent(label_3))
+						.addComponent(lblSenhaAcesso))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(txtSenhaOp, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
