@@ -36,7 +36,7 @@ public class PrincipalCliente extends JPanel{
 		});
 		btnSaldo.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
-		JButton btnDepositos = new JButton("3 - Depósitos");
+		JButton btnDepositos = new JButton("3 - DepÃ³sitos");
 		btnDepositos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TelaPadrao telaDeposito = new TelaPadrao(new DepositoCliente());
@@ -47,7 +47,7 @@ public class PrincipalCliente extends JPanel{
 		});
 		btnDepositos.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
-		JButton btnTransf = new JButton("4 - Transferências");
+		JButton btnTransf = new JButton("4 - TransferÃªncias");
 		btnTransf.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TelaPadrao telaTransferencia = new TelaPadrao(new TransferenciaCliente());

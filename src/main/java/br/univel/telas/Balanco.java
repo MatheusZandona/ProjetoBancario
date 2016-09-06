@@ -9,31 +9,67 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import javax.swing.SwingConstants;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import br.univel.modelos.ModeloBalanco;
 import javax.swing.JComboBox;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Balanco extends JPanel{
 	private JTextField txtDataIni;
 	private JTextField txtDataFim;
-	private JTable tbGrid;
+	private JTable     tbGrid;
+	private Date       dataInicial ;
+	private Date       dataFinal;  
+	
+	public Date getDataInicial() {
+		return dataInicial;
+	}
+
+	public void setDataInicial(Date dataInicial) {
+		this.dataInicial = dataInicial;
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy"); 
+		txtDataIni.setText(format.format(this.dataInicial));
+	}
+
+	public Date getDataFinal() {
+		return dataFinal;
+	}
+
+	public void setDataFinal(Date dataFinal) {
+		
+		this.dataFinal = dataFinal;
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy"); 
+		txtDataFim.setText(format.format(this.dataFinal));
+		
+	}
+
 	public Balanco() {
 		
 		JButton btnRegressaAno = new JButton("|<");
+		btnRegressaAno.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {		
+				dataInicial.setYear(dataInicial.getYear() - 1);				
+				setDataInicial(dataInicial);
+			}
+		});
 		
 		JButton btnRegressaMes = new JButton("<<");
 		
 		JButton btnRegressaDia = new JButton("<");
+						
 		
 		txtDataIni = new JTextField();
-		txtDataIni.setText("25/08/2016");
 		txtDataIni.setEditable(false);
 		txtDataIni.setColumns(10);
 		
 		txtDataFim = new JTextField();
-		txtDataFim.setText("25/08/2016");
 		txtDataFim.setEditable(false);
 		txtDataFim.setColumns(10);
 		
@@ -42,6 +78,12 @@ public class Balanco extends JPanel{
 		JButton btnAvancaMes = new JButton(">>");
 		
 		JButton btnAvancaAno = new JButton(">|");
+		btnAvancaAno.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dataInicial.setYear(dataInicial.getYear() + 1);				
+				setDataInicial(dataInicial);				
+			}
+		});
 		
 		JButton btnImprimir = new JButton("Imprimir");
 		
@@ -168,9 +210,13 @@ public class Balanco extends JPanel{
 						.addComponent(lblSaldo, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
 					.addGap(10))
 		);
-		setLayout(groupLayout);
+		setLayout(groupLayout);				
 	
-		// $hide>>$
+		
+		// $hide>>$		
+		setDataInicial(new Date(System.currentTimeMillis()));
+		setDataFinal(new Date(System.currentTimeMillis()));		
+		
 		montarConsulta();
 		// $hide<<$			
 	}

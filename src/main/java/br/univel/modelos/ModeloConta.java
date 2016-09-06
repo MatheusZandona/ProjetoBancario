@@ -27,7 +27,7 @@ public class ModeloConta extends AbstractTableModel{
 			case 1:
 				return "AG";
 			case 2:
-				return "Número";
+				return "NÃºmero";
 			case 3:
 				return "Titular";
 			case 4:

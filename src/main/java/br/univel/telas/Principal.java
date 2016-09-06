@@ -2,6 +2,11 @@ package br.univel.telas;
 
 import java.awt.EventQueue;
 
+import com.mysql.jdbc.ConnectionPropertiesTransform;
+
+import br.univel.classes.PropertiesSistema;
+import br.univel.classes.bd.ConexaoBD;
+
 public class Principal {
 	/**
 	 * Launch the application.
@@ -9,6 +14,9 @@ public class Principal {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				
+				conectarBD();				
+				
 				try {
 					Login login = new Login();
 					login.setSize(427, 250);
@@ -19,6 +27,15 @@ public class Principal {
 				}
 			}
 		});
+	}
+	
+	private static void conectarBD(){
+		PropertiesSistema properties = new PropertiesSistema();
+		properties.escrever();
+		
+		if(ConexaoBD.getInstance() != null){
+			System.out.println("Conectou");
+		};		
 	}
 
 }

@@ -27,7 +27,7 @@ public class ModeloBalanco extends AbstractTableModel{
 			case 1:
 				return "Conta";
 			case 2:
-				return "Operação";
+				return "OperaÃ§Ã£o";
 			case 3:
 				return "Valor";
 			default:

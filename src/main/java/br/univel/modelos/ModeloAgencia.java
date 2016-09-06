@@ -22,7 +22,7 @@ public class ModeloAgencia extends AbstractTableModel{
 			case 0:
 				return "Nome";
 			case 1:
-				return "Número";
+				return "NÃºmero";
 			case 2:
 				return "Cidade";
 			default:

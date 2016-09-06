@@ -11,7 +11,7 @@ public class ModeloSaldoCliente extends AbstractTableModel{
 
 	@Override
 	public int getRowCount() {
-		return 1	;
+		return 1;
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public class ModeloSaldoCliente extends AbstractTableModel{
 	public String getColumnName(int column) {
 		switch( column) {
 			case 0:
-				return "Operação";
+				return "OperaÃ§Ã£o";
 			case 1:
 				return "Data";
 			case 2:
