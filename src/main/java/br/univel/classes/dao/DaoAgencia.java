@@ -14,16 +14,20 @@ public class DaoAgencia implements Dao<Agencia, Integer>{
 
 	@Override
 	public void salvar(Agencia t) {
-		try {
-			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("INSERT INTO AGENCIA VALUES (?,?,?,?)");
-			ps.setInt(1, t.getId());
-			ps.setString(2, t.getNumero());
-			ps.setString(3, t.getNome());
-			ps.setString(4, t.getCidade());
-			ps.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(t.getId() == 0){ // esta inserindo
+			try {
+				PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+										.clientPrepareStatement("INSERT INTO AGENCIA VALUES (?,?,?,?)");
+				ps.setInt(1, t.getId());
+				ps.setString(2, t.getNumero());
+				ps.setString(3, t.getNome());
+				ps.setString(4, t.getCidade());
+				ps.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}else{	// esta alterando
+			atualizar(t); 
 		}
 	}
 

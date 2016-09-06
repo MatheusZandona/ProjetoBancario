@@ -19,24 +19,28 @@ public class DaoUsuario implements Dao<Usuario, Integer>{
 
 	@Override
 	public void salvar(Usuario t) {
-		DaoPessoa daoPessoa = new DaoPessoa();
-		Pessoa pessoa;
-		try {
-			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("INSERT INTO USUARIO VALUES (?,?,?,?)");
-			ps.setString(1, t.getUser());
-			ps.setString(2, t.getSenha());
-			ResultSet result =  ps.executeQuery();
-			if(daoPessoa.buscar(Integer.parseInt(Funcoes.removerCaracteresEspeciais(result.getString("pessoa")))) != null){
-				pessoa = new Pessoa();
-				pessoa = daoPessoa.buscar(Integer.parseInt(Funcoes.removerCaracteresEspeciais(result.getString("pessoa"))));
-				t.setPessoa(pessoa);
+		if(t.getId() == 0){ // esta inserindo
+			DaoPessoa daoPessoa = new DaoPessoa();
+			Pessoa pessoa;
+			try {
+				PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+										.clientPrepareStatement("INSERT INTO USUARIO VALUES (?,?,?,?)");
+				ps.setString(1, t.getUser());
+				ps.setString(2, t.getSenha());
+				ResultSet result =  ps.executeQuery();
+				if(daoPessoa.buscar(Integer.parseInt(Funcoes.removerCaracteresEspeciais(result.getString("pessoa")))) != null){
+					pessoa = new Pessoa();
+					pessoa = daoPessoa.buscar(Integer.parseInt(Funcoes.removerCaracteresEspeciais(result.getString("pessoa"))));
+					t.setPessoa(pessoa);
+				}
+				ps.setInt(3, t.getPessoa().getId());
+				ps.setString(4, t.getSenhaOperacao());
+				ps.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			ps.setInt(3, t.getPessoa().getId());
-			ps.setString(4, t.getSenhaOperacao());
-			ps.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
+		}else{ //	esta alterando
+			atualizar(t);
 		}
 	}
 

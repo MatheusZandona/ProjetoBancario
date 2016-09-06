@@ -19,17 +19,21 @@ public class DaoPessoa implements Dao<Pessoa, Integer>{
 
 	@Override
 	public void salvar(Pessoa t) {
-		try {
-			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("INSERT INTO PESSOA VALUES (?,?,?,?,?)");
-			ps.setString(2, t.getNome());
-			ps.setInt(3, t.getIdade());
-			ps.setString(4, t.getSenha());
-			ps.setString(5, t.getCpf());
-			ps.setInt(3, t.getTipoPessoa());
-			ps.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(t.getId() == 0){ // esta inserindo
+			try {
+				PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+										.clientPrepareStatement("INSERT INTO PESSOA VALUES (?,?,?,?,?)");
+				ps.setString(2, t.getNome());
+				ps.setInt(3, t.getIdade());
+				ps.setString(4, t.getSenha());
+				ps.setString(5, t.getCpf());
+				ps.setInt(3, t.getTipoPessoa());
+				ps.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}else{ // esta alterando
+			atualizar(t); 
 		}
 	}
 

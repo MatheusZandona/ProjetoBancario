@@ -10,7 +10,17 @@ import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import br.univel.classes.Pessoa;
+import br.univel.classes.Usuario;
+import br.univel.classes.dao.DaoPessoa;
+import br.univel.classes.dao.DaoUsuario;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 public class CadastroProfissional extends JPanel{
+	public static int status = 0;   // 0 = inserindo  1 = alterando
+	
 	private JTextField txtNome;
 	private JTextField txtIdade;
 	private JPasswordField txtSenhaOp;
@@ -37,6 +47,11 @@ public class CadastroProfissional extends JPanel{
 		JLabel lblSenhaAcesso = new JLabel("Senha Acesso");
 		
 		JButton button = new JButton("Confirme");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
 		button.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		JLabel lblUsername = new JLabel("UserName: ");
@@ -96,5 +111,24 @@ public class CadastroProfissional extends JPanel{
 					.addGap(31))
 		);
 		setLayout(groupLayout);
+	}
+	
+	private void salvarProfissional(){
+		// inserir pessoa
+		Pessoa p = new Pessoa();
+		DaoPessoa daoP =  new DaoPessoa();
+		
+		//inserir usuario
+		Usuario us = new Usuario();
+		DaoUsuario daoUs = new DaoUsuario();
+		
+		p.setNome(txtNome.getText());
+		p.setIdade(Integer.parseInt(txtIdade.getText()));
+		us.setSenha(txtSenhaConta.getText());
+		us.setSenhaOperacao(txtSenhaOp.getText());
+		us.setUser(txtUserName.getText());
+		
+		daoP.salvar(p);
+		daoUs.salvar(us);
 	}
 }

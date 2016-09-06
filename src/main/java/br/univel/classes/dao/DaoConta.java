@@ -19,16 +19,20 @@ public class DaoConta implements Dao<Conta, Integer>{
 
 	@Override
 	public void salvar(Conta t) {
-		try {
-			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("INSERT INTO CONTA VALUES (?,?,?,?,?)");
-			ps.setString(2, t.getNumero());
-			ps.setInt(3, t.getTipoConta().ordinal());
-			ps.setDate(4, (Date) t.getDtAbertura());
-			ps.setBigDecimal(5, t.getSaldo());
-			ps.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(t.getId() == 0){ // esta inserindo
+			try {
+				PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+										.clientPrepareStatement("INSERT INTO CONTA VALUES (?,?,?,?,?)");
+				ps.setString(2, t.getNumero());
+				ps.setInt(3, t.getTipoConta().ordinal());
+				ps.setDate(4, (Date) t.getDtAbertura());
+				ps.setBigDecimal(5, t.getSaldo());
+				ps.executeUpdate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}else{ // esta alterando
+			atualizar(t); 
 		}
 	}
 
