@@ -6,6 +6,7 @@ public class Usuario {
 	private String  user;
 	private String  senha;
 	private Pessoa  pessoa;
+	private String  senhaOperacao;
 	
 	public Integer getId() {
 		return id;
@@ -34,6 +35,12 @@ public class Usuario {
 	public Usuario setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
 		return this;
+	}
+	public String getSenhaOperacao() {
+		return senhaOperacao;
+	}
+	public void setSenhaOperacao(String senhaOperacao) {
+		this.senhaOperacao = senhaOperacao;
 	}
 	
 }

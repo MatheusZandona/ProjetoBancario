@@ -23,15 +23,17 @@ public class DaoUsuario implements Dao<Usuario, Integer>{
 		Pessoa pessoa;
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("INSERT INTO USUARIO VALUES (?,?,?)");
-			ps.setString(2, t.getUser());
-			ps.setString(3, t.getSenha());
+									.clientPrepareStatement("INSERT INTO USUARIO VALUES (?,?,?,?)");
+			ps.setString(1, t.getUser());
+			ps.setString(2, t.getSenha());
 			ResultSet result =  ps.executeQuery();
 			if(daoPessoa.buscar(Integer.parseInt(Funcoes.removerCaracteresEspeciais(result.getString("pessoa")))) != null){
 				pessoa = new Pessoa();
-				pessoa = daoPessoa.buscar(Integer.parseInt(Funcoes.removerCaracteresEspeciais(result.getString("agencia"))));
+				pessoa = daoPessoa.buscar(Integer.parseInt(Funcoes.removerCaracteresEspeciais(result.getString("pessoa"))));
 				t.setPessoa(pessoa);
 			}
+			ps.setInt(3, t.getPessoa().getId());
+			ps.setString(4, t.getSenhaOperacao());
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -52,11 +54,12 @@ public class DaoUsuario implements Dao<Usuario, Integer>{
 				us.setId(result.getInt("id"));
 				us.setUser(result.getString("nome"));
 				us.setSenha(result.getString("senha"));
-				if(daoPessoa.buscar(Integer.parseInt(Funcoes.removerCaracteresEspeciais(result.getString("agencia")))) != null){
+				if(daoPessoa.buscar(Integer.parseInt(Funcoes.removerCaracteresEspeciais(result.getString("pessoa")))) != null){
 					pessoa = new Pessoa();
-					pessoa = daoPessoa.buscar(Integer.parseInt(Funcoes.removerCaracteresEspeciais(result.getString("agencia"))));
+					pessoa = daoPessoa.buscar(Integer.parseInt(Funcoes.removerCaracteresEspeciais(result.getString("pessoa"))));
 					us.setPessoa(pessoa);
-				}				
+				}
+				us.setSenhaOperacao(result.getString("senhaop"));
 			}
 			ps.close();
 			result.close();
@@ -70,11 +73,12 @@ public class DaoUsuario implements Dao<Usuario, Integer>{
 	public void atualizar(Usuario t) {
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("UPDATE USUARIO SET NOME = ?, SENHA = ?, PESSOA = ? WHERE ID = ?");
+					.clientPrepareStatement("UPDATE USUARIO SET NOME = ?, SENHA = ?, PESSOA = ?, SENHAOP = ? WHERE ID = ?");
 			
 			ps.setString(1, t.getUser());
-			ps.setString(3, t.getSenha());
-			ps.setInt(2, t.getPessoa().getId());
+			ps.setString(2, t.getSenha());
+			ps.setInt(3, t.getPessoa().getId());
+			ps.setString(4, t.getSenhaOperacao());
 			
 			ps.executeUpdate();
 			ps.close();
@@ -117,6 +121,7 @@ public class DaoUsuario implements Dao<Usuario, Integer>{
 					us.setPessoa(pessoa);
 				}
 				us.setSenha(result.getString("senha"));
+				us.setSenha(result.getString("senhaop"));
 				usuarios.add(us);
 			}
 			

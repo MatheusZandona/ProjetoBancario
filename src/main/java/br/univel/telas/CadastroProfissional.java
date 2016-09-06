@@ -15,6 +15,7 @@ public class CadastroProfissional extends JPanel{
 	private JTextField txtIdade;
 	private JPasswordField txtSenhaOp;
 	private JPasswordField txtSenhaConta;
+	private JTextField txtUserName;
 	public CadastroProfissional() {
 		
 		txtNome = new JTextField();
@@ -37,16 +38,17 @@ public class CadastroProfissional extends JPanel{
 		
 		JButton button = new JButton("Confirme");
 		button.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		JLabel lblUsername = new JLabel("UserName: ");
+		
+		txtUserName = new JTextField();
+		txtUserName.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(53)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE)
-						.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
-						.addComponent(txtIdade, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
-						.addComponent(label, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
 								.addComponent(label_2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -56,8 +58,15 @@ public class CadastroProfissional extends JPanel{
 								.addComponent(button, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)
 								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 									.addComponent(label_3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addComponent(txtSenhaConta, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)))))
-					.addContainerGap(151, Short.MAX_VALUE))
+									.addComponent(txtSenhaConta, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE))))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+							.addComponent(lblUsername)
+							.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
+							.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
+							.addComponent(txtIdade, GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)
+							.addComponent(label, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
+							.addComponent(txtUserName)))
+					.addContainerGap(161, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -70,7 +79,11 @@ public class CadastroProfissional extends JPanel{
 					.addComponent(label_1)
 					.addGap(6)
 					.addComponent(txtIdade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(lblUsername)
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(txtUserName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label_2)
 						.addComponent(label_3))
@@ -80,9 +93,8 @@ public class CadastroProfissional extends JPanel{
 						.addComponent(txtSenhaConta, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(11)
 					.addComponent(button)
-					.addContainerGap(58, Short.MAX_VALUE))
+					.addGap(31))
 		);
 		setLayout(groupLayout);
 	}
-
 }
