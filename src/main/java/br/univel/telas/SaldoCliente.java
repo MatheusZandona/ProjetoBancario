@@ -5,24 +5,51 @@ import javax.swing.JScrollPane;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-
 import br.univel.modelos.ModeloSaldoCliente;
 
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class SaldoCliente extends JPanel{
 	private JTable tbGrid;
-	private JTextField txtDataIini;
-	private JTextField txtDataFinal;
+	private JTextField txtDataIni;
+	private JTextField txtDataFim;
+	private Date       dataInicial ;
+	private Date       dataFinal;  
+	private SimpleDateFormat format; 	
+	private Calendar 		 calendar;
 	
 	
+	public Date getDataInicial() {
+		return dataInicial;
+	}
+
+	public void setDataInicial(Date dataInicial) {
+		this.dataInicial = dataInicial;
+		txtDataIni.setText(format.format(this.dataInicial));
+	}
+
+	public Date getDataFinal() {
+		return dataFinal;
+	}
+
+	public void setDataFinal(Date dataFinal) {
+		this.dataFinal = dataFinal;
+		txtDataFim.setText(format.format(this.dataFinal));		
+	}
+
 	public SaldoCliente() {
 			
 		JScrollPane scrollPane = new JScrollPane();
@@ -34,16 +61,101 @@ public class SaldoCliente extends JPanel{
 		lblSaldo.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
 		JButton btnRegressaAno = new JButton("|<");
+		btnRegressaAno.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					calendar.setTime(format.parse(txtDataIni.getText()));
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+				
+				calendar.add(calendar.YEAR, -1);
+				
+				dataInicial = calendar.getTime();				
+				setDataInicial(dataInicial);					
+			}
+		});
 		
 		JButton btnRegressaMes = new JButton("<<");
+		btnRegressaMes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					calendar.setTime(format.parse(txtDataIni.getText()));
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+				
+				calendar.add(calendar.MONTH, -1);
+				
+				dataInicial = calendar.getTime();				
+				setDataInicial(dataInicial);					
+			}
+		});
 		
 		JButton btnRegressaDia = new JButton("<");
+		btnRegressaDia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					calendar.setTime(format.parse(txtDataIni.getText()));
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+				
+				calendar.add(calendar.DAY_OF_MONTH, -1);
+				
+				dataInicial = calendar.getTime();				
+				setDataInicial(dataInicial);						
+			}
+		});
 		
 		JButton btnAvancaDia = new JButton(">");
+		btnAvancaDia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					calendar.setTime(format.parse(txtDataFim.getText()));
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+				
+				calendar.add(calendar.DAY_OF_MONTH, 1);
+				
+				dataFinal = calendar.getTime();				
+				setDataFinal(dataFinal);					
+			}
+		});
 		
 		JButton btnAvancaMes = new JButton(">>");
+		btnAvancaMes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					calendar.setTime(format.parse(txtDataFim.getText()));
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+				
+				calendar.add(calendar.MONTH, 1);
+				
+				dataFinal = calendar.getTime();				
+				setDataFinal(dataFinal);				
+			}
+		});
 		
 		JButton btnAvancaAno = new JButton(">|");
+		btnAvancaAno.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					calendar.setTime(format.parse(txtDataFim.getText()));
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+				
+				calendar.add(calendar.YEAR, 1);
+				
+				dataFinal = calendar.getTime();				
+				setDataFinal(dataFinal);								
+							
+			}
+		});
 		
 		JButton btnImprimir = new JButton("Imprimir");
 		
@@ -54,27 +166,24 @@ public class SaldoCliente extends JPanel{
 		lblVlrSaldo.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblVlrSaldo.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
-		txtDataIini = new JTextField();
-		txtDataIini.setEditable(false);
-		txtDataIini.setText("25/08/2016");
-		txtDataIini.setColumns(10);
+		txtDataIni = new JTextField();
+		txtDataIni.setEditable(false);
+		txtDataIni.setColumns(10);
 		
-		txtDataFinal = new JTextField();
-		txtDataFinal.setText("25/08/2016");
-		txtDataFinal.setEditable(false);
-		txtDataFinal.setColumns(10);
+		txtDataFim = new JTextField();
+		txtDataFim.setEditable(false);
+		txtDataFim.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(this);
-		
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblSaldo)
 					.addContainerGap(546, Short.MAX_VALUE))
 				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(btnRegressaAno)
 							.addPreferredGap(ComponentPlacement.RELATED)
@@ -82,23 +191,24 @@ public class SaldoCliente extends JPanel{
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnRegressaDia, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(txtDataIini, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(txtDataFinal, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
+							.addComponent(txtDataIni, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(txtDataFim, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnAvancaDia, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
 							.addGap(6)
 							.addComponent(btnAvancaMes, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
 							.addGap(6)
 							.addComponent(btnAvancaAno, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE))
-						.addComponent(lblSaldoPerodo))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(374)
+							.addComponent(lblSaldoPerodo)))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addComponent(btnImprimir)
 						.addComponent(lblVlrSaldo, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE))
 					.addGap(109))
 		);
-		
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
@@ -112,10 +222,10 @@ public class SaldoCliente extends JPanel{
 							.addComponent(btnRegressaAno)
 							.addComponent(btnRegressaMes)
 							.addComponent(btnRegressaDia)
-							.addComponent(txtDataIini, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addComponent(txtDataIni, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 							.addComponent(btnAvancaDia)
-							.addComponent(txtDataFinal, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addComponent(txtDataFim, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addComponent(btnAvancaMes)
 						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 							.addComponent(btnAvancaAno)
@@ -130,6 +240,12 @@ public class SaldoCliente extends JPanel{
 		
 		
 		// $hide>>$
+		format    = new SimpleDateFormat("dd/MM/yyyy"); 		
+		calendar  = Calendar.getInstance();
+		
+		setDataInicial(new Date(System.currentTimeMillis()));
+		setDataFinal(new Date(System.currentTimeMillis()));								
+		
 		montarConsulta();
 		// $hide<<$				
 	}

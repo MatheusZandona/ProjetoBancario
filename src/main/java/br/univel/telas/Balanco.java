@@ -9,7 +9,8 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.JLabel;
 import java.awt.Font;
-import java.sql.Date;
+import java.util.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -27,6 +28,8 @@ public class Balanco extends JPanel{
 	private JTable     tbGrid;
 	private Date       dataInicial ;
 	private Date       dataFinal;  
+	private SimpleDateFormat format; 	
+	private Calendar 		 calendar;
 	
 	public Date getDataInicial() {
 		return dataInicial;
@@ -34,7 +37,6 @@ public class Balanco extends JPanel{
 
 	public void setDataInicial(Date dataInicial) {
 		this.dataInicial = dataInicial;
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy"); 
 		txtDataIni.setText(format.format(this.dataInicial));
 	}
 
@@ -42,12 +44,9 @@ public class Balanco extends JPanel{
 		return dataFinal;
 	}
 
-	public void setDataFinal(Date dataFinal) {
-		
+	public void setDataFinal(Date dataFinal) {		
 		this.dataFinal = dataFinal;
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy"); 
-		txtDataFim.setText(format.format(this.dataFinal));
-		
+		txtDataFim.setText(format.format(this.dataFinal));		
 	}
 
 	public Balanco() {
@@ -55,14 +54,51 @@ public class Balanco extends JPanel{
 		JButton btnRegressaAno = new JButton("|<");
 		btnRegressaAno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {		
-				dataInicial.setYear(dataInicial.getYear() - 1);				
-				setDataInicial(dataInicial);
+				try {
+					calendar.setTime(format.parse(txtDataIni.getText()));
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+				
+				calendar.add(calendar.YEAR, -1);
+				
+				dataInicial = calendar.getTime();				
+				setDataInicial(dataInicial);			
 			}
 		});
 		
 		JButton btnRegressaMes = new JButton("<<");
+		btnRegressaMes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					calendar.setTime(format.parse(txtDataIni.getText()));
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+				
+				calendar.add(calendar.MONTH, -1);
+				
+				dataInicial = calendar.getTime();				
+				setDataInicial(dataInicial);						
+			}
+		});
 		
 		JButton btnRegressaDia = new JButton("<");
+		btnRegressaDia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					calendar.setTime(format.parse(txtDataIni.getText()));
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+				
+				calendar.add(calendar.DAY_OF_MONTH, -1);
+				
+				dataInicial = calendar.getTime();				
+				setDataInicial(dataInicial);								
+		
+			}
+		});
 						
 		
 		txtDataIni = new JTextField();
@@ -74,14 +110,53 @@ public class Balanco extends JPanel{
 		txtDataFim.setColumns(10);
 		
 		JButton btnAvancaDia = new JButton(">");
+		btnAvancaDia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				try {
+					calendar.setTime(format.parse(txtDataFim.getText()));
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+				
+				calendar.add(calendar.DAY_OF_MONTH, 1);
+				
+				dataFinal = calendar.getTime();				
+				setDataFinal(dataFinal);								
+			}
+		});
 		
 		JButton btnAvancaMes = new JButton(">>");
+		btnAvancaMes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				try {
+					calendar.setTime(format.parse(txtDataFim.getText()));
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+				
+				calendar.add(calendar.MONTH, 1);
+				
+				dataFinal = calendar.getTime();				
+				setDataFinal(dataFinal);								
+			}
+		});
 		
 		JButton btnAvancaAno = new JButton(">|");
 		btnAvancaAno.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				dataInicial.setYear(dataInicial.getYear() + 1);				
-				setDataInicial(dataInicial);				
+				try {
+					calendar.setTime(format.parse(txtDataFim.getText()));
+				} catch (ParseException e1) {
+					e1.printStackTrace();
+				}
+				
+				calendar.add(calendar.YEAR, 1);
+				
+				dataFinal = calendar.getTime();				
+				setDataFinal(dataFinal);								
+			
 			}
 		});
 		
@@ -214,8 +289,11 @@ public class Balanco extends JPanel{
 	
 		
 		// $hide>>$		
+		format    = new SimpleDateFormat("dd/MM/yyyy"); 		
+		calendar  = Calendar.getInstance();
+		
 		setDataInicial(new Date(System.currentTimeMillis()));
-		setDataFinal(new Date(System.currentTimeMillis()));		
+		setDataFinal(new Date(System.currentTimeMillis()));						
 		
 		montarConsulta();
 		// $hide<<$			
