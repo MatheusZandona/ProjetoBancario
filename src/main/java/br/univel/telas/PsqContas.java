@@ -4,15 +4,26 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import br.univel.classes.Conta;
+import br.univel.classes.dao.DaoConta;
 import br.univel.modelos.ModeloConta;
 
 public class PsqContas extends JPanel{
+	
 	private JTable tbGrid;
+	private List<Conta> lista = new ArrayList<Conta>();
+	private DaoConta dao  = new DaoConta();
+	
+	
 	public PsqContas() {
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -46,10 +57,9 @@ public class PsqContas extends JPanel{
 		// $hide<<$			
 	}
 	private void montarConsulta() {
-		//lista.clear();
-		//lista = dp.listarTodos();
-		//ModeloProduto modelo = new ModeloProduto(lista);//instancia um modelo de tabela
-		ModeloConta modelo = new ModeloConta();
+		lista.clear();
+		lista = dao.listarTodos();
+		ModeloConta modelo = new ModeloConta(lista);
 		
 		tbGrid.setRowSorter(null);
 		tbGrid.setModel(modelo);//seta a tabela			

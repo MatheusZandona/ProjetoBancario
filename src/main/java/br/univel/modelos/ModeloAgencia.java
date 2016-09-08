@@ -1,9 +1,19 @@
 package br.univel.modelos;
 
+import java.util.List;
+
 import javax.swing.table.AbstractTableModel;
+
+import br.univel.classes.Agencia;
 
 
 public class ModeloAgencia extends AbstractTableModel{
+	
+	private List<Agencia> lista;
+	
+	public ModeloAgencia(List<Agencia> lista){
+		this.lista = lista;
+	}	
 	
 	@Override
 	public int getColumnCount() {
@@ -12,9 +22,8 @@ public class ModeloAgencia extends AbstractTableModel{
 
 	@Override
 	public int getRowCount() {
-		return 3;
+		return lista.size();
 	}
-
 
 	@Override
 	public String getColumnName(int column) {
@@ -31,8 +40,19 @@ public class ModeloAgencia extends AbstractTableModel{
 	}	
 	
 	@Override
-	public Object getValueAt(int arg0, int arg1) {
-		return null;
+	public Object getValueAt(int rowIndex, int columnIndex) {
+		Agencia agencia = lista.get(rowIndex);
+
+		switch (columnIndex) {
+		case 0:
+			return agencia.getNome();
+		case 1:
+			return agencia.getNumero();
+		case 2:
+			return agencia.getCidade();
+		default:
+			return "erro";
+		}
 	}
 
 }

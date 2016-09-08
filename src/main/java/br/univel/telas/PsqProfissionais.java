@@ -7,15 +7,23 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
+import br.univel.classes.Usuario;
+import br.univel.classes.dao.DaoUsuario;
 import br.univel.modelos.ModeloProfissionais;
 
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 public class PsqProfissionais extends JPanel{
+	
 	private JTable tbGrid;
+	private List<Usuario> lista = new ArrayList<Usuario>();
+	private DaoUsuario dao  = new DaoUsuario();
+	
 	public PsqProfissionais() {
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -76,10 +84,9 @@ public class PsqProfissionais extends JPanel{
 	}
 	
 	private void montarConsulta() {
-		//lista.clear();
-		//lista = dp.listarTodos();
-		//ModeloProduto modelo = new ModeloProduto(lista);//instancia um modelo de tabela
-		ModeloProfissionais modelo = new ModeloProfissionais();
+		lista.clear();
+		lista = dao.listarTodos();
+		ModeloProfissionais modelo = new ModeloProfissionais(lista);
 		
 		tbGrid.setRowSorter(null);
 		tbGrid.setModel(modelo);//seta a tabela				

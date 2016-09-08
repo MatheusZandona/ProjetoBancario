@@ -1,8 +1,18 @@
 package br.univel.modelos;
 
+import java.util.List;
+
 import javax.swing.table.AbstractTableModel;
 
+import br.univel.classes.Usuario;
+
 public class ModeloProfissionais extends AbstractTableModel {
+	
+	List<Usuario> lista;
+
+	public ModeloProfissionais(List<Usuario> lista) {
+		this.lista = lista;
+	}
 
 	@Override
 	public int getColumnCount() {
@@ -11,12 +21,21 @@ public class ModeloProfissionais extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		return 3;
+		return lista.size();
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		return null;
+		Usuario user = lista.get(rowIndex);
+
+		switch (columnIndex) {
+		case 0:
+			return user.getPessoa().getNome();
+		case 1:
+			return user.getUser();	
+		default:
+			return "erro";
+		}
 	}
 	
 

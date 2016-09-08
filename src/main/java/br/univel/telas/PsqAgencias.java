@@ -6,16 +6,23 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+
+import br.univel.classes.Agencia;
+import br.univel.classes.dao.DaoAgencia;
 import br.univel.modelos.ModeloAgencia;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 public class PsqAgencias extends JPanel{
 	
 	private JTable tbGrid;
+	private List<Agencia> lista = new ArrayList<Agencia>();
+	private DaoAgencia dao  = new DaoAgencia();
 	
 	public PsqAgencias() {
 
@@ -80,10 +87,9 @@ public class PsqAgencias extends JPanel{
 	}
 
 	private void montarConsulta() {
-		//lista.clear();
-		//lista = dp.listarTodos();
-		//ModeloProduto modelo = new ModeloProduto(lista);//instancia um modelo de tabela
-		ModeloAgencia modelo = new ModeloAgencia();
+		lista.clear();
+		lista = dao.listarTodos();
+		ModeloAgencia modelo = new ModeloAgencia(lista);
 		
 		tbGrid.setRowSorter(null);
 		tbGrid.setModel(modelo);//seta a tabela				

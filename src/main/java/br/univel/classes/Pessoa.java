@@ -1,6 +1,6 @@
 package br.univel.classes;
 
-import br.univel.enuns.TipoConta;
+import br.univel.enuns.TipoLogin;
 
 public class Pessoa {
 	
@@ -9,7 +9,7 @@ public class Pessoa {
 	private Integer idade; 
 	private String  senha;
 	private String  cpf;
-	private Integer tipoPessoa;  // 0 = Cliente  e 1 = Funcionario
+	private TipoLogin tipoLogin;  // 0 = Cliente  e 1 = Funcionario
 
 	public Integer getIdade() {
 		return idade;
@@ -56,12 +56,12 @@ public class Pessoa {
 		return this;
 	}
 
-	public Integer getTipoPessoa() {
-		return tipoPessoa;
+	public TipoLogin getTipoLogin() {
+		return tipoLogin;
 	}
 
-	public Pessoa setTipoPessoa(Integer tipoPessoa) {
-		this.tipoPessoa = tipoPessoa;
+	public Pessoa setTipoLogin(TipoLogin tipoLogin) {
+		this.tipoLogin = tipoLogin;
 		return this;
 	}
 

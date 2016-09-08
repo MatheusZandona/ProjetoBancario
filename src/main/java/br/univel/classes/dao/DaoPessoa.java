@@ -12,6 +12,7 @@ import br.univel.classes.Conta;
 import br.univel.classes.Pessoa;
 import br.univel.classes.bd.ConexaoBD;
 import br.univel.enuns.TipoConta;
+import br.univel.enuns.TipoLogin;
 import br.univel.funcoes.Funcoes;
 import br.univel.interfaces.Dao;
 
@@ -27,7 +28,7 @@ public class DaoPessoa implements Dao<Pessoa, Integer>{
 				ps.setInt(3, t.getIdade());
 				ps.setString(4, t.getSenha());
 				ps.setString(5, t.getCpf());
-				ps.setInt(3, t.getTipoPessoa());
+				ps.setInt(3, t.getTipoLogin().ordinal());
 				ps.executeUpdate();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -53,7 +54,16 @@ public class DaoPessoa implements Dao<Pessoa, Integer>{
 				pessoa.setIdade(result.getInt("idade"));
 				pessoa.setSenha(result.getString("senha"));
 				pessoa.setCpf(result.getString("cpf"));
-				pessoa.setTipoPessoa(result.getInt("tipo"));
+				
+				switch(result.getInt("tipo")){
+					case 0:
+						pessoa.setTipoLogin(TipoLogin.BANCARIO);
+						break;
+						
+					case 1:
+						pessoa.setTipoLogin(TipoLogin.CLIENTE);
+						break;
+				}
 			}
 			
 			ps.close();
@@ -74,7 +84,7 @@ public class DaoPessoa implements Dao<Pessoa, Integer>{
 			ps.setInt(2, t.getIdade());
 			ps.setString(3, t.getSenha());
 			ps.setString(4, t.getCpf());
-			ps.setInt(5, t.getTipoPessoa());
+			ps.setInt(5, t.getTipoLogin().ordinal());
 			
 			ps.executeUpdate();
 			ps.close();
@@ -114,7 +124,15 @@ public class DaoPessoa implements Dao<Pessoa, Integer>{
 				pessoa.setIdade(result.getInt("idade"));
 				pessoa.setSenha(result.getString("senha"));
 				pessoa.setCpf(result.getString("cpf"));
-				pessoa.setTipoPessoa(result.getInt("tipo"));
+				switch(result.getInt("tipo")){
+					case 0:
+						pessoa.setTipoLogin(TipoLogin.BANCARIO);
+						break;
+						
+					case 1:
+						pessoa.setTipoLogin(TipoLogin.CLIENTE);
+						break;
+				}
 				
 				pessoas.add(pessoa);
 			}
