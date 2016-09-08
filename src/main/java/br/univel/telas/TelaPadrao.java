@@ -129,13 +129,8 @@ public class TelaPadrao extends JFrame{
 		
 		setTipoLogin(tipoLogin);
 	}
-
-	public TipoLogin getTipoLogin() {
-		return tipoLogin;
-	}
-
-	public void setTipoLogin(TipoLogin tipoLogin) {
-		this.tipoLogin = tipoLogin;
+	
+	private void configurarCabecalho(){
 		
 		if(this.tipoLogin == TipoLogin.BANCARIO){
 			lblData.setVisible(true); 
@@ -155,6 +150,15 @@ public class TelaPadrao extends JFrame{
 			lblVlrSaldo.setVisible(true);			
 		}
 		
-		lblData.setText(new SimpleDateFormat("dd/MM/yyyy - HH:mm").format(new Date(System.currentTimeMillis())));
+		lblData.setText(new SimpleDateFormat("dd/MM/yyyy - HH:mm").format(new Date(System.currentTimeMillis())));		
+	}
+
+	public TipoLogin getTipoLogin() {
+		return tipoLogin;
+	}
+
+	public void setTipoLogin(TipoLogin tipoLogin) {
+		this.tipoLogin = tipoLogin;
+		configurarCabecalho();
 	}
 }
