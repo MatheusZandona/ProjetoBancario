@@ -5,8 +5,14 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
+
+import br.univel.enuns.TipoLogin;
+
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.swing.SwingConstants;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Color;
@@ -14,7 +20,17 @@ import java.awt.CardLayout;
 
 public class TelaPadrao extends JFrame{
 	
-	public TelaPadrao(JPanel panel) {
+	private JLabel lblData;
+	private JLabel lblNroAgencia;
+	private JLabel lblTipoConta;
+	private JLabel lblNroConta;
+	private JLabel lblVlrSaldo;
+	private JLabel lblAg;
+	private JLabel lblSaldo;
+	private TipoLogin tipoLogin;
+	
+	public TelaPadrao(TipoLogin tipoLogin, JPanel panel) {
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Banco Tads");
 		
 		JLabel lblBancoTads = new JLabel("BANCO TADS");
@@ -25,19 +41,19 @@ public class TelaPadrao extends JFrame{
 		JPanel pnlSeparador = new JPanel();
 		pnlSeparador.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
 		
-		JLabel lblNroAgencia = new JLabel("0000-00");
+		lblNroAgencia = new JLabel("0000-00");
 		
-		JLabel lblTipoConta = new JLabel("Tipo Conta:");
+		lblTipoConta = new JLabel("Tipo Conta:");
 		
-		JLabel lblNroConta = new JLabel("00000-00");
+		lblNroConta = new JLabel("00000-00");
 		
-		JLabel lblSaldo = new JLabel("R$ 0,00");
+		lblVlrSaldo = new JLabel("R$ 0,00");
 		
-		JLabel lblNewLabel = new JLabel("Saldo:");
+		lblSaldo = new JLabel("Saldo:");
 		
-		JLabel lblAg = new JLabel("AG:");
+		lblAg = new JLabel("AG:");
 		
-		JLabel lblData = new JLabel("01/08/2016 - 20:00");
+		lblData = new JLabel("01/08/2016 - 20:00");
 		
 		JLabel lblBt = new JLabel("BT");
 		lblBt.setBackground(Color.LIGHT_GRAY);
@@ -66,14 +82,14 @@ public class TelaPadrao extends JFrame{
 								.addComponent(lblData)
 								.addGroup(groupLayout.createSequentialGroup()
 									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-										.addComponent(lblNewLabel)
+										.addComponent(lblSaldo)
 										.addComponent(lblTipoConta)
 										.addComponent(lblAg))
 									.addPreferredGap(ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
 									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 										.addComponent(lblNroAgencia, Alignment.TRAILING)
 										.addComponent(lblNroConta, Alignment.TRAILING)
-										.addComponent(lblSaldo, Alignment.TRAILING))))
+										.addComponent(lblVlrSaldo, Alignment.TRAILING))))
 							.addGap(66))))
 		);
 		groupLayout.setVerticalGroup(
@@ -99,8 +115,8 @@ public class TelaPadrao extends JFrame{
 								.addComponent(lblSlogan))))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblSaldo)
-						.addComponent(lblNewLabel))
+						.addComponent(lblVlrSaldo)
+						.addComponent(lblSaldo))
 					.addGap(8)
 					.addComponent(pnlSeparador, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -110,5 +126,35 @@ public class TelaPadrao extends JFrame{
 		pnlPrincipal.setLayout(new CardLayout(0, 0));
 		pnlPrincipal.add(panel);
 		getContentPane().setLayout(groupLayout);
+		
+		setTipoLogin(tipoLogin);
+	}
+
+	public TipoLogin getTipoLogin() {
+		return tipoLogin;
+	}
+
+	public void setTipoLogin(TipoLogin tipoLogin) {
+		this.tipoLogin = tipoLogin;
+		
+		if(this.tipoLogin == TipoLogin.BANCARIO){
+			lblData.setVisible(true); 
+			lblAg.setVisible(false);
+			lblNroAgencia.setVisible(false);
+			lblNroConta.setVisible(false);
+			lblSaldo.setVisible(false);
+			lblTipoConta.setVisible(false);
+			lblVlrSaldo.setVisible(false);
+		}else{
+			lblData.setVisible(true); 
+			lblAg.setVisible(true);
+			lblNroAgencia.setVisible(true);
+			lblNroConta.setVisible(true);
+			lblSaldo.setVisible(true);
+			lblTipoConta.setVisible(true);
+			lblVlrSaldo.setVisible(true);			
+		}
+		
+		lblData.setText(new SimpleDateFormat("dd/MM/yyyy - HH:mm").format(new Date(System.currentTimeMillis())));
 	}
 }

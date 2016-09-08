@@ -9,6 +9,7 @@ import javax.swing.GroupLayout.Alignment;
 
 import br.univel.classes.Agencia;
 import br.univel.classes.dao.DaoAgencia;
+import br.univel.enuns.TipoLogin;
 import br.univel.modelos.ModeloAgencia;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -34,7 +35,7 @@ public class PsqAgencias extends JPanel{
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao cadAgencia = new TelaPadrao(new CadastroAgencia());
+				TelaPadrao cadAgencia = new TelaPadrao(TipoLogin.BANCARIO, new CadastroAgencia());
 				cadAgencia.setSize(550, 450);
 				cadAgencia.setLocationRelativeTo(null);
 				cadAgencia.setVisible(true);					
@@ -46,7 +47,7 @@ public class PsqAgencias extends JPanel{
 		JButton btnAdicionar = new JButton("Adicionar");
 		btnAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TelaPadrao cadAgencia = new TelaPadrao(new CadastroAgencia());
+				TelaPadrao cadAgencia = new TelaPadrao(TipoLogin.BANCARIO, new CadastroAgencia());
 				cadAgencia.setSize(550, 450);
 				cadAgencia.setLocationRelativeTo(null);
 				cadAgencia.setVisible(true);						

@@ -2,6 +2,10 @@ package br.univel.telas;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
+import br.univel.enuns.TipoConta;
+import br.univel.enuns.TipoLogin;
+
 import java.awt.Font;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -10,14 +14,56 @@ import java.awt.event.ActionEvent;
 
 public class PrincipalCliente extends JPanel{
 	
-	public PrincipalCliente() {
+	private JButton btnSaque;
+	private JButton btnSaldo;
+	private JButton btnDepositos;
+	private JButton btnTransf;
+	private JButton btnPagamentos;
+	private JButton btnFinalizar;
+	
+	private void habilitarBotoes(TipoConta tipo){
+		
+		switch (tipo) {
+			case CORRENTE:
+				btnSaque.setEnabled(true);
+				btnSaldo.setEnabled(true);
+				btnDepositos.setEnabled(true);
+				btnTransf.setEnabled(true);
+				btnPagamentos.setEnabled(true);
+				btnTransf.setEnabled(true);
+				break;
+	
+			case ELETRONICA:
+				btnSaque.setEnabled(false);
+				btnSaldo.setEnabled(true);
+				btnDepositos.setEnabled(false);
+				btnTransf.setEnabled(true);
+				btnPagamentos.setEnabled(true);
+				btnTransf.setEnabled(true);
+				break;
+	
+			case POUPANÇA:
+				btnSaque.setEnabled(true);
+				btnSaldo.setEnabled(true);
+				btnDepositos.setEnabled(true);
+				btnTransf.setEnabled(true);
+				btnPagamentos.setEnabled(false);
+				btnTransf.setEnabled(true);
+				break;			
+				
+			default:
+				break;
+		}
+	}
+	
+	public PrincipalCliente(TipoConta tipo) {
 		setSize(558, 284);
 
-		JButton btnSaque = new JButton("1 - Saques");
+		btnSaque = new JButton("1 - Saques");
 		btnSaque.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				TelaPadrao telaSaque = new TelaPadrao(new SaqueCliente());
+				TelaPadrao telaSaque = new TelaPadrao(TipoLogin.CLIENTE, new SaqueCliente());
 				telaSaque.setSize(600, 500);
 				telaSaque.setLocationRelativeTo(null);
 				telaSaque.setVisible(true);					
@@ -25,10 +71,10 @@ public class PrincipalCliente extends JPanel{
 		});
 		btnSaque.setFont(new Font("Tahoma", Font.BOLD, 14));
 
-		JButton btnSaldo = new JButton("2 - Saldo");
+		btnSaldo = new JButton("2 - Saldo");
 		btnSaldo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaSaldo = new TelaPadrao(new SaldoCliente());
+				TelaPadrao telaSaldo = new TelaPadrao(TipoLogin.CLIENTE, new SaldoCliente());
 				telaSaldo.setSize(800, 600);
 				telaSaldo.setLocationRelativeTo(null);
 				telaSaldo.setVisible(true);					
@@ -36,10 +82,10 @@ public class PrincipalCliente extends JPanel{
 		});
 		btnSaldo.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
-		JButton btnDepositos = new JButton("3 - Depósitos");
+		btnDepositos = new JButton("3 - Depósitos");
 		btnDepositos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaDeposito = new TelaPadrao(new DepositoCliente());
+				TelaPadrao telaDeposito = new TelaPadrao(TipoLogin.CLIENTE, new DepositoCliente());
 				telaDeposito.setSize(600, 500);
 				telaDeposito.setLocationRelativeTo(null);
 				telaDeposito.setVisible(true);						
@@ -47,10 +93,10 @@ public class PrincipalCliente extends JPanel{
 		});
 		btnDepositos.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
-		JButton btnTransf = new JButton("4 - Transferências");
+		btnTransf = new JButton("4 - Transferências");
 		btnTransf.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaTransferencia = new TelaPadrao(new TransferenciaCliente());
+				TelaPadrao telaTransferencia = new TelaPadrao(TipoLogin.CLIENTE, new TransferenciaCliente());
 				telaTransferencia.setSize(600, 500);
 				telaTransferencia.setLocationRelativeTo(null);
 				telaTransferencia.setVisible(true);				
@@ -58,10 +104,10 @@ public class PrincipalCliente extends JPanel{
 		});
 		btnTransf.setFont(new Font("Tahoma", Font.BOLD, 14));
 
-		JButton btnPagamentos = new JButton("5 - Pagamentos");
+		btnPagamentos = new JButton("5 - Pagamentos");
 		btnPagamentos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaPagamentos = new TelaPadrao(new PagamentoCliente());
+				TelaPadrao telaPagamentos = new TelaPadrao(TipoLogin.CLIENTE, new PagamentoCliente());
 				telaPagamentos.setSize(600, 500);
 				telaPagamentos.setLocationRelativeTo(null);
 				telaPagamentos.setVisible(true);								
@@ -69,8 +115,9 @@ public class PrincipalCliente extends JPanel{
 		});
 		btnPagamentos.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
-		JButton btnFinalizar = new JButton("6 - Finalizar");
+		btnFinalizar = new JButton("6 - Finalizar");
 		btnFinalizar.setFont(new Font("Tahoma", Font.BOLD, 14));
+		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -107,6 +154,10 @@ public class PrincipalCliente extends JPanel{
 						.addComponent(btnFinalizar, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)))
 		);
 		setLayout(groupLayout);
+		
+		// $hide>>$
+		habilitarBotoes(tipo);
+		// $hide<<$			
 
 	}
 	

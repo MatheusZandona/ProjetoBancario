@@ -9,6 +9,7 @@ import javax.swing.ListSelectionModel;
 
 import br.univel.classes.Usuario;
 import br.univel.classes.dao.DaoUsuario;
+import br.univel.enuns.TipoLogin;
 import br.univel.modelos.ModeloProfissionais;
 
 import javax.swing.JButton;
@@ -34,7 +35,7 @@ public class PsqProfissionais extends JPanel{
 		JButton btnAdicionar = new JButton("Adicionar");
 		btnAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao cadProfissional = new TelaPadrao(new CadastroProfissional());
+				TelaPadrao cadProfissional = new TelaPadrao(TipoLogin.BANCARIO, new CadastroProfissional());
 				cadProfissional.setSize(550, 450);
 				cadProfissional.setLocationRelativeTo(null);
 				cadProfissional.setVisible(true);					
@@ -46,7 +47,7 @@ public class PsqProfissionais extends JPanel{
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao cadProfissional = new TelaPadrao(new CadastroProfissional());
+				TelaPadrao cadProfissional = new TelaPadrao(TipoLogin.BANCARIO, new CadastroProfissional());
 				cadProfissional.setSize(550, 450);
 				cadProfissional.setLocationRelativeTo(null);
 				cadProfissional.setVisible(true);					

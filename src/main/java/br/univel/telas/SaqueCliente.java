@@ -8,6 +8,9 @@ import java.awt.Font;
 import java.math.BigDecimal;
 
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import br.univel.enuns.TipoLogin;
+
 import javax.swing.JLabel;
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
@@ -27,7 +30,7 @@ public class SaqueCliente extends JPanel{
 		
 		
 		TelaPadrao telaSaldo = null;
-		telaSaldo = new TelaPadrao(new ConfirmaOperacao(telaSaldo));
+		telaSaldo = new TelaPadrao(TipoLogin.CLIENTE, new ConfirmaOperacao(telaSaldo));
 		telaSaldo.setSize(600, 400);
 		telaSaldo.setLocationRelativeTo(null);
 		telaSaldo.setVisible(true);				

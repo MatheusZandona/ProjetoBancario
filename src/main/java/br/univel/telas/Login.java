@@ -8,6 +8,10 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPasswordField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import br.univel.enuns.TipoConta;
+import br.univel.enuns.TipoLogin;
+
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JLabel;
@@ -18,6 +22,8 @@ import java.awt.event.ActionEvent;
 public class Login extends JFrame{
 	private JTextField txtUsername;
 	private JPasswordField txtSenha;
+	
+	
 	public Login() {
 		setType(Type.POPUP);
 		setResizable(false);
@@ -32,12 +38,14 @@ public class Login extends JFrame{
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao painelCliente = new TelaPadrao(new PrincipalCliente());
+				
+				
+				TelaPadrao painelCliente = new TelaPadrao(TipoLogin.CLIENTE, new PrincipalCliente(TipoConta.CORRENTE));
 				painelCliente.setSize(600, 500);
 				painelCliente.setLocationRelativeTo(null);
 				painelCliente.setVisible(true);				
 
-				TelaPadrao painelBancario = new TelaPadrao(new PrincipalBancario());
+				TelaPadrao painelBancario = new TelaPadrao(TipoLogin.BANCARIO, new PrincipalBancario());
 				painelBancario.setSize(600, 500);
 				painelBancario.setLocationRelativeTo(null);
 				painelBancario.setVisible(true);				

@@ -6,6 +6,9 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JCheckBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import br.univel.enuns.TipoLogin;
+
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
 import java.awt.Font;
@@ -52,14 +55,6 @@ public class DepositoCliente extends JPanel{
 		cbbTipoConta.setSelectedIndex(0);
 		
 		JButton btnConfirme = new JButton("Confirme");
-		btnConfirme.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				TelaPadrao cadProfissional = new TelaPadrao(new CadastroProfissional());
-				cadProfissional.setSize(550, 450);
-				cadProfissional.setLocationRelativeTo(null);
-				cadProfissional.setVisible(true);					
-			}
-		});
 		btnConfirme.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		JLabel lblTitular = new JLabel("Titular");
