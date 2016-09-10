@@ -8,6 +8,8 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class CadastroAgencia extends JPanel{
 	private JTextField txtNome;
@@ -28,6 +30,15 @@ public class CadastroAgencia extends JPanel{
 	public CadastroAgencia() {
 		
 		JButton btnConfirme = new JButton("Confirme");
+		btnConfirme.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(editando){
+					
+				}else{
+					
+				}
+			}
+		});
 		btnConfirme.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		JLabel lblNome = new JLabel("Nome:");
