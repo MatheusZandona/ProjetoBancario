@@ -10,6 +10,7 @@ import javax.swing.GroupLayout.Alignment;
 import br.univel.classes.Agencia;
 import br.univel.classes.dao.DaoAgencia;
 import br.univel.enuns.TipoLogin;
+import br.univel.funcoes.Funcoes;
 import br.univel.modelos.ModeloAgencia;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -35,10 +36,24 @@ public class PsqAgencias extends JPanel{
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao cadAgencia = new TelaPadrao(TipoLogin.BANCARIO, new CadastroAgencia());
-				cadAgencia.setSize(550, 450);
-				cadAgencia.setLocationRelativeTo(null);
-				cadAgencia.setVisible(true);					
+				
+				//tela
+				if(lista.isEmpty()){
+					Funcoes.msgAviso("Nenhum registro a ser alterado.");					
+				}else{					
+					if(tbGrid.getSelectedRow() == -1){
+						Funcoes.msgAviso("Selecione um registro para ser alterado.");
+					}else{					
+						CadastroAgencia panel = new CadastroAgencia();
+						panel.setEditando(true);
+						
+						TelaPadrao cadAgencia = new TelaPadrao(TipoLogin.BANCARIO, panel);
+						cadAgencia.setSize(550, 450);
+						cadAgencia.setLocationRelativeTo(null);
+						cadAgencia.setVisible(true);
+					}
+				}
+								
 			}
 		});
 		
@@ -47,7 +62,10 @@ public class PsqAgencias extends JPanel{
 		JButton btnAdicionar = new JButton("Adicionar");
 		btnAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TelaPadrao cadAgencia = new TelaPadrao(TipoLogin.BANCARIO, new CadastroAgencia());
+				CadastroAgencia panel = new CadastroAgencia();
+				panel.setEditando(false);
+				
+				TelaPadrao cadAgencia = new TelaPadrao(TipoLogin.BANCARIO, panel);
 				cadAgencia.setSize(550, 450);
 				cadAgencia.setLocationRelativeTo(null);
 				cadAgencia.setVisible(true);						

@@ -13,6 +13,18 @@ public class CadastroAgencia extends JPanel{
 	private JTextField txtNome;
 	private JTextField txtNumero;
 	private JTextField txtCidade;
+	private Boolean editando;
+	
+	
+	public Boolean getEditando() {
+		return editando;
+	}
+
+
+	public void setEditando(Boolean editando) {
+		this.editando = editando;
+	}
+
 	public CadastroAgencia() {
 		
 		JButton btnConfirme = new JButton("Confirme");

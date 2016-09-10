@@ -4,13 +4,13 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import br.univel.classes.Usuario;
+import br.univel.classes.Profissional;
 
 public class ModeloProfissionais extends AbstractTableModel {
 	
-	List<Usuario> lista;
+	List<Profissional> lista;
 
-	public ModeloProfissionais(List<Usuario> lista) {
+	public ModeloProfissionais(List<Profissional> lista) {
 		this.lista = lista;
 	}
 
@@ -26,13 +26,13 @@ public class ModeloProfissionais extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Usuario user = lista.get(rowIndex);
+		Profissional profissional = lista.get(rowIndex);
 
 		switch (columnIndex) {
 		case 0:
-			return user.getPessoa().getNome();
+			return profissional.getNome();
 		case 1:
-			return user.getUser();	
+			return profissional.getUsername();	
 		default:
 			return "erro";
 		}

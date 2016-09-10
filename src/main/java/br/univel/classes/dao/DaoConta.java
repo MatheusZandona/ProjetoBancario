@@ -15,18 +15,22 @@ import br.univel.enuns.TipoConta;
 import br.univel.funcoes.Funcoes;
 import br.univel.interfaces.Dao;
 
-public class DaoConta implements Dao<Conta, Integer>{
+public class DaoConta implements Dao<Conta, String>{
 
 	@Override
 	public void salvar(Conta t) {
-		if(t.getId() == 0){ // esta inserindo
+		if(t.getNumero().isEmpty()){ // esta inserindo
 			try {
 				PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-										.clientPrepareStatement("INSERT INTO CONTA VALUES (?,?,?,?,?)");
-				ps.setString(2, t.getNumero());
-				ps.setInt(3, t.getTipoConta().ordinal());
-				ps.setDate(4, (Date) t.getDtAbertura());
-				ps.setBigDecimal(5, t.getSaldo());
+										.clientPrepareStatement("INSERT INTO CONTAS VALUES (?,?,?,?,?,?,?,?)");
+				ps.setString(1, t.getNumero());
+				ps.setString(2, t.getNome());
+				ps.setInt(3, t.getIdade());
+				ps.setString(4, t.getCpf());
+				ps.setString(5, t.getAgencia().getNumero());
+				ps.setDate(6, (Date) t.getDtAbertura());
+				ps.setString(7, t.getSenhaAcesso());
+				ps.setString(8, t.getSenhaOperacoes());
 				ps.executeUpdate();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -37,33 +41,46 @@ public class DaoConta implements Dao<Conta, Integer>{
 	}
 
 	@Override
-	public Conta buscar(Integer k) {
+	public Conta buscar(String k) {
 		Conta conta = new Conta();
 		DaoAgencia DaoAG = new DaoAgencia();
 		Agencia ag;
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("SELECT * FROM CONTA WHERE ID = ?");
-			ps.setInt(1, k);
+									.clientPrepareStatement("SELECT * FROM CONTAS WHERE NUMERO = ?");
+			ps.setString(1, k);
 			ResultSet result =  ps.executeQuery();
+			
 			while(result.next()){
-				conta.setId(result.getInt("id"));
 				conta.setNumero(result.getString("numero"));
-				if(DaoAG.buscar(Integer.parseInt(Funcoes.removerCaracteresEspeciais(result.getString("agencia")))) != null){
-					ag = new Agencia();
-					ag = DaoAG.buscar(Integer.parseInt(Funcoes.removerCaracteresEspeciais(result.getString("agencia"))));
-					conta.setAgencia(ag);
-				}
+				conta.setNome(result.getString("nome"));
+				conta.setIdade(result.getInt("idade"));
+				conta.setCpf(result.getString("cpf"));				
+
+				ag = new Agencia();
+				ag = DaoAG.buscar(result.getString("agencia"));
+				conta.setAgencia(ag);
+
 				conta.setDtAbertura(result.getDate("dt_abertura"));
-				if(result.getInt("tipo") == 0){
+				
+				switch (result.getInt("tipo")) {
+				case 0:
 					conta.setTipoConta(TipoConta.CORRENTE);
-				}else if(result.getInt("tipo") == 1){
+					break;
+				case 1:
 					conta.setTipoConta(TipoConta.POUPANÇA);
-				}else{
+					break;
+				case 2:
 					conta.setTipoConta(TipoConta.ELETRONICA);
+					break;
+
+				default:
+					break;
 				}
 				
-				conta.setSaldo(result.getBigDecimal("saldo"));
+				conta.setSenhaAcesso(result.getString("senha_acesso"));	
+				conta.setSenhaOperacoes(result.getString("senha_op"));	
+				
 			}
 			
 			ps.close();
@@ -78,15 +95,19 @@ public class DaoConta implements Dao<Conta, Integer>{
 	public void atualizar(Conta t) {
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("UPDATE CONTA SET NUMERO = ?, AGENCIA = ?, DT_ABERTURA = ?, TIPO = ?, SALDO = ? WHERE ID = ?");
+					.clientPrepareStatement("UPDATE CONTAS SET NOME_TITULAR = ?, IDADE = ?, CPF = ?, AGENCIA = ?, DT_ABERTURA = ?, SENHA_ACESSO = ?, SENHA_OP = ? WHERE NUMERO = ?");
 			
-			ps.setString(1, t.getNumero());
-			ps.setString(2, t.getAgencia().getNumero());
-			ps.setDate(3, (Date) t.getDtAbertura());
-			ps.setInt(4, t.getTipoConta().ordinal());
-			ps.setBigDecimal(5, t.getSaldo());
 			
-			ps.executeUpdate();
+			ps.setString(1, t.getNome());
+			ps.setInt(2, t.getIdade());
+			ps.setString(3, t.getCpf());
+			ps.setString(4, t.getAgencia().getNumero());
+			ps.setDate(5, (Date) t.getDtAbertura());
+			ps.setString(6, t.getSenhaAcesso());
+			ps.setString(7, t.getSenhaOperacoes());
+			ps.setString(8, t.getNumero());
+			ps.executeUpdate();			
+			
 			ps.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -94,12 +115,12 @@ public class DaoConta implements Dao<Conta, Integer>{
 	}
 
 	@Override
-	public void excluir(Integer k) {
+	public void excluir(String k) {
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("DELETE FROM CONTA WHERE ID = ?");
+					.clientPrepareStatement("DELETE FROM CONTAS WHERE NUMERO = ?");
 			
-			ps.setInt(1, k);
+			ps.setString(1, k);
 			
 			ps.executeUpdate();
 			ps.close();
@@ -115,29 +136,43 @@ public class DaoConta implements Dao<Conta, Integer>{
 		Agencia ag;
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("SELECT * FROM CONTA");
+									.clientPrepareStatement("SELECT * FROM CONTAS");
 			ResultSet result =  ps.executeQuery();
+			
 			while(result.next()){
 				Conta conta = new Conta();
-				conta.setId(result.getInt("id"));
 				conta.setNumero(result.getString("numero"));
-				if(DaoAG.buscar(Integer.parseInt(Funcoes.removerCaracteresEspeciais(result.getString("agencia")))) != null){
-					ag = new Agencia();
-					ag = DaoAG.buscar(Integer.parseInt(Funcoes.removerCaracteresEspeciais(result.getString("agencia"))));
-					conta.setAgencia(ag);
-				}
+				conta.setNome(result.getString("nome"));
+				conta.setIdade(result.getInt("idade"));
+				conta.setCpf(result.getString("cpf"));				
+
+				ag = new Agencia();
+				ag = DaoAG.buscar(result.getString("agencia"));
+				conta.setAgencia(ag);
+
 				conta.setDtAbertura(result.getDate("dt_abertura"));
-				if(result.getInt("tipo") == 0){
+				
+				switch (result.getInt("tipo")) {
+				case 0:
 					conta.setTipoConta(TipoConta.CORRENTE);
-				}else if(result.getInt("tipo") == 1){
+					break;
+				case 1:
 					conta.setTipoConta(TipoConta.POUPANÇA);
-				}else{
+					break;
+				case 2:
 					conta.setTipoConta(TipoConta.ELETRONICA);
+					break;
+
+				default:
+					break;
 				}
 				
-				conta.setSaldo(result.getBigDecimal("saldo"));
+				conta.setSenhaAcesso(result.getString("senha_acesso"));	
+				conta.setSenhaOperacoes(result.getString("senha_op"));	
+
 				contas.add(conta);
 			}
+			
 			
 			ps.close();
 			result.close();
@@ -145,19 +180,5 @@ public class DaoConta implements Dao<Conta, Integer>{
 			e.printStackTrace();
 		}
 		return contas;
-	}
-
-	@Override
-	public int proximoID() {
-		int proxId = 0;
-		try {
-			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("SELECT MAX(ID) FROM CONTA");
-			ResultSet result = ps.executeQuery();
-			proxId = 1 + result.getInt("id");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return proxId;
 	}
 }

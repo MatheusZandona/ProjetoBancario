@@ -4,12 +4,12 @@ import br.univel.enuns.TipoLogin;
 
 public class Pessoa {
 	
-	private Integer id;
 	private String  nome;	
 	private Integer idade; 
-	private String  senha;
 	private String  cpf;
-	private TipoLogin tipoLogin;  // 0 = Cliente  e 1 = Funcionario
+	private String senhaAcesso;
+	private String senhaOperacoes;
+	private TipoLogin tipoLogin;
 
 	public Integer getIdade() {
 		return idade;
@@ -29,22 +29,20 @@ public class Pessoa {
 		return this;
 	}
 
-	public String getSenha() {
-		return senha;
+	public String getSenhaAcesso() {
+		return senhaAcesso;
 	}
 
-	public Pessoa setSenha(String senha) {
-		this.senha = senha;
-		return this;
+	public void setSenhaAcesso(String senhaAcesso) {
+		this.senhaAcesso = senhaAcesso;
 	}
 
-	public Integer getId() {
-		return id;
+	public String getSenhaOperacoes() {
+		return senhaOperacoes;
 	}
 
-	public Pessoa setId(Integer id) {
-		this.id = id;
-		return this;
+	public void setSenhaOperacoes(String senhaOperacoes) {
+		this.senhaOperacoes = senhaOperacoes;
 	}
 
 	public String getCpf() {

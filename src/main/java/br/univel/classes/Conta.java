@@ -5,23 +5,23 @@ import java.util.Date;
 
 import br.univel.enuns.TipoConta;
 
-public class Conta {
+public class Conta extends Pessoa{
 	
-	private Integer    id;
 	private TipoConta  tipoConta; // 0 = Corrente  1 = Poupança  2 = Eletronica   no Banco de Dados
 	private Agencia    agencia;
 	private String     numero;
 	private Date       dtAbertura;
 	private BigDecimal saldo;
 	
-	public Integer getId() { 
-		return id;
+
+	public BigDecimal getSaldo() {
+		return saldo;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setSaldo(BigDecimal saldo) {
+		this.saldo = saldo;
 	}
-	
+
 	public TipoConta getTipoConta() {
 		return tipoConta;
 	}
@@ -52,14 +52,6 @@ public class Conta {
 
 	public void setDtAbertura(Date dtAbertura) {
 		this.dtAbertura = dtAbertura;
-	}
-
-	public BigDecimal getSaldo() {
-		return saldo;
-	}
-
-	public void setSaldo(BigDecimal saldo) {
-		this.saldo = saldo;
 	}
 	
 }

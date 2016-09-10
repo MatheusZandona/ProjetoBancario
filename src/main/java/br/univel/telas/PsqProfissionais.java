@@ -7,8 +7,8 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
-import br.univel.classes.Usuario;
-import br.univel.classes.dao.DaoUsuario;
+import br.univel.classes.Profissional;
+import br.univel.classes.dao.DaoProfissional;
 import br.univel.enuns.TipoLogin;
 import br.univel.modelos.ModeloProfissionais;
 
@@ -22,8 +22,8 @@ import java.awt.event.ActionEvent;
 public class PsqProfissionais extends JPanel{
 	
 	private JTable tbGrid;
-	private List<Usuario> lista = new ArrayList<Usuario>();
-	private DaoUsuario dao  = new DaoUsuario();
+	private List<Profissional> lista = new ArrayList<Profissional>();
+	private DaoProfissional dao  = new DaoProfissional();
 	
 	public PsqProfissionais() {
 		

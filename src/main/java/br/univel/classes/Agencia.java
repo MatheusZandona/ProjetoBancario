@@ -2,20 +2,10 @@ package br.univel.classes;
 
 public class Agencia {
 
-	private Integer id;
 	private String numero;
 	private String nome;
 	private String cidade;
 	 
-	public Integer getId() {
-		return id;
-	}
-	
-	public Agencia setId(Integer id) {
-		this.id = id;
-		return this;
-	}
-	
 	public String getNome() {
 		return nome;
 	}

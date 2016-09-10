@@ -10,37 +10,31 @@ import br.univel.classes.Agencia;
 import br.univel.classes.bd.ConexaoBD;
 import br.univel.interfaces.Dao;
 
-public class DaoAgencia implements Dao<Agencia, Integer>{
+public class DaoAgencia implements Dao<Agencia, String>{
 
 	@Override
 	public void salvar(Agencia t) {
-		if(t.getId() == 0){ // esta inserindo
-			try {
-				PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-										.clientPrepareStatement("INSERT INTO AGENCIA VALUES (?,?,?,?)");
-				ps.setInt(1, t.getId());
-				ps.setString(2, t.getNumero());
-				ps.setString(3, t.getNome());
-				ps.setString(4, t.getCidade());
-				ps.executeUpdate();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}else{	// esta alterando
-			atualizar(t); 
+		try {
+			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+									.clientPrepareStatement("INSERT INTO AGENCIAS VALUES (?,?,?)");
+			ps.setString(1, t.getNumero());
+			ps.setString(2, t.getNome());
+			ps.setString(3, t.getCidade());
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public Agencia buscar(Integer k) {
+	public Agencia buscar(String k) {
 		Agencia ag = new Agencia();
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("SELECT * FROM AGENCIA WHERE ID = ?");
-			ps.setInt(1, k);
+									.clientPrepareStatement("SELECT * FROM AGENCIAS WHERE ID = ?");
+			ps.setString(1, k);
 			ResultSet result =  ps.executeQuery();
 			while(result.next()){
-				ag.setId(result.getInt("id"));
 				ag.setNumero(result.getString("numero"));
 				ag.setNome(result.getString("nome"));
 				ag.setCidade(result.getString("cidade"));
@@ -58,13 +52,11 @@ public class DaoAgencia implements Dao<Agencia, Integer>{
 	public void atualizar(Agencia t) {
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("UPDATE AGENCIA SET NUMERO = ?, NOME = ?, CIDADE = ? WHERE ID = ?");
+					.clientPrepareStatement("UPDATE AGENCIAS SET NOME = ?, CIDADE = ? WHERE NUMERO = ?");
 			
-			ps.setString(1, t.getNumero());
-			ps.setString(2, t.getNome());
-			ps.setString(3, t.getCidade());
-			ps.setInt(4, t.getId());
-			
+			ps.setString(1, t.getNome());
+			ps.setString(2, t.getCidade());
+			ps.setString(3, t.getNumero());			
 			ps.executeUpdate();
 			ps.close();
 		} catch (Exception e) {
@@ -73,12 +65,12 @@ public class DaoAgencia implements Dao<Agencia, Integer>{
 	}
 
 	@Override
-	public void excluir(Integer k) {
+	public void excluir(String k) {
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("DELETE FROM AGENCIA WHERE ID = ?");
+					.clientPrepareStatement("DELETE FROM AGENCIAS WHERE numero = ?");
 			
-			ps.setInt(1, k);
+			ps.setString(1, k);
 			
 			ps.executeUpdate();
 			ps.close();
@@ -92,11 +84,10 @@ public class DaoAgencia implements Dao<Agencia, Integer>{
 		ArrayList<Agencia> agencias = new ArrayList<>();
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("SELECT * FROM AGENCIA");
+									.clientPrepareStatement("SELECT * FROM AGENCIAS");
 			ResultSet result =  ps.executeQuery();
 			while(result.next()){
 				Agencia ag = new Agencia();
-				ag.setId(result.getInt("id"));
 				ag.setNumero(result.getString("numero"));
 				ag.setNome(result.getString("nome"));
 				ag.setCidade(result.getString("cidade"));
@@ -110,20 +101,5 @@ public class DaoAgencia implements Dao<Agencia, Integer>{
 		}
 		return agencias;
 	}
-
-	@Override
-	public int proximoID() {
-		int proxId = 0;
-		try {
-			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("SELECT MAX(ID) FROM AGENCIA");
-			ResultSet result = ps.executeQuery();
-			proxId = 1 + result.getInt("id");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return proxId;
-	}
-
 	
 }
