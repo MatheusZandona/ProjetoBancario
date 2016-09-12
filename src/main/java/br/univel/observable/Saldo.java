@@ -1,4 +1,4 @@
-package Observable;
+package br.univel.observable;
 
 import java.util.ArrayList;
 import java.util.List;

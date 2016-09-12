@@ -1,6 +1,6 @@
 package br.univel.interfaces;
 
-import Observable.Saldo;
+import br.univel.observable.Saldo;
 
 public interface SaldoObserver {
 

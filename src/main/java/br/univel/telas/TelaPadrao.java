@@ -6,11 +6,11 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
-import Observable.Saldo;
 import br.univel.classes.Conta;
 import br.univel.classes.Profissional;
 import br.univel.enuns.TipoLogin;
 import br.univel.interfaces.SaldoObserver;
+import br.univel.observable.Saldo;
 import javafx.beans.Observable;
 
 import javax.swing.JLabel;

@@ -8,11 +8,10 @@ import javax.swing.JCheckBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.univel.enuns.TipoLogin;
+import br.univel.observable.Saldo;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
-
-import Observable.Saldo;
 
 import java.awt.Font;
 import javax.swing.JTextField;
