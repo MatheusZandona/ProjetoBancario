@@ -2,7 +2,6 @@ package br.univel.telas;
 
 import java.awt.EventQueue;
 
-import com.mysql.jdbc.ConnectionPropertiesTransform;
 
 import br.univel.classes.PropertiesSistema;
 import br.univel.classes.bd.ConexaoBD;
@@ -33,9 +32,7 @@ public class Principal {
 		PropertiesSistema properties = new PropertiesSistema();
 		properties.escrever();
 		
-		if(ConexaoBD.getInstance() != null){
-			System.out.println("Conectou");
-		};		
+		ConexaoBD.getInstance();
 	}
 
 }

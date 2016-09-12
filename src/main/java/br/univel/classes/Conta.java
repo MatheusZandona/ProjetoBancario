@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import br.univel.enuns.TipoConta;
+import br.univel.enuns.TipoLogin;
 
 public class Conta extends Pessoa{
 	
@@ -13,6 +14,29 @@ public class Conta extends Pessoa{
 	private Date       dtAbertura;
 	private BigDecimal saldo;
 	
+
+	public Conta(){
+		this.setTipoLogin(TipoLogin.CLIENTE);
+		this.setSaldo(new BigDecimal(0.00));
+	}
+	
+	
+	public Conta(String nome2, Integer idade2, String cpf2, String senhaAcesso2, String senhaOperacoes2,
+			Agencia agencia2, String numero2, Date dtAbertura2, TipoConta tipoConta2, BigDecimal saldo2) {
+
+		this.tipoConta      = tipoConta2;
+		this.agencia        = agencia2;
+		this.numero         = numero2;
+		this.dtAbertura     = dtAbertura2;
+		this.saldo			= saldo2;
+		this.setTipoLogin(TipoLogin.CLIENTE);
+		this.setCpf(cpf2);
+		this.setIdade(idade2);
+		this.setNome(nome2);
+		this.setSenhaAcesso(senhaAcesso2);
+		this.setSenhaOperacoes(senhaOperacoes2);		
+		
+	}
 
 	public BigDecimal getSaldo() {
 		return saldo;

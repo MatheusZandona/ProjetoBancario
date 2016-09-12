@@ -38,7 +38,11 @@ public class ModeloConta extends AbstractTableModel{
 		case 3:
 			return conta.getNome();
 		case 4:
-			return conta.getDtAbertura().toString();	
+			if(conta.getDtAbertura() != null){
+				return conta.getDtAbertura().toString();
+			}else{
+				return null;
+			}
 		case 5:
 			return conta.getSaldo().toString();			
 		default:
