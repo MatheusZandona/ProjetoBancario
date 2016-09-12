@@ -22,7 +22,7 @@ public class PrincipalCliente extends JPanel{
 	private JButton btnFinalizar;
 	
 	private void habilitarBotoes(TipoConta tipo){
-		
+
 		switch (tipo) {
 			case CORRENTE:
 				btnSaque.setEnabled(true);

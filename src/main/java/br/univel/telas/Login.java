@@ -16,6 +16,8 @@ import br.univel.classes.Conta;
 import br.univel.classes.Profissional;
 import br.univel.classes.bd.ConexaoBD;
 import br.univel.classes.dao.DaoAgencia;
+import br.univel.classes.dao.DaoConta;
+import br.univel.classes.dao.DaoProfissional;
 import br.univel.enuns.TipoConta;
 import br.univel.enuns.TipoLogin;
 
@@ -85,73 +87,25 @@ public class Login extends JFrame{
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					PreparedStatement ps;
-					ResultSet result;
 					if(RBCliente.isSelected()){
-						ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-								.clientPrepareStatement("SELECT * FROM CONTAS WHERE CPF = ? AND SENHA_ACESSO = ?");
-						ps.setString(1, txtUsername.getText());
-						ps.setString(2, txtSenha.getText());
-						result =  ps.executeQuery();
-						if(result.next()){
-							TelaPadrao.conta = new Conta();
-							TelaPadrao.conta.setNumero(result.getString("numero"));
-							TelaPadrao.conta.setNome(result.getString("nome_titular"));
-							TelaPadrao.conta.setIdade(result.getInt("idade"));
-							TelaPadrao.conta.setSenhaAcesso(result.getString("senha_acesso"));
-							TelaPadrao.conta.setSenhaOperacoes(result.getString("senha_op"));
-							
-							Agencia ag = new Agencia();
-							DaoAgencia daoAG = new DaoAgencia();
-							ag = daoAG.buscar(result.getString("agencia"));
-							TelaPadrao.conta.setAgencia(ag);
-							
-							TelaPadrao.conta.setCpf(result.getString("cpf"));
-							TelaPadrao.conta.setDtAbertura(result.getDate("dt_abertura"));
-							TelaPadrao.conta.setSaldo(new BigDecimal(result.getDouble("saldo")));
-							if(TelaPadrao.conta.getCpf().equals(txtUsername.getText()) &&
-							   TelaPadrao.conta.getSenhaAcesso().equals(txtSenha.getText())){
-								TelaPadrao painelCliente = new TelaPadrao(TipoLogin.CLIENTE, new PrincipalCliente(TipoConta.CORRENTE));
-								painelCliente.setSize(600, 500);
-								painelCliente.setLocationRelativeTo(null);
-								painelCliente.setVisible(true);
-							}else{
-								JOptionPane.showInternalMessageDialog(null, "Usuário e senha inválidos.");
-							}
+						DaoConta dao = new DaoConta();
+						if(dao.validarLogin(txtUsername.getText(), txtSenha.getText())){
+							TelaPadrao painelCliente = new TelaPadrao(TipoLogin.CLIENTE, new PrincipalCliente(TelaPadrao.conta.getTipoConta()));
+							painelCliente.setSize(600, 500);
+							painelCliente.setLocationRelativeTo(null);
+							painelCliente.setVisible(true);
 						}
 					}else{
-						ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-												.clientPrepareStatement("SELECT * FROM PROFISSIONAIS WHERE USERNAME = ? AND SENHA_ACESSO = ?");
-						ps.setString(1, txtUsername.getText());
-						ps.setString(2, txtSenha.getText());
-						
-						result =  ps.executeQuery();
-						if(result.next()){
-							TelaPadrao.profissional = new Profissional();
-							TelaPadrao.profissional.setUsername(result.getString("username"));
-							TelaPadrao.profissional.setNome(result.getString("nome"));
-							TelaPadrao.profissional.setIdade(result.getInt("idade"));
-							TelaPadrao.profissional.setSenhaAcesso(result.getString("senha_acesso"));
-							TelaPadrao.profissional.setSenhaOperacoes(result.getString("senha_op"));
-							if(TelaPadrao.profissional.getUsername().equals(txtUsername.getText()) &&
-							   TelaPadrao.profissional.getSenhaAcesso().equals(txtSenha.getText())){
-								TelaPadrao painelBancario = new TelaPadrao(TipoLogin.BANCARIO, new PrincipalBancario());
-								painelBancario.setSize(600, 500);
-								painelBancario.setLocationRelativeTo(null);
-								painelBancario.setVisible(true);
-							}else{
-								JOptionPane.showInternalMessageDialog(null, "Usuário e senha inválidos.");
-							}
+						DaoProfissional dao = new DaoProfissional();
+						if(dao.validarLogin(txtUsername.getText(), txtSenha.getText())){
+							TelaPadrao painelBancario = new TelaPadrao(TipoLogin.BANCARIO, new PrincipalBancario());
+							painelBancario.setSize(600, 500);
+							painelBancario.setLocationRelativeTo(null);
+							painelBancario.setVisible(true);
 						}
+						
 					}
 					
-					ps.close();
-					result.close();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-
 			}
 		});
 		btnLogin.setFont(new Font("Tahoma", Font.PLAIN, 13));

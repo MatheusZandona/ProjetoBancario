@@ -64,7 +64,7 @@ public class DepositoCliente extends JPanel{
 				// fazer o procedimento no Banco para entao atualizar o saldo na tela padrao
 				TelaPadrao.conta.setSaldo(new BigDecimal(txtValor.getText()));
 				
-				TelaPadrao tp = new TelaPadrao();
+				TelaPadrao tp = new TelaPadrao(TipoLogin.CLIENTE,new DepositoCliente());
 				Saldo saldo = new Saldo();
 				saldo.addObservers(tp);
 				saldo.saldoAtualizado();

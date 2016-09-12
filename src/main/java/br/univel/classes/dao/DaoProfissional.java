@@ -12,7 +12,10 @@ import com.mysql.jdbc.PreparedStatement;
 
 import br.univel.classes.Profissional;
 import br.univel.classes.bd.ConexaoBD;
+import br.univel.enuns.TipoLogin;
 import br.univel.interfaces.Dao;
+import br.univel.telas.PrincipalBancario;
+import br.univel.telas.TelaPadrao;
 
 public class DaoProfissional implements Dao<Profissional, String>{
 
@@ -145,6 +148,30 @@ public class DaoProfissional implements Dao<Profissional, String>{
 		}
 		return profissionais;
 	}
-
+	
+	public boolean validarLogin(String username, String senha){
+		boolean resultado = false;
+		try {
+			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+					.clientPrepareStatement("SELECT * FROM PROFISSIONAIS WHERE USERNAME = ? AND SENHA_ACESSO = ?");
+			ps.setString(1, username);
+			ps.setString(2, senha);
+			
+			ResultSet result =  ps.executeQuery();
+			if(result.next()){
+				TelaPadrao.profissional = new Profissional();
+				TelaPadrao.profissional.setUsername(result.getString("username"));
+				TelaPadrao.profissional.setNome(result.getString("nome"));
+				TelaPadrao.profissional.setIdade(result.getInt("idade"));
+				TelaPadrao.profissional.setSenhaAcesso(result.getString("senha_acesso"));
+				TelaPadrao.profissional.setSenhaOperacoes(result.getString("senha_op"));
+				resultado = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return resultado;
+	}
 
 }

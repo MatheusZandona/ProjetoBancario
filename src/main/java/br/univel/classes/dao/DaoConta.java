@@ -1,16 +1,24 @@
 package br.univel.classes.dao;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JOptionPane;
+
 import com.mysql.jdbc.PreparedStatement;
 import br.univel.classes.Agencia;
 import br.univel.classes.Conta;
 import br.univel.classes.bd.ConexaoBD;
 import br.univel.enuns.TipoConta;
+import br.univel.enuns.TipoLogin;
+import br.univel.funcoes.Funcoes;
 import br.univel.interfaces.Dao;
+import br.univel.telas.PrincipalCliente;
+import br.univel.telas.TelaPadrao;
 
 public class DaoConta implements Dao<Conta, String>{
 
@@ -208,5 +216,53 @@ public class DaoConta implements Dao<Conta, String>{
 		}		
 		
 		return new DecimalFormat("00000").format(numero).concat("-").concat(new DecimalFormat("00").format(digito));
+	}
+	
+	public boolean validarLogin(String username, String senha){
+		boolean resultado = false;
+		try {
+			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+					.clientPrepareStatement("SELECT * FROM CONTAS WHERE CPF = ? AND SENHA_ACESSO = ?");
+			ps.setString(1, username);
+			ps.setString(2, senha);
+			ResultSet result =  ps.executeQuery();
+			if(result.next()){
+				TelaPadrao.conta = new Conta();
+				TelaPadrao.conta.setNumero(result.getString("numero"));
+				TelaPadrao.conta.setNome(result.getString("nome_titular"));
+				TelaPadrao.conta.setIdade(result.getInt("idade"));
+				TelaPadrao.conta.setSenhaAcesso(result.getString("senha_acesso"));
+				TelaPadrao.conta.setSenhaOperacoes(result.getString("senha_op"));
+				
+				Agencia ag = new Agencia();
+				DaoAgencia daoAG = new DaoAgencia();
+				ag = daoAG.buscar(result.getString("agencia"));
+				TelaPadrao.conta.setAgencia(ag);
+				
+				TelaPadrao.conta.setCpf(result.getString("cpf"));
+				TelaPadrao.conta.setDtAbertura(result.getDate("dt_abertura"));
+				TelaPadrao.conta.setSaldo(new BigDecimal(result.getDouble("saldo")));
+				
+				switch (result.getInt("tipo")) {
+				case 0:
+					TelaPadrao.conta.setTipoConta(TipoConta.CORRENTE);
+					break;
+				case 1:
+					TelaPadrao.conta.setTipoConta(TipoConta.POUPANÇA);
+					break;
+				case 2:
+					TelaPadrao.conta.setTipoConta(TipoConta.ELETRONICA);
+					break;
+
+				default:
+					break;
+				}
+				
+				resultado = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultado;
 	}
 }
