@@ -6,21 +6,26 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
+import Observable.Saldo;
 import br.univel.classes.Conta;
 import br.univel.classes.Profissional;
 import br.univel.enuns.TipoLogin;
+import br.univel.interfaces.SaldoObserver;
+import javafx.beans.Observable;
 
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Observer;
 
 import javax.swing.SwingConstants;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.Color;
 import java.awt.CardLayout;
 
-public class TelaPadrao extends JFrame{
+public class TelaPadrao extends JFrame implements SaldoObserver{
 	
 	private JLabel lblData;
 	private JLabel lblNroAgencia;
@@ -33,6 +38,9 @@ public class TelaPadrao extends JFrame{
 	public static Profissional profissional;
 	private TipoLogin tipoLogin;
 	
+	public TelaPadrao() {
+		
+	}
 	public TelaPadrao(TipoLogin tipoLogin, JPanel panel) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Banco Tads");
@@ -164,6 +172,13 @@ public class TelaPadrao extends JFrame{
 	public void setTipoLogin(TipoLogin tipoLogin) {
 		this.tipoLogin = tipoLogin;
 		configurarCabecalho();
+	}
+
+	@Override
+	public void atualizaSaldo(Saldo saldo) {
+		if (saldo.saldoAtualizado()) {
+			lblSaldo.setText(conta.getSaldo().toString());
+		}
 	}
 	
 }

@@ -11,12 +11,16 @@ import br.univel.enuns.TipoLogin;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
+
+import Observable.Saldo;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.awt.event.ActionEvent;
 
 public class DepositoCliente extends JPanel{
@@ -55,6 +59,18 @@ public class DepositoCliente extends JPanel{
 		cbbTipoConta.setSelectedIndex(0);
 		
 		JButton btnConfirme = new JButton("Confirme");
+		btnConfirme.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				// fazer o procedimento no Banco para entao atualizar o saldo na tela padrao
+				TelaPadrao.conta.setSaldo(new BigDecimal(txtValor.getText()));
+				
+				TelaPadrao tp = new TelaPadrao();
+				Saldo saldo = new Saldo();
+				saldo.addObservers(tp);
+				saldo.saldoAtualizado();
+			}
+		});
 		btnConfirme.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		JLabel lblTitular = new JLabel("Titular");
