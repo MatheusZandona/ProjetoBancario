@@ -12,6 +12,17 @@ import java.awt.Font;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
+import br.univel.classes.builder.AgenciaBuilder;
+import br.univel.classes.builder.ContaBuilder;
+import br.univel.classes.dao.DaoAgencia;
+import br.univel.classes.dao.DaoConta;
+import br.univel.enuns.TipoConta;
+import br.univel.funcoes.Funcoes;
+
+import java.awt.event.ActionListener;
+import java.util.Date;
+import java.awt.event.ActionEvent;
+
 public class CadastroConta extends JPanel{
 	private JTextField txtNome;
 	private JTextField txtIdade;
@@ -19,6 +30,71 @@ public class CadastroConta extends JPanel{
 	private JTextField txtAgencia;
 	private JPasswordField txtSenhaOp;
 	private JPasswordField txtSenhaConta;
+	private JComboBox cbbTipoConta;
+	
+	
+	private Boolean validarCampos(){		
+		
+		Boolean resultado = true;
+		
+		//nome
+		if(txtNome.getText().trim().isEmpty()){			
+			Funcoes.msgAviso("Informe o nome do titular da conta.");
+			resultado = false;			
+		}
+		
+		//idade
+		if(txtIdade.getText().trim().isEmpty()){			
+			Funcoes.msgAviso("Informe a idade do titular da conta.");
+			resultado = false;			
+		}		
+		
+		//cpf
+		if(txtCPF.getText().trim().isEmpty()){								
+			Funcoes.msgAviso("Informe o CPF do titular da conta.");
+			resultado = false;			
+		}
+		
+		//agência
+		if(txtAgencia.getText().trim().isEmpty()){								
+			Funcoes.msgAviso("Informe a agência da conta.");
+			resultado = false;			
+		}		
+		
+		DaoAgencia dao = new DaoAgencia();
+		if(dao.buscar(txtAgencia.getText().trim()) == null){
+			Funcoes.msgAviso("Agência não encontrada.");
+			resultado = false;					
+		}		
+		
+		//tipo de conta
+		if(cbbTipoConta.getSelectedIndex() < 0){
+			Funcoes.msgAviso("Selecione um tipo de conta.");
+			resultado = false;
+		}
+		
+		//senha de acesso
+		if(txtSenhaConta.getPassword().length == 0){								
+			Funcoes.msgAviso("Informe a senha de acesso da conta.");
+			resultado = false;			
+		}			
+		
+		//senha de acesso
+		if(txtSenhaOp.getPassword().length == 0){								
+			Funcoes.msgAviso("Informe a senha de acesso de operações.");
+			resultado = false;			
+		} else {
+			if(txtSenhaOp.getPassword().length != 6){								
+				Funcoes.msgAviso("A senha de acesso deve conter 6 dígitos.");
+				resultado = false;			
+			}			
+		}			
+		
+		
+		return resultado;
+	}
+	
+	
 	public CadastroConta() {
 		
 		txtNome = new JTextField();
@@ -35,6 +111,38 @@ public class CadastroConta extends JPanel{
 		JLabel lblUsername = new JLabel("CPF");
 		
 		JButton btnConfirme = new JButton("Confirme");
+		btnConfirme.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if(validarCampos()){
+					String numero = "";
+					
+					DaoConta dao = new DaoConta();
+					ContaBuilder builder = new ContaBuilder();
+					
+					numero = dao.gerarProximoNumConta();
+					
+					
+					builder.setNome(txtNome.getText().toUpperCase())
+						.setIdade(Integer.parseInt(txtIdade.getText()))
+						.setCpf(txtCPF.getText())
+						.setNumero(numero)
+						.setAgencia(new DaoAgencia().buscar(txtAgencia.getText()))
+						.setDtAbertura(new Date())
+						.setSenhaAcesso(txtSenhaConta.getPassword().toString())
+						.setSenhaOperacoes(txtSenhaOp.getPassword().toString());
+	
+					dao.salvar(builder.build());									
+					
+					
+					Funcoes.msgInforma("Conta corrente: ".concat(numero));
+					
+					//fechar a tela
+					Funcoes.fecharTelaPadrao(getParent());				
+					
+				}
+			}
+		});
 		btnConfirme.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		JLabel label = new JLabel("AG:");
@@ -44,8 +152,8 @@ public class CadastroConta extends JPanel{
 		
 		JLabel label_1 = new JLabel("Tipo Conta");
 		
-		JComboBox cbbTipoConta = new JComboBox();
-		cbbTipoConta.setModel(new DefaultComboBoxModel(new String[] {"Conta Corrente", "Conta Poupan\u00E7a", "Conta Eletr\u00F4nica"}));
+		cbbTipoConta = new JComboBox();
+		cbbTipoConta.setModel(new DefaultComboBoxModel(TipoConta.values()));
 		cbbTipoConta.setSelectedIndex(0);
 		cbbTipoConta.setMaximumRowCount(3);
 		

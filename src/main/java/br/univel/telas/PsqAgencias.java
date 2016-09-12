@@ -25,7 +25,19 @@ public class PsqAgencias extends JPanel{
 	private JTable tbGrid;
 	private List<Agencia> lista = new ArrayList<Agencia>();
 	private DaoAgencia dao  = new DaoAgencia();
+	private CadastroAgencia telaCadastro = null;
 	
+	public CadastroAgencia getTelaCadastro() {
+		
+		if(telaCadastro == null){
+			telaCadastro = new CadastroAgencia();
+			telaCadastro.setTelaPesquisa(this);
+			
+		}
+		
+		return telaCadastro;
+	}
+
 	public PsqAgencias() {
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -37,15 +49,15 @@ public class PsqAgencias extends JPanel{
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				//tela
 				if(lista.isEmpty()){
 					Funcoes.msgAviso("Nenhum registro a ser alterado.");					
 				}else{					
 					if(tbGrid.getSelectedRow() == -1){
 						Funcoes.msgAviso("Selecione um registro para ser alterado.");
 					}else{					
-						CadastroAgencia panel = new CadastroAgencia();
-						panel.setEditando(true);
+						CadastroAgencia panel = getTelaCadastro();
+						panel.setEditando(true);						
+						panel.carregarDados((String) tbGrid.getModel().getValueAt(tbGrid.getSelectedRow(), 1));
 						
 						TelaPadrao cadAgencia = new TelaPadrao(TipoLogin.BANCARIO, panel);
 						cadAgencia.setSize(550, 450);
@@ -62,7 +74,7 @@ public class PsqAgencias extends JPanel{
 		JButton btnAdicionar = new JButton("Adicionar");
 		btnAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				CadastroAgencia panel = new CadastroAgencia();
+				CadastroAgencia panel = getTelaCadastro();
 				panel.setEditando(false);
 				
 				TelaPadrao cadAgencia = new TelaPadrao(TipoLogin.BANCARIO, panel);
@@ -105,7 +117,7 @@ public class PsqAgencias extends JPanel{
 		// $hide<<$				
 	}
 
-	private void montarConsulta() {
+	public void montarConsulta() {
 		lista.clear();
 		lista = dao.listarTodos();
 		ModeloAgencia modelo = new ModeloAgencia(lista);

@@ -1,6 +1,11 @@
 package br.univel.funcoes;
 
+import java.awt.Container;
+
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import br.univel.telas.TelaPadrao;
 
 public class Funcoes {
 	
@@ -45,5 +50,16 @@ public class Funcoes {
 		return opcao == 0;
 	}
 	
+	/*
+	 * Função para fechar o JFrame pai de um Jpanel
+	 */
+	public static void fecharTelaPadrao(Container tela){
+		
+		while(!tela.getClass().getSimpleName().equals("TelaPadrao")){
+			tela = tela.getParent();
+		}
+		
+		((TelaPadrao) tela).dispose();		
+	}
 	
 }

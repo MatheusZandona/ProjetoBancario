@@ -30,11 +30,6 @@ public class AgenciaBuilder {
 		return this;
 	}	
 	
-	/**
-	 * Build é responsavel por criar a pessoa com o parametros que desejarmos
-	 * 
-	 * @return
-	 */
 	public Agencia build() {
 		return new Agencia(this.numero, this.nome, this.cidade);
 	}	

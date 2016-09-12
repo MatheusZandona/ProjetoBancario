@@ -28,13 +28,14 @@ public class DaoAgencia implements Dao<Agencia, String>{
 
 	@Override
 	public Agencia buscar(String k) {
-		Agencia ag = new Agencia();
+		Agencia ag = null;
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("SELECT * FROM AGENCIAS WHERE ID = ?");
+									.clientPrepareStatement("SELECT * FROM AGENCIAS WHERE NUMERO = ?");
 			ps.setString(1, k);
 			ResultSet result =  ps.executeQuery();
 			while(result.next()){
+				ag = new Agencia();
 				ag.setNumero(result.getString("numero"));
 				ag.setNome(result.getString("nome"));
 				ag.setCidade(result.getString("cidade"));

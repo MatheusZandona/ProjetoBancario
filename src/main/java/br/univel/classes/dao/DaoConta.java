@@ -2,17 +2,14 @@ package br.univel.classes.dao;
 
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
-
 import com.mysql.jdbc.PreparedStatement;
-
 import br.univel.classes.Agencia;
 import br.univel.classes.Conta;
 import br.univel.classes.bd.ConexaoBD;
 import br.univel.enuns.TipoConta;
-import br.univel.funcoes.Funcoes;
 import br.univel.interfaces.Dao;
 
 public class DaoConta implements Dao<Conta, String>{
@@ -53,7 +50,7 @@ public class DaoConta implements Dao<Conta, String>{
 			
 			while(result.next()){
 				conta.setNumero(result.getString("numero"));
-				conta.setNome(result.getString("nome"));
+				conta.setNome(result.getString("nome_titular"));
 				conta.setIdade(result.getInt("idade"));
 				conta.setCpf(result.getString("cpf"));				
 
@@ -142,7 +139,7 @@ public class DaoConta implements Dao<Conta, String>{
 			while(result.next()){
 				Conta conta = new Conta();
 				conta.setNumero(result.getString("numero"));
-				conta.setNome(result.getString("nome"));
+				conta.setNome(result.getString("nome_titular"));
 				conta.setIdade(result.getInt("idade"));
 				conta.setCpf(result.getString("cpf"));				
 
@@ -180,5 +177,39 @@ public class DaoConta implements Dao<Conta, String>{
 			e.printStackTrace();
 		}
 		return contas;
+	}
+
+	public String gerarProximoNumConta() {
+		PreparedStatement ps;
+		Integer numero = 1, digito = 0;
+		
+		try {
+			ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+					.clientPrepareStatement("SELECT MAX(NUMERO) AS NUMERO FROM CONTAS");
+			ResultSet result =  ps.executeQuery();
+			
+			while(result.next()){
+				if(result.getString("NUMERO") != null){
+					numero = Integer.parseInt(result.getString("NUMERO").substring(0, 5));
+					digito = Integer.parseInt(result.getString("NUMERO").substring(6, 8));
+				}
+			}
+			
+			ps.close();
+			result.close();			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//define próxima conta
+		if(digito == 99){
+			numero++;
+			digito = 1;
+		}else{
+			digito++;
+		}		
+		
+		return new DecimalFormat("00000").format(numero).concat("-").concat(new DecimalFormat("00").format(digito));
 	}
 }
