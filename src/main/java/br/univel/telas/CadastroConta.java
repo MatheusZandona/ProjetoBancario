@@ -12,7 +12,6 @@ import java.awt.Font;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
-import br.univel.classes.builder.AgenciaBuilder;
 import br.univel.classes.builder.ContaBuilder;
 import br.univel.classes.dao.DaoAgencia;
 import br.univel.classes.dao.DaoConta;
@@ -22,6 +21,8 @@ import br.univel.funcoes.Funcoes;
 import java.awt.event.ActionListener;
 import java.util.Date;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class CadastroConta extends JPanel{
 	private JTextField txtNome;
@@ -103,9 +104,27 @@ public class CadastroConta extends JPanel{
 		JLabel lblIdade = new JLabel("Idade");
 		
 		txtIdade = new JTextField();
+		txtIdade.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				String caracteres="0987654321";
+				if(!caracteres.contains(e.getKeyChar()+"")){
+					e.consume();
+				}							
+			}
+		});
 		txtIdade.setColumns(10);
 		
 		txtCPF = new JTextField();
+		txtCPF.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				String caracteres="0987654321./-";
+				if(!caracteres.contains(e.getKeyChar()+"")){
+					e.consume();
+				}							
+			}
+		});
 		txtCPF.setColumns(10);
 		
 		JLabel lblUsername = new JLabel("CPF");
@@ -131,6 +150,20 @@ public class CadastroConta extends JPanel{
 						.setDtAbertura(new Date())
 						.setSenhaAcesso(txtSenhaConta.getPassword().toString())
 						.setSenhaOperacoes(txtSenhaOp.getPassword().toString());
+					
+					switch(cbbTipoConta.getSelectedIndex()){
+						case 0:
+							builder.setTipoConta(TipoConta.CORRENTE);
+							break;
+						case 1:
+							builder.setTipoConta(TipoConta.POUPANÇA);
+							break;
+						case 2:
+							builder.setTipoConta(TipoConta.ELETRONICA);
+							break;
+						default: 
+							break;	
+					}
 	
 					dao.salvar(builder.build());									
 					
@@ -148,6 +181,15 @@ public class CadastroConta extends JPanel{
 		JLabel label = new JLabel("AG:");
 		
 		txtAgencia = new JTextField();
+		txtAgencia.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				String caracteres="0987654321-";
+				if(!caracteres.contains(e.getKeyChar()+"")){
+					e.consume();
+				}							
+			}
+		});
 		txtAgencia.setColumns(10);
 		
 		JLabel label_1 = new JLabel("Tipo Conta");

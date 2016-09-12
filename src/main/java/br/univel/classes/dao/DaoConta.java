@@ -16,24 +16,21 @@ public class DaoConta implements Dao<Conta, String>{
 
 	@Override
 	public void salvar(Conta t) {
-		if(t.getNumero().isEmpty()){ // esta inserindo
-			try {
-				PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-										.clientPrepareStatement("INSERT INTO CONTAS VALUES (?,?,?,?,?,?,?,?)");
-				ps.setString(1, t.getNumero());
-				ps.setString(2, t.getNome());
-				ps.setInt(3, t.getIdade());
-				ps.setString(4, t.getCpf());
-				ps.setString(5, t.getAgencia().getNumero());
-				ps.setDate(6, (Date) t.getDtAbertura());
-				ps.setString(7, t.getSenhaAcesso());
-				ps.setString(8, t.getSenhaOperacoes());
-				ps.executeUpdate();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}else{ // esta alterando
-			atualizar(t); 
+		try {
+			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+									.clientPrepareStatement("INSERT INTO CONTAS VALUES (?,?,?,?,?,?,?,?,?)");
+			ps.setString(1, t.getNumero());
+			ps.setInt(2, t.getTipoConta().ordinal());
+			ps.setString(3, t.getNome());
+			ps.setInt(4, t.getIdade());
+			ps.setString(5, t.getCpf());
+			ps.setString(6, t.getAgencia().getNumero());
+			ps.setDate(7, new java.sql.Date(t.getDtAbertura().getTime()));
+			ps.setString(8, t.getSenhaAcesso());
+			ps.setString(9, t.getSenhaOperacoes());
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -99,7 +96,7 @@ public class DaoConta implements Dao<Conta, String>{
 			ps.setInt(2, t.getIdade());
 			ps.setString(3, t.getCpf());
 			ps.setString(4, t.getAgencia().getNumero());
-			ps.setDate(5, (Date) t.getDtAbertura());
+			ps.setDate(5, new java.sql.Date(t.getDtAbertura().getTime()));
 			ps.setString(6, t.getSenhaAcesso());
 			ps.setString(7, t.getSenhaOperacoes());
 			ps.setString(8, t.getNumero());
