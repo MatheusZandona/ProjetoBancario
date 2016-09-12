@@ -19,21 +19,21 @@ public class DaoProfissional implements Dao<Profissional, String>{
 	@Override
 	public void salvar(Profissional t) {
 		try {
-			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("SELECT * FROM PROFISSIONAIS WHERE USERNAME = ?");
-			
-			ps.setString(1, t.getUsername());
-			ResultSet result = ps.executeQuery();
-			
-			ps.close();
-			if(result.next()){
-				JOptionPane.showMessageDialog(null, "Já existe um profissional com o mesmo USERNAME.");
-				return;
-			}
+//			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+//					.clientPrepareStatement("SELECT * FROM PROFISSIONAIS WHERE ID = ?");
+//			
+//			ps.setInt(1, t.getId());
+//			ResultSet result = ps.executeQuery();
+//			
+//			ps.close();
+//			if(result.next()){
+//				JOptionPane.showMessageDialog(null, "Já existe um profissional com o mesmo USERNAME.");
+//				return;
+//			}
 			
 			
 			PreparedStatement ps1 = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("INSERT INTO PROFISSIONAIS VALUES (?,?,?,?,?)");
+									.clientPrepareStatement("INSERT INTO PROFISSIONAIS VALUES (?,?,?,?,?,10)");
 			ps1.setString(1, t.getUsername());
 			ps1.setString(2, t.getNome());
 			ps1.setInt(3, t.getIdade());
@@ -74,27 +74,27 @@ public class DaoProfissional implements Dao<Profissional, String>{
 	@Override
 	public void atualizar(Profissional t) {
 		try {
-			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("SELECT * FROM PROFISSIONAIS WHERE USERNAME = ?");
-			
-			ps.setString(1, t.getUsername());
-			ResultSet result = ps.executeQuery();
-			
-			ps.close();
-			if(result.next()){
-				JOptionPane.showMessageDialog(null, "Já existe um profissional com o mesmo USERNAME.");
-				return;
-			}
+//			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+//					.clientPrepareStatement("SELECT * FROM PROFISSIONAIS WHERE ID = ?");
+//			
+//			ps.setInt(1, t.getId());
+//			ResultSet result = ps.executeQuery();
+//			
+//			ps.close();
+//			if(result.next()){
+//				JOptionPane.showMessageDialog(null, "Já existe um profissional com o mesmo USERNAME.");
+//				return;
+//			}
 			
 			PreparedStatement ps1 = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("UPDATE PROFISSIONAIS SET NOME = ?, IDADE = ?, SENHA_ACESSO = ?, SENHA_OP = ?, USERNAME = ? WHERE ID = ? AND ");
+					.clientPrepareStatement("UPDATE PROFISSIONAIS SET NOME = ?, IDADE = ?, SENHA_ACESSO = ?, SENHA_OP = ?, USERNAME = ? WHERE ID = ?");
 			
 			ps1.setString(1, t.getNome());
 			ps1.setInt(2, t.getIdade());
 			ps1.setString(3, t.getSenhaAcesso());
 			ps1.setString(4, t.getSenhaOperacoes());
 			ps1.setString(5, t.getUsername());
-			ps1.setInt(6, t.getGetID());
+			ps1.setInt(6, t.getId());
 			
 			ps1.executeUpdate();
 			ps1.close();

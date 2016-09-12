@@ -6,6 +6,8 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
+import br.univel.classes.Conta;
+import br.univel.classes.Profissional;
 import br.univel.enuns.TipoLogin;
 
 import javax.swing.JLabel;
@@ -27,6 +29,8 @@ public class TelaPadrao extends JFrame{
 	private JLabel lblVlrSaldo;
 	private JLabel lblAg;
 	private JLabel lblSaldo;
+	public static Conta conta;
+	public static Profissional profissional;
 	private TipoLogin tipoLogin;
 	
 	public TelaPadrao(TipoLogin tipoLogin, JPanel panel) {
@@ -43,7 +47,7 @@ public class TelaPadrao extends JFrame{
 		
 		lblNroAgencia = new JLabel("0000-00");
 		
-		lblTipoConta = new JLabel("Tipo Conta:");
+		lblTipoConta = new JLabel("Conta:");
 		
 		lblNroConta = new JLabel("00000-00");
 		

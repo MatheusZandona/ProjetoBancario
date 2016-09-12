@@ -2,7 +2,7 @@ package br.univel.classes;
 
 public class Profissional extends Pessoa{
 	
-	private int getID;
+	private int id;
 	private String username;
 	
 
@@ -14,12 +14,12 @@ public class Profissional extends Pessoa{
 		this.username = username;
 	}
 
-	public int getGetID() {
-		return getID;
+	public int getId() {
+		return id;
 	}
 
-	public void setGetID(int getID) {
-		this.getID = getID;
+	public void setId(int getID) {
+		this.id = getID;
 	}
 
 }

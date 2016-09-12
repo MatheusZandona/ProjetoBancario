@@ -60,6 +60,7 @@ public class PsqProfissionais extends JPanel{
 					cadProfissional.setSize(550, 450);
 					cadProfissional.setLocationRelativeTo(null);
 					cadProfissional.setVisible(true);
+					
 				}else{
 					JOptionPane.showMessageDialog(null, "Por favor selecione um registro.");
 				}

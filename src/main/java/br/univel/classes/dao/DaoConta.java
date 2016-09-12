@@ -37,7 +37,7 @@ public class DaoConta implements Dao<Conta, String>{
 	@Override
 	public Conta buscar(String k) {
 		Conta conta = new Conta();
-		DaoAgencia DaoAG = new DaoAgencia();
+		DaoAgencia daoAG = new DaoAgencia();
 		Agencia ag;
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
@@ -52,7 +52,7 @@ public class DaoConta implements Dao<Conta, String>{
 				conta.setCpf(result.getString("cpf"));				
 
 				ag = new Agencia();
-				ag = DaoAG.buscar(result.getString("agencia"));
+				ag = daoAG.buscar(result.getString("agencia"));
 				conta.setAgencia(ag);
 
 				conta.setDtAbertura(result.getDate("dt_abertura"));
