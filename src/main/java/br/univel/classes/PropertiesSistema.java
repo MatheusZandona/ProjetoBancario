@@ -27,8 +27,8 @@ public class PropertiesSistema {
 		Properties p = new Properties();
 
 		p.put("bd", "banco");
-		p.put("user", "root");
-		p.put("password", "root");
+		p.put("user", "admin");
+		p.put("password", "admin");
 		p.put("ip", "localhost");
 		p.put("tipoBanco", "relacional");
 

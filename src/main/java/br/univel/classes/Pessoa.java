@@ -10,6 +10,7 @@ public class Pessoa {
 	private String senhaAcesso;
 	private String senhaOperacoes;
 	private TipoLogin tipoLogin;
+	
 
 	public Integer getIdade() {
 		return idade;

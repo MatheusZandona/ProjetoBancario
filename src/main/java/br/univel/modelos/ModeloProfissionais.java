@@ -51,4 +51,8 @@ public class ModeloProfissionais extends AbstractTableModel {
 		}
 	}
 
+	public Profissional getProfissional(int selecionado){
+		return lista.get(selecionado);
+	}
+	
 }

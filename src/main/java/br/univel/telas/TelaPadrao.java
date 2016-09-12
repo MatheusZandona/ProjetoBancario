@@ -161,4 +161,5 @@ public class TelaPadrao extends JFrame{
 		this.tipoLogin = tipoLogin;
 		configurarCabecalho();
 	}
+	
 }

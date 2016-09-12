@@ -3,7 +3,10 @@ package br.univel.classes.dao;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import javax.swing.JOptionPane;
 
 import com.mysql.jdbc.PreparedStatement;
 
@@ -17,13 +20,26 @@ public class DaoProfissional implements Dao<Profissional, String>{
 	public void salvar(Profissional t) {
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("INSERT INTO PROFISSIONAIS VALUES (?,?,?,?,?)");
+					.clientPrepareStatement("SELECT * FROM PROFISSIONAIS WHERE USERNAME = ?");
+			
 			ps.setString(1, t.getUsername());
-			ps.setString(2, t.getNome());
-			ps.setInt(3, t.getIdade());
-			ps.setString(4, t.getSenhaAcesso());
-			ps.setString(5, t.getSenhaOperacoes());
-			ps.executeUpdate();
+			ResultSet result = ps.executeQuery();
+			
+			ps.close();
+			if(result.next()){
+				JOptionPane.showMessageDialog(null, "Já existe um profissional com o mesmo USERNAME.");
+				return;
+			}
+			
+			
+			PreparedStatement ps1 = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+									.clientPrepareStatement("INSERT INTO PROFISSIONAIS VALUES (?,?,?,?,?)");
+			ps1.setString(1, t.getUsername());
+			ps1.setString(2, t.getNome());
+			ps1.setInt(3, t.getIdade());
+			ps1.setString(4, t.getSenhaAcesso());
+			ps1.setString(5, t.getSenhaOperacoes());
+			ps1.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -59,16 +75,29 @@ public class DaoProfissional implements Dao<Profissional, String>{
 	public void atualizar(Profissional t) {
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("UPDATE PROFISSIONAIS SET NOME = ?, IDADE = ?, SENHA_ACESSO = ?, SENHA_OP = ? WHERE USERNAME = ?");
+					.clientPrepareStatement("SELECT * FROM PROFISSIONAIS WHERE USERNAME = ?");
 			
-			ps.setString(1, t.getNome());
-			ps.setInt(2, t.getIdade());
-			ps.setString(3, t.getSenhaAcesso());
-			ps.setString(4, t.getSenhaOperacoes());
-			ps.setString(5, t.getUsername());
+			ps.setString(1, t.getUsername());
+			ResultSet result = ps.executeQuery();
 			
-			ps.executeUpdate();
 			ps.close();
+			if(result.next()){
+				JOptionPane.showMessageDialog(null, "Já existe um profissional com o mesmo USERNAME.");
+				return;
+			}
+			
+			PreparedStatement ps1 = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+					.clientPrepareStatement("UPDATE PROFISSIONAIS SET NOME = ?, IDADE = ?, SENHA_ACESSO = ?, SENHA_OP = ?, USERNAME = ? WHERE ID = ? AND ");
+			
+			ps1.setString(1, t.getNome());
+			ps1.setInt(2, t.getIdade());
+			ps1.setString(3, t.getSenhaAcesso());
+			ps1.setString(4, t.getSenhaOperacoes());
+			ps1.setString(5, t.getUsername());
+			ps1.setInt(6, t.getGetID());
+			
+			ps1.executeUpdate();
+			ps1.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -79,7 +108,7 @@ public class DaoProfissional implements Dao<Profissional, String>{
 	public void excluir(String k) {
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("DELETE FROM PROFISSIONAIS WHERE USERNAME = ?");
+					.clientPrepareStatement("DELETE FROM PROFISSIONAIS WHERE ID = ?");
 			
 			ps.setString(1, k);
 			

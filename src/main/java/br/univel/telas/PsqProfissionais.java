@@ -13,6 +13,8 @@ import br.univel.enuns.TipoLogin;
 import br.univel.modelos.ModeloProfissionais;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -47,10 +49,20 @@ public class PsqProfissionais extends JPanel{
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao cadProfissional = new TelaPadrao(TipoLogin.BANCARIO, new CadastroProfissional());
-				cadProfissional.setSize(550, 450);
-				cadProfissional.setLocationRelativeTo(null);
-				cadProfissional.setVisible(true);					
+				int selec = tbGrid.getSelectedRow();
+				
+				if(selec != -1){
+					Profissional prof = ((ModeloProfissionais) tbGrid.getModel()).getProfissional(selec);
+					CadastroProfissional.setProfissional(prof);
+					CadastroProfissional.setEdit(1);
+					
+					TelaPadrao cadProfissional = new TelaPadrao(TipoLogin.BANCARIO, new CadastroProfissional());
+					cadProfissional.setSize(550, 450);
+					cadProfissional.setLocationRelativeTo(null);
+					cadProfissional.setVisible(true);
+				}else{
+					JOptionPane.showMessageDialog(null, "Por favor selecione um registro.");
+				}
 			}
 		});
 		

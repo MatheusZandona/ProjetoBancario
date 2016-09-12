@@ -5,6 +5,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.Font;
@@ -17,13 +18,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class CadastroProfissional extends JPanel{
-	public static int status = 0;   // 0 = inserindo  1 = alterando
+	private static int edit = 0;   // 0 = inserindo  1 = alterando
 	
 	private JTextField txtNome;
 	private JTextField txtIdade;
 	private JPasswordField txtSenhaOp;
 	private JPasswordField txtSenhaConta;
 	private JTextField txtUserName;
+	private static Profissional p;
 	
 	
 	public CadastroProfissional() {
@@ -48,8 +50,11 @@ public class CadastroProfissional extends JPanel{
 		
 		JButton button = new JButton("Confirme");
 		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
+				public void actionPerformed(ActionEvent arg0) {
+					if(!validarCampos()){
+						salvarProfissional();
+						limparCampos();
+					}
 			}
 		});
 		button.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -111,13 +116,23 @@ public class CadastroProfissional extends JPanel{
 					.addGap(31))
 		);
 		setLayout(groupLayout);
+		
+		if(edit == 1){
+			txtNome.setText(p.getNome());
+			txtIdade.setText(p.getIdade().toString());
+			txtUserName.setText(p.getUsername());
+			txtSenhaConta.setText(p.getSenhaAcesso());
+			txtSenhaOp.setText(p.getSenhaOperacoes());
+		}
 	}
 	
 	private void salvarProfissional(){
-		
-		//inserir usuario
-		Profissional p = new Profissional();
+	
 		DaoProfissional daoP = new DaoProfissional();
+		
+		if(edit == 0){
+			p = new Profissional();
+		}
 		
 		p.setNome(txtNome.getText());
 		p.setIdade(Integer.parseInt(txtIdade.getText()));
@@ -125,6 +140,54 @@ public class CadastroProfissional extends JPanel{
 		p.setSenhaOperacoes(txtSenhaOp.getText());
 		p.setUsername(txtUserName.getText());
 		
-		daoP.salvar(p);
+		if(edit == 0){
+			daoP.salvar(p);
+		}else{
+			daoP.atualizar(p);
+		}
+	}
+
+	public static void setEdit(int edit1) {
+		edit = edit1;
+	}
+	
+	public boolean validarCampos(){  // true = erro
+		if(txtNome.getText().equals("")){
+			txtNome.setFocusable(true);
+			JOptionPane.showMessageDialog(null, "Nome deve conter ao menos 1 caracter.");
+			return true;
+		}else if (txtIdade.getText().equals("")) {
+			txtIdade.setFocusable(true);
+			JOptionPane.showMessageDialog(null, "Idade deve conter ao menos 1 caracter.");
+			return true;
+		}else if (txtUserName.getText().equals("")) {
+			txtUserName.setFocusable(true);
+			JOptionPane.showMessageDialog(null, "UserName deve conter ao menos 1 caracter.");
+			return true;
+		}else if (txtSenhaConta.getText().equals("")) {
+			txtSenhaConta.setFocusable(true);
+			JOptionPane.showMessageDialog(null, "Senha Conta deve conter ao menos 1 caracter.");
+			return true;
+		}else if (txtSenhaOp.getText().equals("")) {
+			txtSenhaOp.setFocusable(true);
+			JOptionPane.showMessageDialog(null, "Senha Op deve conter ao menos 1 caracter.");
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public void limparCampos(){
+		txtNome.setText("");
+		txtIdade.setText("");
+		txtUserName.setText("");
+		txtSenhaConta.setText("");
+		txtSenhaOp.setText("");
+	}
+	
+	public static void setProfissional(Profissional p1){
+		p = new Profissional();
+		p = p1;
 	}
 }
+
