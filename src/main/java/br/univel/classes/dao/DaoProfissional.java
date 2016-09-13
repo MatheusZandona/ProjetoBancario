@@ -36,7 +36,7 @@ public class DaoProfissional implements Dao<Profissional, String>{
 			
 			
 			PreparedStatement ps1 = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("INSERT INTO PROFISSIONAIS VALUES (?,?,?,?,?,10)");
+									.clientPrepareStatement("INSERT INTO PROFISSIONAIS VALUES (?,?,?,?,?)");
 			ps1.setString(1, t.getUsername());
 			ps1.setString(2, t.getNome());
 			ps1.setInt(3, t.getIdade());
