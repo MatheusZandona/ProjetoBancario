@@ -148,8 +148,8 @@ public class CadastroConta extends JPanel{
 						.setNumero(numero)
 						.setAgencia(new DaoAgencia().buscar(txtAgencia.getText()))
 						.setDtAbertura(new Date())
-						.setSenhaAcesso(txtSenhaConta.getPassword().toString())
-						.setSenhaOperacoes(txtSenhaOp.getPassword().toString());
+						.setSenhaAcesso(txtSenhaConta.getText())
+						.setSenhaOperacoes(txtSenhaOp.getText());
 					
 					switch(cbbTipoConta.getSelectedIndex()){
 						case 0:

@@ -21,22 +21,10 @@ public class DaoProfissional implements Dao<Profissional, String>{
 
 	@Override
 	public void salvar(Profissional t) {
-		try {
-//			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-//					.clientPrepareStatement("SELECT * FROM PROFISSIONAIS WHERE ID = ?");
-//			
-//			ps.setInt(1, t.getId());
-//			ResultSet result = ps.executeQuery();
-//			
-//			ps.close();
-//			if(result.next()){
-//				JOptionPane.showMessageDialog(null, "Já existe um profissional com o mesmo USERNAME.");
-//				return;
-//			}
-			
+		try {		
 			
 			PreparedStatement ps1 = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("INSERT INTO PROFISSIONAIS VALUES (?,?,?,?,?,10)");
+									.clientPrepareStatement("INSERT INTO PROFISSIONAIS(USERNAME, NOME, IDADE, SENHA_ACESSO, SENHA_OP) VALUES (?,?,?,?,?)");
 			ps1.setString(1, t.getUsername());
 			ps1.setString(2, t.getNome());
 			ps1.setInt(3, t.getIdade());
@@ -63,6 +51,7 @@ public class DaoProfissional implements Dao<Profissional, String>{
 				profissional.setIdade(result.getInt("idade"));
 				profissional.setSenhaAcesso(result.getString("senha_acesso"));
 				profissional.setSenhaOperacoes(result.getString("senha_op"));
+				profissional.setId(result.getInt("id"));
 				
 			}
 			
@@ -76,22 +65,10 @@ public class DaoProfissional implements Dao<Profissional, String>{
 
 	@Override
 	public void atualizar(Profissional t) {
-		try {
-//			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-//					.clientPrepareStatement("SELECT * FROM PROFISSIONAIS WHERE ID = ?");
-//			
-//			ps.setInt(1, t.getId());
-//			ResultSet result = ps.executeQuery();
-//			
-//			ps.close();
-//			if(result.next()){
-//				JOptionPane.showMessageDialog(null, "Já existe um profissional com o mesmo USERNAME.");
-//				return;
-//			}
-			
+		try {			
 			PreparedStatement ps1 = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
 					.clientPrepareStatement("UPDATE PROFISSIONAIS SET NOME = ?, IDADE = ?, SENHA_ACESSO = ?, SENHA_OP = ?, USERNAME = ? WHERE ID = ?");
-			
+					
 			ps1.setString(1, t.getNome());
 			ps1.setInt(2, t.getIdade());
 			ps1.setString(3, t.getSenhaAcesso());
@@ -137,6 +114,7 @@ public class DaoProfissional implements Dao<Profissional, String>{
 				profissional.setIdade(result.getInt("idade"));
 				profissional.setSenhaAcesso(result.getString("senha_acesso"));
 				profissional.setSenhaOperacoes(result.getString("senha_op"));
+				profissional.setId(result.getInt("id"));
 				
 				profissionais.add(profissional);
 			}
