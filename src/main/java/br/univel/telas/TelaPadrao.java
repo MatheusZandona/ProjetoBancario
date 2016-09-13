@@ -14,6 +14,8 @@ import br.univel.observable.Saldo;
 import javafx.beans.Observable;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -38,11 +40,9 @@ public class TelaPadrao extends JFrame implements SaldoObserver{
 	public static Profissional profissional;
 	private TipoLogin tipoLogin;
 	
-	public TelaPadrao() {
-		
-	}
+	
 	public TelaPadrao(TipoLogin tipoLogin, JPanel panel) {
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Banco Tads");
 		
 		JLabel lblBancoTads = new JLabel("BANCO TADS");
@@ -177,9 +177,7 @@ public class TelaPadrao extends JFrame implements SaldoObserver{
 
 	@Override
 	public void atualizaSaldo(Saldo saldo) {
-		if (saldo.saldoAtualizado()) {
-			lblSaldo.setText(conta.getSaldo().toString());
-		}
+		lblVlrSaldo.setText(saldo.getValor().toString());
 	}
 	
 	public void atualizaDados(){

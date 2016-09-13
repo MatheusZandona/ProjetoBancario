@@ -7,7 +7,7 @@ import java.util.Date;
 public class Movimentacao {
 
 	private Conta      conta;
-	private String     tipoM;   // S = SAQUE /  D = DEPOSITO  / T = TRANSDERENCIA
+	private String     tipoM;   // S = SAQUE /  D = DEPOSITO  / TE, TS = TRANSDERENCIA
 	private Date       data;
 	private Time       hora;
 	private BigDecimal valor;

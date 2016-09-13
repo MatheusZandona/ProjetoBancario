@@ -1,5 +1,6 @@
 package br.univel.observable;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -7,6 +8,8 @@ import java.util.Observable;
 import br.univel.interfaces.SaldoObserver;
 
 public class Saldo{
+	
+	BigDecimal valor = BigDecimal.ZERO;
 	
 	final List<SaldoObserver> observers = new ArrayList<>();
 
@@ -27,8 +30,18 @@ public class Saldo{
 		}
 	}
 	
-	public boolean saldoAtualizado(){
-		notifyObservers(); // notificar os observadores
+//	public boolean saldoAtualizado(){
+//		notifyObservers(); // notificar os observadores
+//		return true;
+//	} 
+	
+	public boolean incrementeSaldo(BigDecimal valor){
+		this.valor = this.valor.add(valor);
+		notifyObservers();
 		return true;
-	} 
+	}
+	
+	public BigDecimal getValor() {
+		return valor;
+	}
 }

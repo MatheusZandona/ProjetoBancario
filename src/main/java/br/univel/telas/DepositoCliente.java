@@ -27,6 +27,13 @@ public class DepositoCliente extends JPanel{
 	private JTextField txtAgencia;
 	private JTextField txtConta;
 	private JTextField txtTitular;
+	
+	private TelaPadrao tp;
+	
+	public void setTp(TelaPadrao tp) {
+		this.tp = tp;
+	}
+	
 	public DepositoCliente() {
 		
 		JLabel lblNewLabel = new JLabel("Informe o valor a ser depositado:");
@@ -68,11 +75,12 @@ public class DepositoCliente extends JPanel{
 				
 				// fazer o procedimento no Banco para entao atualizar o saldo na tela padrao
 				
-				TelaPadrao tp = new TelaPadrao(TipoLogin.CLIENTE,new DepositoCliente());
-				tp.conta.setSaldo(new BigDecimal(txtValor.getText()));
+				//TelaPadrao tp = new TelaPadrao(TipoLogin.CLIENTE, new DepositoCliente());
+				//tp.setVisible(true);
+//				tp.conta.setSaldo();
 				Saldo saldo = new Saldo();
 				saldo.addObservers(tp);
-				saldo.saldoAtualizado();
+				saldo.incrementeSaldo(new BigDecimal(txtValor.getText()));
 			}
 		});
 		btnConfirme.setFont(new Font("Tahoma", Font.BOLD, 12));
