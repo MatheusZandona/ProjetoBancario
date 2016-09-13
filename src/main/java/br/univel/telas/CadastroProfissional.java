@@ -5,7 +5,6 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.Font;
@@ -13,21 +12,23 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.univel.classes.Profissional;
 import br.univel.classes.dao.DaoProfissional;
+import br.univel.funcoes.Funcoes;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class CadastroProfissional extends JPanel{
-	private static int edit = 0;   // 0 = inserindo  1 = alterando
 	
 	private JTextField txtNome;
 	private JTextField txtIdade;
 	private JPasswordField txtSenhaOp;
 	private JPasswordField txtSenhaConta;
 	private JTextField txtUserName;
-	private static Profissional p;
-	
-	
+	private boolean editando = false; 
+	private Profissional profissional;
+	private PsqProfissionais telaPesquisa;
+
+
 	public CadastroProfissional() {
 		
 		txtNome = new JTextField();
@@ -51,9 +52,11 @@ public class CadastroProfissional extends JPanel{
 		JButton button = new JButton("Confirme");
 		button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					if(!validarCampos()){
+					
+					if(validarCampos()){
 						salvarProfissional();
-						limparCampos();
+						telaPesquisa.montarConsulta();
+						Funcoes.fecharTelaPadrao(getParent());
 					}
 			}
 		});
@@ -117,77 +120,89 @@ public class CadastroProfissional extends JPanel{
 		);
 		setLayout(groupLayout);
 		
-		if(edit == 1){
-			txtNome.setText(p.getNome());
-			txtIdade.setText(p.getIdade().toString());
-			txtUserName.setText(p.getUsername());
-			txtSenhaConta.setText(p.getSenhaAcesso());
-			txtSenhaOp.setText(p.getSenhaOperacoes());
-		}
+
+	}
+	
+	public void carregarDados(){
+		
+		profissional =  new DaoProfissional().buscar(profissional.getUsername());	
+		
+		if(editando){
+			txtNome.setText(profissional.getNome());
+			txtIdade.setText(profissional.getIdade().toString());
+			txtUserName.setText(profissional.getUsername());
+			txtSenhaConta.setText(profissional.getSenhaAcesso());
+			txtSenhaOp.setText(profissional.getSenhaOperacoes());
+		}		
 	}
 	
 	private void salvarProfissional(){
 	
 		DaoProfissional daoP = new DaoProfissional();
 		
-		if(edit == 0){
-			p = new Profissional();
+		if(!editando){
+			profissional = new Profissional();
 		}
 		
-		p.setNome(txtNome.getText());
-		p.setIdade(Integer.parseInt(txtIdade.getText()));
-		p.setSenhaAcesso(txtSenhaConta.getText());
-		p.setSenhaOperacoes(txtSenhaOp.getText());
-		p.setUsername(txtUserName.getText());
+		profissional.setNome(txtNome.getText());
+		profissional.setIdade(Integer.parseInt(txtIdade.getText()));
+		profissional.setSenhaAcesso(txtSenhaConta.getText());
+		profissional.setSenhaOperacoes(txtSenhaOp.getText());
+		profissional.setUsername(txtUserName.getText());
 		
-		if(edit == 0){
-			daoP.salvar(p);
+		
+		if(!editando){
+			daoP.salvar(profissional);
 		}else{
-			daoP.atualizar(p);
+			daoP.atualizar(profissional);
 		}
 	}
 
-	public static void setEdit(int edit1) {
-		edit = edit1;
-	}
-	
-	public boolean validarCampos(){  // true = erro
+		
+	public boolean validarCampos(){  
 		if(txtNome.getText().equals("")){
 			txtNome.setFocusable(true);
-			JOptionPane.showMessageDialog(null, "Nome deve conter ao menos 1 caracter.");
-			return true;
+			Funcoes.msgAviso("Nome deve conter ao menos 1 caracter.");
+			return false;
 		}else if (txtIdade.getText().equals("")) {
 			txtIdade.setFocusable(true);
-			JOptionPane.showMessageDialog(null, "Idade deve conter ao menos 1 caracter.");
-			return true;
+			Funcoes.msgAviso("Idade deve conter ao menos 1 caracter.");
+			return false;
 		}else if (txtUserName.getText().equals("")) {
 			txtUserName.setFocusable(true);
-			JOptionPane.showMessageDialog(null, "UserName deve conter ao menos 1 caracter.");
-			return true;
+			Funcoes.msgAviso("UserName deve conter ao menos 1 caracter.");
+			return false;
 		}else if (txtSenhaConta.getText().equals("")) {
 			txtSenhaConta.setFocusable(true);
-			JOptionPane.showMessageDialog(null, "Senha Conta deve conter ao menos 1 caracter.");
-			return true;
+			Funcoes.msgAviso("Senha Conta deve conter ao menos 1 caracter.");
+			return false;
 		}else if (txtSenhaOp.getText().equals("")) {
 			txtSenhaOp.setFocusable(true);
-			JOptionPane.showMessageDialog(null, "Senha Op deve conter ao menos 1 caracter.");
-			return true;
-		}else{
+			Funcoes.msgAviso("Senha Op deve conter ao menos 1 caracter.");
 			return false;
+		}else{
+			return true;
 		}
 	}
-	
-	public void limparCampos(){
-		txtNome.setText("");
-		txtIdade.setText("");
-		txtUserName.setText("");
-		txtSenhaConta.setText("");
-		txtSenhaOp.setText("");
+		
+	public Profissional getProfissional() {
+		return profissional;
 	}
-	
-	public static void setProfissional(Profissional p1){
-		p = new Profissional();
-		p = p1;
+
+	public void setProfissional(Profissional profissional) {
+		this.profissional = profissional;
 	}
+
+	public boolean isEditando() {
+		return editando;
+	}
+
+	public void setEditando(boolean editando) {
+		this.editando = editando;
+	}		
+		
+	public void setTelaPesquisa(PsqProfissionais telaPesquisa) {
+		this.telaPesquisa = telaPesquisa;
+	}	
 }
 

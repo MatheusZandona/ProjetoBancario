@@ -21,22 +21,10 @@ public class DaoProfissional implements Dao<Profissional, String>{
 
 	@Override
 	public void salvar(Profissional t) {
-		try {
-//			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-//					.clientPrepareStatement("SELECT * FROM PROFISSIONAIS WHERE ID = ?");
-//			
-//			ps.setInt(1, t.getId());
-//			ResultSet result = ps.executeQuery();
-//			
-//			ps.close();
-//			if(result.next()){
-//				JOptionPane.showMessageDialog(null, "Já existe um profissional com o mesmo USERNAME.");
-//				return;
-//			}
-			
+		try {		
 			
 			PreparedStatement ps1 = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("INSERT INTO PROFISSIONAIS VALUES (?,?,?,?,?)");
+									.clientPrepareStatement("INSERT INTO PROFISSIONAIS(USERNAME, NOME, IDADE, SENHA_ACESSO, SENHA_OP) VALUES (?,?,?,?,?)");
 			ps1.setString(1, t.getUsername());
 			ps1.setString(2, t.getNome());
 			ps1.setInt(3, t.getIdade());
