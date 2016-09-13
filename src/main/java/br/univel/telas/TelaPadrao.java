@@ -162,7 +162,8 @@ public class TelaPadrao extends JFrame implements SaldoObserver{
 			lblVlrSaldo.setVisible(true);			
 		}
 		
-		lblData.setText(new SimpleDateFormat("dd/MM/yyyy - HH:mm").format(new Date(System.currentTimeMillis())));		
+		lblData.setText(new SimpleDateFormat("dd/MM/yyyy - HH:mm").format(new Date(System.currentTimeMillis())));
+		atualizaDados();
 	}
 
 	public TipoLogin getTipoLogin() {
@@ -181,4 +182,9 @@ public class TelaPadrao extends JFrame implements SaldoObserver{
 		}
 	}
 	
+	public void atualizaDados(){
+		lblNroAgencia.setText(conta.getAgencia().getNumero());
+		lblNroConta.setText(conta.getNumero());
+		lblVlrSaldo.setText("R$ "+conta.getSaldo());
+	}
 }

@@ -7,6 +7,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JCheckBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.enuns.TipoLogin;
 import br.univel.observable.Saldo;
 
@@ -60,6 +61,10 @@ public class DepositoCliente extends JPanel{
 		JButton btnConfirme = new JButton("Confirme");
 		btnConfirme.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+//				if(chkContaLogada.isSelected()){
+//					DaoMovimentacao daoMov =  new DaoMovimentacao();
+//					daoMov.sacar(valor, numConta, agencia, senha);
+//				}
 				
 				// fazer o procedimento no Banco para entao atualizar o saldo na tela padrao
 				

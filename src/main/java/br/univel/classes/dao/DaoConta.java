@@ -265,4 +265,42 @@ public class DaoConta implements Dao<Conta, String>{
 		}
 		return resultado;
 	}
+	
+	public boolean existeConta(String conta){
+		boolean resultado = false;
+		try {
+			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+					.clientPrepareStatement("SELECT * FROM CONTAS WHERE NUMERO = ?");
+			ps.setString(1, conta);
+			ResultSet result =  ps.executeQuery();
+			if(result.next()){
+				resultado = true;
+			}
+			ps.close();
+			result.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultado;
+	}
+	
+	public boolean validarSenhaOP(String senha){
+		boolean resultado = false;
+		try {
+			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+					.clientPrepareStatement("SELECT * FROM CONTAS WHERE SENHA_OP = ?");
+			ps.setString(1, senha);
+			ResultSet result =  ps.executeQuery();
+			if(result.next()){
+				if(senha.equals(result.getString("SENHA_OP"))){
+					resultado = true;
+				}
+			}
+			ps.close();
+			result.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultado;
+	}
 }
