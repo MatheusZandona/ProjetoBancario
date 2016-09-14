@@ -15,5 +15,5 @@ public interface DaoMov {
 	public void depositar(BigDecimal valor, String conta, String agencia);
 	public BigDecimal saldoAtual(String conta, String agencia);
 	public boolean temSaldo(String conta,  String agencia);
-	public void transferir(BigDecimal valor, String contaDest, String agenciaDest, String senha);
+	public void transferir(BigDecimal valor, String contaDest, String agenciaDest, String contaOri, String agenciaOri, String senha, String tipo);
 }

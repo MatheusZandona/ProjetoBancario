@@ -129,9 +129,70 @@ public class DaoMovimentacao implements DaoMov{
 	}
 
 	@Override
-	public void transferir(BigDecimal valor, String contaDest, String agenciaDest, String senha) {
-		// TODO Auto-generated method stub
+	public void transferir(BigDecimal valor, String contaDest, String agenciaDest, String contaOri, String agenciaOri, String senha, String tipo) {
+		//sacar contaOrigem
+		DaoConta daoContaOri = new DaoConta();
+		Conta conta = new Conta(); 
 		
+		conta = daoContaOri.buscar(contaOri);
+		if((conta.getTipoConta() == TipoConta.CORRENTE) || (conta.getTipoConta() == TipoConta.ELETRONICA)){
+			if(daoContaOri.existeConta(contaOri)){			
+				if(temSaldo(contaOri, contaOri)){
+					BigDecimal saldoAtual = new BigDecimal(0.0);
+					saldoAtual = saldoAtual(contaOri, contaOri);
+					if(saldoAtual.compareTo(valor) >= 0){
+						try {
+							PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+									.clientPrepareStatement("INSERT INTO CONTAS_MOVIMENTO (CONTA_NUMERO,TIPO_MOVIMENTO,DATA,HORA,VALOR,DESCRICAO) VALUES (?,?,?,?,?,?)");
+							ps.setString(1, contaOri);
+							ps.setString(2, "S");
+							Date d = new Date();
+							ps.setDate(3, new java.sql.Date(d.getTime()));
+							ps.setTime(4, new java.sql.Time(d.getTime()));
+							valor = valor.subtract(valor.add(valor));  // kkkk adaptação técnica
+							ps.setBigDecimal(5, valor);
+							ps.setString(6, "SAQUE");
+							ps.executeUpdate();
+							Funcoes.msgConfirma("Saque efetuado com sucesso !");
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}else{
+						Funcoes.msgAviso("Saldo insuficiente !");
+					}
+				}else{
+					Funcoes.msgAviso("Saldo insuficiente !");
+				}
+			}else{
+				Funcoes.msgErro("Conta inexistente !");
+			}
+		}else if (conta.getTipoConta() == TipoConta.POUPANÇA) {
+			Funcoes.msgAviso("Não é possivel efetuar transferencia em conta poupança.");
+		}
+		
+		//depositar contaDestino
+		try {
+			DaoConta daoContaDest = new DaoConta();
+			if(daoContaDest.existeConta(contaDest)){
+				PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+						.clientPrepareStatement("INSERT INTO CONTAS_MOVIMENTO (CONTA_NUMERO,TIPO_MOVIMENTO,DATA,HORA,VALOR,DESCRICAO) VALUES (?,?,?,?,?,?)");
+				ps.setString(1, contaDest);
+				ps.setString(2, "D");
+				Date d = new Date();
+				ps.setDate(3, new java.sql.Date(d.getTime()));
+				ps.setTime(4, new java.sql.Time(d.getTime()));
+				ps.setBigDecimal(5, valor);
+				ps.setString(6, "DEPOSITO");
+				ps.executeUpdate();
+				Funcoes.msgConfirma("Depósito efetuado com sucesso !");
+			}else{
+				Funcoes.msgErro("Conta inexistente !");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+
+	
 	
 }

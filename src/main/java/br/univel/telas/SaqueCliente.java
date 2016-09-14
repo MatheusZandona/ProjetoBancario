@@ -134,7 +134,7 @@ public class SaqueCliente extends PanelAbstrato{
 	
 	private void Sacar( BigDecimal valor ){
 		DaoMovimentacao daoMov = new DaoMovimentacao();
-		daoMov.sacar(valor, TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero(), "10");
+		daoMov.sacar(valor, TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero(), "11");
 		
 		
 //		TecladoSenhaCliente teclado = null;
