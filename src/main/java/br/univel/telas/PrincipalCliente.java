@@ -4,11 +4,13 @@ import javax.swing.JButton;
 import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.enuns.TipoConta;
 import br.univel.enuns.TipoLogin;
+import br.univel.observable.Saldo;
 
 import java.awt.Font;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.awt.event.ActionEvent;
 
 public class PrincipalCliente extends PanelAbstrato{
@@ -62,7 +64,7 @@ public class PrincipalCliente extends PanelAbstrato{
 		btnSaque.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				TelaPadrao telaSaque = new TelaPadrao(TipoLogin.CLIENTE, new SaqueCliente());
+				TelaPadrao telaSaque = setTelaPadrao(new TelaPadrao(TipoLogin.CLIENTE, new SaqueCliente())).getTelaPadrao();
 				telaSaque.setSize(600, 500);
 				telaSaque.setLocationRelativeTo(null);
 				telaSaque.setVisible(true);					
@@ -73,7 +75,7 @@ public class PrincipalCliente extends PanelAbstrato{
 		btnSaldo = new JButton("2 - Saldo");
 		btnSaldo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaSaldo = new TelaPadrao(TipoLogin.CLIENTE, new SaldoCliente());
+				TelaPadrao telaSaldo = setTelaPadrao(new TelaPadrao(TipoLogin.CLIENTE, new SaldoCliente())).getTelaPadrao();
 				telaSaldo.setSize(800, 600);
 				telaSaldo.setLocationRelativeTo(null);
 				telaSaldo.setVisible(true);					
@@ -84,10 +86,10 @@ public class PrincipalCliente extends PanelAbstrato{
 		btnDepositos = new JButton("3 - Depósitos");
 		btnDepositos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaDeposito = new TelaPadrao(TipoLogin.CLIENTE, new DepositoCliente());
+				TelaPadrao telaDeposito = setTelaPadrao(new TelaPadrao(TipoLogin.CLIENTE, new DepositoCliente())).getTelaPadrao();
 				telaDeposito.setSize(600, 500);
 				telaDeposito.setLocationRelativeTo(null);
-				telaDeposito.setVisible(true);						
+				telaDeposito.setVisible(true);
 			}
 		});
 		btnDepositos.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -95,7 +97,7 @@ public class PrincipalCliente extends PanelAbstrato{
 		btnTransf = new JButton("4 - Transferências");
 		btnTransf.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaTransferencia = new TelaPadrao(TipoLogin.CLIENTE, new TransferenciaCliente());
+				TelaPadrao telaTransferencia = setTelaPadrao(new TelaPadrao(TipoLogin.CLIENTE, new TransferenciaCliente())).getTelaPadrao();
 				telaTransferencia.setSize(600, 500);
 				telaTransferencia.setLocationRelativeTo(null);
 				telaTransferencia.setVisible(true);				
@@ -106,7 +108,7 @@ public class PrincipalCliente extends PanelAbstrato{
 		btnPagamentos = new JButton("5 - Pagamentos");
 		btnPagamentos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaPagamentos = new TelaPadrao(TipoLogin.CLIENTE, new PagamentoCliente());
+				TelaPadrao telaPagamentos = setTelaPadrao(new TelaPadrao(TipoLogin.CLIENTE, new PagamentoCliente())).getTelaPadrao();
 				telaPagamentos.setSize(600, 500);
 				telaPagamentos.setLocationRelativeTo(null);
 				telaPagamentos.setVisible(true);								

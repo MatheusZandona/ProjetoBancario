@@ -26,19 +26,20 @@ public class DaoMovimentacao implements DaoMov{
 		
 		conta = daoC.buscar(numConta);
 		if(conta.getTipoConta() == TipoConta.CORRENTE){
-			if(temSaldo(numConta, agencia)){			
-				if(daoC.existeConta(numConta)){
+			if(daoC.existeConta(numConta)){			
+				if(temSaldo(numConta, agencia)){
 					BigDecimal saldoAtual = new BigDecimal(0.0);
 					saldoAtual = saldoAtual(numConta, agencia);
-					if(valor.compareTo(saldoAtual) >= 0){
+					if(saldoAtual.compareTo(valor) >= 0){
 						try {
 							PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("INSERT INTO CONTAS_MOVIMENTO VALUES (?,?,?,?,?,?)");
+									.clientPrepareStatement("INSERT INTO CONTAS_MOVIMENTO (CONTA_NUMERO,TIPO_MOVIMENTO,DATA,HORA,VALOR,DESCRICAO) VALUES (?,?,?,?,?,?)");
 							ps.setString(1, numConta);
 							ps.setString(2, "S");
 							Date d = new Date();
 							ps.setDate(3, new java.sql.Date(d.getTime()));
 							ps.setTime(4, new java.sql.Time(d.getTime()));
+							valor = valor.subtract(valor.add(valor));  // kkkk adaptação técnica
 							ps.setBigDecimal(5, valor);
 							ps.setString(6, "SAQUE");
 							ps.executeUpdate();
@@ -50,8 +51,10 @@ public class DaoMovimentacao implements DaoMov{
 						Funcoes.msgAviso("Saldo insuficiente !");
 					}
 				}else{
-					Funcoes.msgErro("Conta inexistente !");
+					Funcoes.msgAviso("Saldo insuficiente !");
 				}
+			}else{
+				Funcoes.msgErro("Conta inexistente !");
 			}
 		}else if (conta.getTipoConta() == TipoConta.POUPANÇA) {
 			Funcoes.msgAviso("Não é possivel efetuar saque em conta poupança.");
@@ -66,7 +69,7 @@ public class DaoMovimentacao implements DaoMov{
 			DaoConta daoC = new DaoConta();
 			if(daoC.existeConta(conta)){
 				PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-						.clientPrepareStatement("INSERT INTO CONTAS_MOVIMENTO VALUES (?,?,?,?,?,?)");
+						.clientPrepareStatement("INSERT INTO CONTAS_MOVIMENTO (CONTA_NUMERO,TIPO_MOVIMENTO,DATA,HORA,VALOR,DESCRICAO) VALUES (?,?,?,?,?,?)");
 				ps.setString(1, conta);
 				ps.setString(2, "D");
 				Date d = new Date();
@@ -93,7 +96,8 @@ public class DaoMovimentacao implements DaoMov{
 			ps.setString(1, k);
 			ResultSet result =  ps.executeQuery();
 			if(result.next()){
-				saldo = result.getBigDecimal("SALDO");
+				saldo = result.getBigDecimal("saldo");
+				
 			}		
 		} catch (Exception e) {
 			e.printStackTrace();

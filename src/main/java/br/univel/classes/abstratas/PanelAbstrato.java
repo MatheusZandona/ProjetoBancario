@@ -12,8 +12,9 @@ public abstract class PanelAbstrato extends JPanel{
 		return telaPadrao;
 	}
 
-	public void setTelaPadrao(TelaPadrao telaPadrao) {
+	public PanelAbstrato setTelaPadrao(TelaPadrao telaPadrao) {
 		this.telaPadrao = telaPadrao;
+		return this;
 	}
 }
 

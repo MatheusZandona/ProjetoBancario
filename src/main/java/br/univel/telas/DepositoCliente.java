@@ -10,6 +10,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.enuns.TipoLogin;
+import br.univel.funcoes.Funcoes;
 import br.univel.observable.Saldo;
 
 import javax.swing.JFormattedTextField;
@@ -23,6 +24,8 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class DepositoCliente extends PanelAbstrato{
 	private JTextField txtAgencia;
@@ -41,20 +44,36 @@ public class DepositoCliente extends PanelAbstrato{
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		JCheckBox chkContaLogada = new JCheckBox("Conta logada");
+		chkContaLogada.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(chkContaLogada.isSelected()){
+					txtAgencia.setEditable(false);
+					txtConta.setEditable(false);
+					txtTitular.setEditable(false);
+				}else{
+					txtAgencia.setEditable(true);
+					txtConta.setEditable(true);
+					txtTitular.setEditable(true);
+				}
+			}
+		});
 		chkContaLogada.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		chkContaLogada.setSelected(true);
 		
 		JFormattedTextField txtValor = new JFormattedTextField();
 		txtValor.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtValor.setHorizontalAlignment(SwingConstants.RIGHT);
-		txtValor.setText("R$ 0,00");
+		txtValor.setText("0,00");
 		
 		JLabel lblAg = new JLabel("AG:");
 		
 		txtAgencia = new JTextField();
+		txtAgencia.setEditable(false);
 		txtAgencia.setColumns(10);
 		
 		txtConta = new JTextField();
+		txtConta.setEditable(false);
 		txtConta.setColumns(10);
 		
 		JLabel lblConta = new JLabel("Conta");
@@ -69,10 +88,18 @@ public class DepositoCliente extends PanelAbstrato{
 		JButton btnConfirme = new JButton("Confirme");
 		btnConfirme.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-//				if(chkContaLogada.isSelected()){
-//					DaoMovimentacao daoMov =  new DaoMovimentacao();
-//					daoMov.sacar(valor, numConta, agencia, senha);
-//				}
+				DaoMovimentacao daoMov =  new DaoMovimentacao();
+				if(chkContaLogada.isSelected()){					
+					daoMov.depositar(new BigDecimal(txtValor.getText()), TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero());
+					getTelaPadrao().dispose();
+				}else{
+					if(!txtConta.getText().equals("") && !txtAgencia.getText().equals("")){
+						daoMov.depositar(new BigDecimal(txtValor.getText()), txtConta.getText(), txtAgencia.getText());
+						getTelaPadrao().dispose();
+					}else{
+						Funcoes.msgAviso("É necessário informar conta e agência.");
+					}
+				}
 				
 				// fazer o procedimento no Banco para entao atualizar o saldo na tela padrao
 				
@@ -80,7 +107,7 @@ public class DepositoCliente extends PanelAbstrato{
 				//tp.setVisible(true);
 //				tp.conta.setSaldo();
 				Saldo saldo = new Saldo();
-				saldo.addObservers(tp);
+				saldo.addObservers(getTelaPadrao());
 				saldo.incrementeSaldo(new BigDecimal(txtValor.getText()));
 			}
 		});
@@ -89,6 +116,7 @@ public class DepositoCliente extends PanelAbstrato{
 		JLabel lblTitular = new JLabel("Titular");
 		
 		txtTitular = new JTextField();
+		txtTitular.setEditable(false);
 		txtTitular.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
@@ -151,4 +179,5 @@ public class DepositoCliente extends PanelAbstrato{
 		);
 		setLayout(groupLayout);
 	}
+	
 }

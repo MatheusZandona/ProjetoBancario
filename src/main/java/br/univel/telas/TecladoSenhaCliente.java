@@ -10,17 +10,15 @@ import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+
+import br.univel.funcoes.Funcoes;
+
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class TecladoSenhaCliente extends JFrame{
 	private JPasswordField txtSenha;
-	
-	
-	private void setarNumCampoSenha(Integer valor){
-		txtSenha.setText(txtSenha.getText().concat(valor.toString()));
-	}
 	
 	public TecladoSenhaCliente() {
 		
@@ -42,6 +40,11 @@ public class TecladoSenhaCliente extends JFrame{
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		
 		JButton btnConfirmar = new JButton("Confirmar");
+		btnConfirmar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
 		btnConfirmar.setFont(new Font("Tahoma", Font.BOLD, 11));
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
@@ -207,5 +210,13 @@ public class TecladoSenhaCliente extends JFrame{
 		);
 		panel.setLayout(gl_panel);
 		getContentPane().setLayout(groupLayout);
+	}
+	
+	private void setarNumCampoSenha(Integer valor){
+		txtSenha.setText(txtSenha.getText().concat(valor.toString()));
+	}
+	
+	public String getSenha(){
+		return txtSenha.getText();
 	}
 }

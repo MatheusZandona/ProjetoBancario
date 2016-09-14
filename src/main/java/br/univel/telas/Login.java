@@ -17,9 +17,11 @@ import br.univel.classes.Profissional;
 import br.univel.classes.bd.ConexaoBD;
 import br.univel.classes.dao.DaoAgencia;
 import br.univel.classes.dao.DaoConta;
+import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.classes.dao.DaoProfissional;
 import br.univel.enuns.TipoConta;
 import br.univel.enuns.TipoLogin;
+import br.univel.interfaces.DaoMov;
 
 import javax.swing.JButton;
 import java.awt.Font;
@@ -90,6 +92,8 @@ public class Login extends JFrame{
 					if(RBCliente.isSelected()){
 						DaoConta dao = new DaoConta();
 						if(dao.validarLogin(txtUsername.getText(), txtSenha.getText())){
+							DaoMovimentacao daoMov = new DaoMovimentacao();
+							TelaPadrao.conta.setSaldo(daoMov.saldoAtual(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero()));
 							TelaPadrao painelCliente = new TelaPadrao(TipoLogin.CLIENTE, new PrincipalCliente(TelaPadrao.conta.getTipoConta()));
 							painelCliente.setSize(600, 500);
 							painelCliente.setLocationRelativeTo(null);
