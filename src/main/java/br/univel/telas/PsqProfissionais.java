@@ -7,6 +7,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import br.univel.classes.Profissional;
+import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.dao.DaoProfissional;
 import br.univel.enuns.TipoLogin;
 import br.univel.funcoes.Funcoes;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 
-public class PsqProfissionais extends JPanel{
+public class PsqProfissionais extends PanelAbstrato{
 	
 	private JTable tbGrid;
 	private List<Profissional> lista = new ArrayList<Profissional>();

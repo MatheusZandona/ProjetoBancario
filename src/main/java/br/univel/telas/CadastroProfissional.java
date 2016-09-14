@@ -1,6 +1,5 @@
 package br.univel.telas;
 
-import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
@@ -11,13 +10,15 @@ import java.awt.Font;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.univel.classes.Profissional;
+import br.univel.classes.abstratas.PanelAbstrato;
+import br.univel.classes.builder.ProfissionalBuilder;
 import br.univel.classes.dao.DaoProfissional;
 import br.univel.funcoes.Funcoes;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class CadastroProfissional extends JPanel{
+public class CadastroProfissional extends PanelAbstrato{
 	
 	private JTextField txtNome;
 	private JTextField txtIdade;
@@ -56,7 +57,7 @@ public class CadastroProfissional extends JPanel{
 					if(validarCampos()){
 						salvarProfissional();
 						telaPesquisa.montarConsulta();
-						Funcoes.fecharTelaPadrao(getParent());
+						getTelaPadrao().dispose();
 					}
 			}
 		});
@@ -144,17 +145,20 @@ public class CadastroProfissional extends JPanel{
 			profissional = new Profissional();
 		}
 		
-		profissional.setNome(txtNome.getText());
-		profissional.setIdade(Integer.parseInt(txtIdade.getText()));
-		profissional.setSenhaAcesso(txtSenhaConta.getText());
-		profissional.setSenhaOperacoes(txtSenhaOp.getText());
-		profissional.setUsername(txtUserName.getText());
+		ProfissionalBuilder builder = new ProfissionalBuilder();
 		
+		builder.setId(profissional.getId()).
+				setIdade(Integer.parseInt(txtIdade.getText())).
+				setNome(txtNome.getText()).
+				setSenhaAcesso(txtSenhaConta.getText()). 
+				setSenhaOperacoes(txtSenhaOp.getText()). 
+				setUsername(txtUserName.getText());				
+				
 		
-		if(!editando){
-			daoP.salvar(profissional);
+		if(editando){
+			daoP.atualizar(builder.build());
 		}else{
-			daoP.atualizar(profissional);
+			daoP.salvar(builder.build());
 		}
 	}
 

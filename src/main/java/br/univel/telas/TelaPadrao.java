@@ -8,6 +8,7 @@ import javax.swing.border.BevelBorder;
 
 import br.univel.classes.Conta;
 import br.univel.classes.Profissional;
+import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.enuns.TipoLogin;
 import br.univel.interfaces.SaldoObserver;
 import br.univel.observable.Saldo;
@@ -41,8 +42,8 @@ public class TelaPadrao extends JFrame implements SaldoObserver{
 	private TipoLogin tipoLogin;
 	
 	
-	public TelaPadrao(TipoLogin tipoLogin, JPanel panel) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public TelaPadrao(TipoLogin tipoLogin, PanelAbstrato panel) {
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Banco Tads");
 		
 		JLabel lblBancoTads = new JLabel("BANCO TADS");
@@ -140,6 +141,7 @@ public class TelaPadrao extends JFrame implements SaldoObserver{
 		getContentPane().setLayout(groupLayout);
 		
 		setTipoLogin(tipoLogin);
+		panel.setTelaPadrao(this);
 	}
 	
 	private void configurarCabecalho(){
@@ -160,10 +162,10 @@ public class TelaPadrao extends JFrame implements SaldoObserver{
 			lblSaldo.setVisible(true);
 			lblTipoConta.setVisible(true);
 			lblVlrSaldo.setVisible(true);			
+			atualizaDados();
 		}
 		
 		lblData.setText(new SimpleDateFormat("dd/MM/yyyy - HH:mm").format(new Date(System.currentTimeMillis())));
-		atualizaDados();
 	}
 
 	public TipoLogin getTipoLogin() {

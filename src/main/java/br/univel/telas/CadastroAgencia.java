@@ -1,6 +1,5 @@
 package br.univel.telas;
 
-import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -10,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.univel.classes.Agencia;
+import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.builder.AgenciaBuilder;
 import br.univel.classes.dao.DaoAgencia;
 import br.univel.funcoes.Funcoes;
@@ -20,7 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class CadastroAgencia extends JPanel{
+public class CadastroAgencia extends PanelAbstrato{
 	private JTextField  txtNome;
 	private JTextField  txtNumero;
 	private JTextField  txtCidade;
@@ -118,7 +118,7 @@ public class CadastroAgencia extends JPanel{
 					telaPesquisa.montarConsulta();
 					
 					//fechar tela
-					Funcoes.fecharTelaPadrao(getParent());
+					getTelaPadrao().dispose();
 				}
 			}
 

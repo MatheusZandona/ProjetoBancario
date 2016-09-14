@@ -9,9 +9,12 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JFormattedTextField;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+
+import br.univel.classes.abstratas.PanelAbstrato;
+
 import javax.swing.JButton;
 
-public class PagamentoCliente extends JPanel{
+public class PagamentoCliente extends PanelAbstrato{
 	private JTextField txtCodigoBarras;
 	public PagamentoCliente() {
 		

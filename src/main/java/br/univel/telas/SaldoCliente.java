@@ -5,6 +5,8 @@ import javax.swing.JScrollPane;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTable;
+
+import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.modelos.ModeloSaldoCliente;
 
 import javax.swing.JLabel;
@@ -22,7 +24,7 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class SaldoCliente extends JPanel{
+public class SaldoCliente extends PanelAbstrato{
 	private JTable tbGrid;
 	private JTextField txtDataIni;
 	private JTextField txtDataFim;

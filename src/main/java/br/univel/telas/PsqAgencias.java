@@ -1,6 +1,5 @@
 package br.univel.telas;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -8,6 +7,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
 import br.univel.classes.Agencia;
+import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.dao.DaoAgencia;
 import br.univel.enuns.TipoLogin;
 import br.univel.funcoes.Funcoes;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 
-public class PsqAgencias extends JPanel{
+public class PsqAgencias extends PanelAbstrato{
 	
 	private JTable tbGrid;
 	private List<Agencia> lista = new ArrayList<Agencia>();

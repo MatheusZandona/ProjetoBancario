@@ -8,10 +8,13 @@ import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import br.univel.classes.abstratas.PanelAbstrato;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class ConfirmaOperacao extends JPanel{
+public class ConfirmaOperacao extends PanelAbstrato{
 	public ConfirmaOperacao(JFrame frame) {
 		
 		JLabel lblOperacao = new JLabel("Opera\u00E7\u00E3o $opera\u00E7\u00E3o realizada com sucesso!");

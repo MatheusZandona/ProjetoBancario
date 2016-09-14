@@ -14,10 +14,11 @@ import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.univel.classes.Conta;
+import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.dao.DaoConta;
 import br.univel.modelos.ModeloConta;
 
-public class PsqContas extends JPanel{
+public class PsqContas extends PanelAbstrato{
 	
 	private JTable tbGrid;
 	private List<Conta> lista = new ArrayList<Conta>();

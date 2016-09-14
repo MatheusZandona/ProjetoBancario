@@ -9,11 +9,14 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
+
+import br.univel.classes.abstratas.PanelAbstrato;
+
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
 import javax.swing.DefaultComboBoxModel;
 
-public class TransferenciaCliente extends JPanel{
+public class TransferenciaCliente extends PanelAbstrato{
 	private JTextField txtAgencia;
 	private JTextField txtConta;
 	private JTextField txtTitular;

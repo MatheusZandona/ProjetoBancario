@@ -112,7 +112,7 @@ public class DaoConta implements Dao<Conta, String>{
 				ps.setString(6, new Hash().hashMD5(t.getSenhaAcesso()));
 			}
 			
-			if(t.getSenhaOperacoes().equals("")){
+			if(!t.getSenhaOperacoes().equals("")){
 				ps.setString(7, t.getSenhaOperacoes());
 			}
 			
@@ -250,7 +250,7 @@ public class DaoConta implements Dao<Conta, String>{
 				
 				TelaPadrao.conta.setCpf(result.getString("cpf"));
 				TelaPadrao.conta.setDtAbertura(result.getDate("dt_abertura"));
-				TelaPadrao.conta.setSaldo(new BigDecimal(result.getDouble("saldo")));
+
 				
 				switch (result.getInt("tipo")) {
 				case 0:

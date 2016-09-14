@@ -1,6 +1,5 @@
 package br.univel.telas;
 
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -17,12 +16,14 @@ import java.util.Calendar;
 import javax.swing.SwingConstants;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.modelos.ModeloBalanco;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Balanco extends JPanel{
+public class Balanco extends PanelAbstrato{
 	private JTextField txtDataIni;
 	private JTextField txtDataFim;
 	private JTable     tbGrid;

@@ -1,8 +1,7 @@
 package br.univel.telas;
 
 import javax.swing.JButton;
-import javax.swing.JPanel;
-
+import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.enuns.TipoConta;
 import br.univel.enuns.TipoLogin;
 
@@ -12,7 +11,7 @@ import javax.swing.GroupLayout.Alignment;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class PrincipalCliente extends JPanel{
+public class PrincipalCliente extends PanelAbstrato{
 	
 	private JButton btnSaque;
 	private JButton btnSaldo;

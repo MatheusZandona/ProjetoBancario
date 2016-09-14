@@ -1,6 +1,5 @@
 package br.univel.telas;
 
-import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
@@ -12,6 +11,7 @@ import java.awt.Font;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
+import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.builder.ContaBuilder;
 import br.univel.classes.dao.DaoAgencia;
 import br.univel.classes.dao.DaoConta;
@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class CadastroConta extends JPanel{
+public class CadastroConta extends PanelAbstrato{
 	private JTextField txtNome;
 	private JTextField txtIdade;
 	private JTextField txtCPF;
@@ -172,7 +172,7 @@ public class CadastroConta extends JPanel{
 					Funcoes.msgInforma("Conta corrente: ".concat(numero));
 					
 					//fechar a tela
-					Funcoes.fecharTelaPadrao(getParent());				
+					getTelaPadrao().dispose();
 					
 				}
 			}

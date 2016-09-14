@@ -1,5 +1,6 @@
 package br.univel.modelos;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -8,9 +9,11 @@ import br.univel.classes.Conta;
 public class ModeloConta extends AbstractTableModel{
 	
 	private List<Conta> lista;
+	private SimpleDateFormat format;
 
 	public ModeloConta(List<Conta> lista){
 		this.lista = lista;
+	    format = new SimpleDateFormat("dd/MM/yyyy");
 	}		
 	
 	
@@ -39,7 +42,7 @@ public class ModeloConta extends AbstractTableModel{
 			return conta.getNome();
 		case 4:
 			if(conta.getDtAbertura() != null){
-				return conta.getDtAbertura().toString();
+				return format.format(conta.getDtAbertura());
 			}else{
 				return null;
 			}

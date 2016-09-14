@@ -1,7 +1,6 @@
 package br.univel.telas;
 
-import javax.swing.JPanel;
-
+import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.enuns.TipoLogin;
 
 import javax.swing.GroupLayout;
@@ -11,7 +10,7 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class PrincipalBancario extends JPanel{
+public class PrincipalBancario extends PanelAbstrato{
 	public PrincipalBancario() {
 		
 		JButton btnInfo = new JButton("1 - Info. de Contas");
@@ -40,7 +39,7 @@ public class PrincipalBancario extends JPanel{
 		btnClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TelaPadrao telaClientes = new TelaPadrao(TipoLogin.BANCARIO, new PsqContas());
-				telaClientes.setSize(600, 500);
+				telaClientes.setSize(800, 450);
 				telaClientes.setLocationRelativeTo(null);
 				telaClientes.setVisible(true);						
 			}

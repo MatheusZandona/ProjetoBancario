@@ -7,6 +7,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JCheckBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.enuns.TipoLogin;
 import br.univel.observable.Saldo;
@@ -23,7 +24,7 @@ import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.awt.event.ActionEvent;
 
-public class DepositoCliente extends JPanel{
+public class DepositoCliente extends PanelAbstrato{
 	private JTextField txtAgencia;
 	private JTextField txtConta;
 	private JTextField txtTitular;
