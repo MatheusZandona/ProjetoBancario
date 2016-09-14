@@ -148,6 +148,7 @@ public class CadastroConta extends JPanel{
 						.setNumero(numero)
 						.setAgencia(new DaoAgencia().buscar(txtAgencia.getText()))
 						.setDtAbertura(new Date())
+					
 						.setSenhaAcesso(txtSenhaConta.getText())
 						.setSenhaOperacoes(txtSenhaOp.getText());
 					

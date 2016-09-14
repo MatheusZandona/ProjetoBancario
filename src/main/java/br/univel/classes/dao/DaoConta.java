@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import com.mysql.jdbc.PreparedStatement;
 import br.univel.classes.Agencia;
 import br.univel.classes.Conta;
+import br.univel.classes.Hash;
 import br.univel.classes.bd.ConexaoBD;
 import br.univel.enuns.TipoConta;
 import br.univel.enuns.TipoLogin;
@@ -34,7 +35,7 @@ public class DaoConta implements Dao<Conta, String>{
 			ps.setString(5, t.getCpf());
 			ps.setString(6, t.getAgencia().getNumero());
 			ps.setDate(7, new java.sql.Date(t.getDtAbertura().getTime()));
-			ps.setString(8, t.getSenhaAcesso());
+			ps.setString(8, new Hash().hashMD5(t.getSenhaAcesso()));
 			ps.setString(9, t.getSenhaOperacoes());
 			ps.executeUpdate();
 		} catch (Exception e) {
@@ -105,8 +106,16 @@ public class DaoConta implements Dao<Conta, String>{
 			ps.setString(3, t.getCpf());
 			ps.setString(4, t.getAgencia().getNumero());
 			ps.setDate(5, new java.sql.Date(t.getDtAbertura().getTime()));
-			ps.setString(6, t.getSenhaAcesso());
-			ps.setString(7, t.getSenhaOperacoes());
+			
+			
+			if(!t.getSenhaAcesso().equals("")){
+				ps.setString(6, new Hash().hashMD5(t.getSenhaAcesso()));
+			}
+			
+			if(t.getSenhaOperacoes().equals("")){
+				ps.setString(7, t.getSenhaOperacoes());
+			}
+			
 			ps.setString(8, t.getNumero());
 			ps.executeUpdate();			
 			
