@@ -21,8 +21,6 @@ import java.awt.event.ActionEvent;
 
 public class SaqueCliente extends PanelAbstrato{
 	
-	
-	
 	public SaqueCliente() {
 		
 		JButton btn50reais = new JButton("R$ 50,00");
@@ -135,7 +133,6 @@ public class SaqueCliente extends PanelAbstrato{
 	private void Sacar( BigDecimal valor ){
 		DaoMovimentacao daoMov = new DaoMovimentacao();
 		daoMov.sacar(valor, TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero(), "11");
-		
 		
 //		TecladoSenhaCliente teclado = null;
 //		teclado = new TecladoSenhaCliente();
