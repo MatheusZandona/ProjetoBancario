@@ -64,7 +64,7 @@ public class PrincipalCliente extends PanelAbstrato{
 		btnSaque.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				TelaPadrao telaSaque = setTelaPadrao(new TelaPadrao(TipoLogin.CLIENTE, new SaqueCliente())).getTelaPadrao();
+				TelaPadrao telaSaque = new TelaPadrao(TipoLogin.CLIENTE, new SaqueCliente());
 				telaSaque.setSize(600, 500);
 				telaSaque.setLocationRelativeTo(null);
 				telaSaque.setVisible(true);					
@@ -75,7 +75,7 @@ public class PrincipalCliente extends PanelAbstrato{
 		btnSaldo = new JButton("2 - Saldo");
 		btnSaldo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaSaldo = setTelaPadrao(new TelaPadrao(TipoLogin.CLIENTE, new SaldoCliente())).getTelaPadrao();
+				TelaPadrao telaSaldo = new TelaPadrao(TipoLogin.CLIENTE, new SaldoCliente());
 				telaSaldo.setSize(800, 600);
 				telaSaldo.setLocationRelativeTo(null);
 				telaSaldo.setVisible(true);					
@@ -86,7 +86,7 @@ public class PrincipalCliente extends PanelAbstrato{
 		btnDepositos = new JButton("3 - Depósitos");
 		btnDepositos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaDeposito = setTelaPadrao(new TelaPadrao(TipoLogin.CLIENTE, new DepositoCliente())).getTelaPadrao();
+				TelaPadrao telaDeposito = new TelaPadrao(TipoLogin.CLIENTE, new DepositoCliente());
 				telaDeposito.setSize(600, 500);
 				telaDeposito.setLocationRelativeTo(null);
 				telaDeposito.setVisible(true);
@@ -97,7 +97,7 @@ public class PrincipalCliente extends PanelAbstrato{
 		btnTransf = new JButton("4 - Transferências");
 		btnTransf.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaTransferencia = setTelaPadrao(new TelaPadrao(TipoLogin.CLIENTE, new TransferenciaCliente())).getTelaPadrao();
+				TelaPadrao telaTransferencia = new TelaPadrao(TipoLogin.CLIENTE, new TransferenciaCliente());
 				telaTransferencia.setSize(600, 500);
 				telaTransferencia.setLocationRelativeTo(null);
 				telaTransferencia.setVisible(true);				
@@ -108,7 +108,7 @@ public class PrincipalCliente extends PanelAbstrato{
 		btnPagamentos = new JButton("5 - Pagamentos");
 		btnPagamentos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaPagamentos = setTelaPadrao(new TelaPadrao(TipoLogin.CLIENTE, new PagamentoCliente())).getTelaPadrao();
+				TelaPadrao telaPagamentos = new TelaPadrao(TipoLogin.CLIENTE, new PagamentoCliente());
 				telaPagamentos.setSize(600, 500);
 				telaPagamentos.setLocationRelativeTo(null);
 				telaPagamentos.setVisible(true);								
