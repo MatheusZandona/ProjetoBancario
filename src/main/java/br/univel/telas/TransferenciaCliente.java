@@ -10,16 +10,23 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
 
+import com.sun.javafx.font.Disposer;
+
 import br.univel.classes.abstratas.PanelAbstrato;
+import br.univel.classes.dao.DaoMovimentacao;
 
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.awt.event.ActionEvent;
 
 public class TransferenciaCliente extends PanelAbstrato{
 	private JTextField txtAgencia;
 	private JTextField txtConta;
 	private JTextField txtTitular;
+	private JFormattedTextField txtValor;
 	public TransferenciaCliente() {
 		
 		JLabel lblContaDeDestinocrdito = new JLabel("Conta de destino/Cr\u00E9dito");
@@ -45,14 +52,20 @@ public class TransferenciaCliente extends PanelAbstrato{
 		txtTitular = new JTextField();
 		txtTitular.setColumns(10);
 		
-		JFormattedTextField txtValor = new JFormattedTextField();
-		txtValor.setText("R$ 0,00");
+		txtValor = new JFormattedTextField();
+		txtValor.setText("0,00");
 		txtValor.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtValor.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		JLabel lblValor = new JLabel("Valor");
 		
 		JButton btnConfirme = new JButton("Confirme");
+		btnConfirme.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				transferir();
+				limparCampos();
+			}
+		});
 		btnConfirme.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		JLabel lblConta = new JLabel("Conta");
@@ -121,5 +134,17 @@ public class TransferenciaCliente extends PanelAbstrato{
 					.addGap(20))
 		);
 		setLayout(groupLayout);
+	}
+	
+	public void transferir(){
+		DaoMovimentacao daoMov = new DaoMovimentacao();
+		daoMov.transferir(new BigDecimal(txtValor.getText()), txtConta.getText(), txtAgencia.getText(), TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero(), "10");
+	}
+	
+	public void limparCampos(){
+		txtAgencia.setText("");
+		txtConta.setText("");
+		txtValor.setText("0,00");
+		txtTitular.setText("");
 	}
 }

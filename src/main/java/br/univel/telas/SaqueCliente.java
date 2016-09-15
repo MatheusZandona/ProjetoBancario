@@ -134,6 +134,7 @@ public class SaqueCliente extends PanelAbstrato{
 		DaoMovimentacao daoMov = new DaoMovimentacao();
 		daoMov.sacar(valor, TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero(), "11");
 		
+		
 //		TecladoSenhaCliente teclado = null;
 //		teclado = new TecladoSenhaCliente();
 //		teclado.setSize(515, 200);
