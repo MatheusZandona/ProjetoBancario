@@ -1,7 +1,9 @@
 package br.univel.modelos;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.table.AbstractTableModel;
 import br.univel.classes.Conta;
@@ -9,11 +11,14 @@ import br.univel.classes.Conta;
 public class ModeloConta extends AbstractTableModel{
 	
 	private List<Conta> lista;
-	private SimpleDateFormat format;
+	private SimpleDateFormat formatDate;
+	private NumberFormat formatNumber;
 
 	public ModeloConta(List<Conta> lista){
 		this.lista = lista;
-	    format = new SimpleDateFormat("dd/MM/yyyy");
+		formatDate = new SimpleDateFormat("dd/MM/yyyy");
+		formatNumber = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		
 	}		
 	
 	
@@ -42,12 +47,12 @@ public class ModeloConta extends AbstractTableModel{
 			return conta.getNome();
 		case 4:
 			if(conta.getDtAbertura() != null){
-				return format.format(conta.getDtAbertura());
+				return formatDate.format(conta.getDtAbertura());
 			}else{
 				return null;
 			}
 		case 5:
-			return conta.getSaldo().toString();			
+			return formatNumber.format(conta.getSaldo());			
 		default:
 			return "erro";
 		}

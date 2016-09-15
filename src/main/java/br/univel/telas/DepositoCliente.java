@@ -1,15 +1,13 @@
 package br.univel.telas;
 
-import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JCheckBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import br.univel.classes.abstratas.PanelAbstrato;
+import br.univel.classes.abstratas.PanelFilhoMenu;
 import br.univel.classes.dao.DaoMovimentacao;
-import br.univel.enuns.TipoLogin;
 import br.univel.funcoes.Funcoes;
 import br.univel.observable.Saldo;
 
@@ -27,7 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class DepositoCliente extends PanelAbstrato{
+public class DepositoCliente extends PanelFilhoMenu{
 	private JTextField txtAgencia;
 	private JTextField txtConta;
 	private JTextField txtTitular;
@@ -91,6 +89,11 @@ public class DepositoCliente extends PanelAbstrato{
 				DaoMovimentacao daoMov =  new DaoMovimentacao();
 				if(chkContaLogada.isSelected()){					
 					daoMov.depositar(new BigDecimal(txtValor.getText()), TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero());
+					
+					Saldo saldo = new Saldo();
+					saldo.addObservers(getTelaPadrao());
+					saldo.addObservers(getTelaMenu());
+					saldo.alterarSaldo();				
 					getTelaPadrao().dispose();
 				}else{
 					if(!txtConta.getText().equals("") && !txtAgencia.getText().equals("")){
@@ -101,14 +104,6 @@ public class DepositoCliente extends PanelAbstrato{
 					}
 				}
 				
-				// fazer o procedimento no Banco para entao atualizar o saldo na tela padrao
-				
-				//TelaPadrao tp = new TelaPadrao(TipoLogin.CLIENTE, new DepositoCliente());
-				//tp.setVisible(true);
-//				tp.conta.setSaldo();
-				Saldo saldo = new Saldo();
-				saldo.addObservers(getTelaPadrao());
-				saldo.incrementeSaldo(new BigDecimal(txtValor.getText()));
 			}
 		});
 		btnConfirme.setFont(new Font("Tahoma", Font.BOLD, 12));

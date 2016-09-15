@@ -11,10 +11,11 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import br.univel.classes.abstratas.PanelAbstrato;
+import br.univel.classes.abstratas.PanelFilhoMenu;
 
 import javax.swing.JButton;
 
-public class PagamentoCliente extends PanelAbstrato{
+public class PagamentoCliente extends PanelFilhoMenu{
 	private JTextField txtCodigoBarras;
 	public PagamentoCliente() {
 		

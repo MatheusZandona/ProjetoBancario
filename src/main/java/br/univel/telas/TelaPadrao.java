@@ -9,19 +9,21 @@ import javax.swing.border.BevelBorder;
 import br.univel.classes.Conta;
 import br.univel.classes.Profissional;
 import br.univel.classes.abstratas.PanelAbstrato;
+import br.univel.classes.abstratas.PanelFilhoMenu;
+import br.univel.classes.dao.DaoConta;
+import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.enuns.TipoLogin;
 import br.univel.interfaces.SaldoObserver;
 import br.univel.observable.Saldo;
-import javafx.beans.Observable;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Observer;
+import java.util.Locale;
 
 import javax.swing.SwingConstants;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -40,6 +42,7 @@ public class TelaPadrao extends JFrame implements SaldoObserver{
 	public static Conta conta;
 	public static Profissional profissional;
 	private TipoLogin tipoLogin;
+	private NumberFormat formatNumber = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));;
 	
 	
 	public TelaPadrao(TipoLogin tipoLogin, PanelAbstrato panel) {
@@ -60,7 +63,7 @@ public class TelaPadrao extends JFrame implements SaldoObserver{
 		
 		lblNroConta = new JLabel("00000-00");
 		
-		lblVlrSaldo = new JLabel("R$ 0,00");
+		lblVlrSaldo = new JLabel("0,00");
 		
 		lblSaldo = new JLabel("Saldo:");
 		
@@ -138,10 +141,11 @@ public class TelaPadrao extends JFrame implements SaldoObserver{
 		);
 		pnlPrincipal.setLayout(new CardLayout(0, 0));
 		pnlPrincipal.add(panel);
-		getContentPane().setLayout(groupLayout);
+		getContentPane().setLayout(groupLayout);			
 		
 		setTipoLogin(tipoLogin);
 		panel.setTelaPadrao(this);
+		
 	}
 	
 	private void configurarCabecalho(){
@@ -178,13 +182,22 @@ public class TelaPadrao extends JFrame implements SaldoObserver{
 	}
 
 	@Override
-	public void atualizaSaldo(Saldo saldo) {
-		lblVlrSaldo.setText(saldo.getValor().toString());
+	public void atualizaSaldo(){
+		
+		DaoMovimentacao dao = new DaoMovimentacao();
+		conta.setSaldo(dao.saldoAtual(conta.getNumero(), conta.getAgencia().getNumero()));
+		
+		if (conta.getSaldo() == null){
+			conta.setSaldo(BigDecimal.ZERO);
+		}		
+		
+		lblVlrSaldo.setText(formatNumber.format(conta.getSaldo()));
 	}
 	
 	public void atualizaDados(){
 		lblNroAgencia.setText(conta.getAgencia().getNumero());
 		lblNroConta.setText(conta.getNumero());
-		lblVlrSaldo.setText("R$ "+conta.getSaldo());
+		
+		atualizaSaldo();
 	}
 }

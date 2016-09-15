@@ -250,7 +250,7 @@ public class DaoConta implements Dao<Conta, String>{
 				
 				TelaPadrao.conta.setCpf(result.getString("cpf"));
 				TelaPadrao.conta.setDtAbertura(result.getDate("dt_abertura"));
-
+				TelaPadrao.conta.setSaldo(BigDecimal.ZERO);
 				
 				switch (result.getInt("tipo")) {
 				case 0:

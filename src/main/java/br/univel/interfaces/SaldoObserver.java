@@ -4,5 +4,5 @@ import br.univel.observable.Saldo;
 
 public interface SaldoObserver {
 
-	void atualizaSaldo(final Saldo saldo);
+	void atualizaSaldo();
 }

@@ -17,7 +17,7 @@ public class Conta extends Pessoa{
 
 	public Conta(){
 		this.setTipoLogin(TipoLogin.CLIENTE);
-		this.setSaldo(new BigDecimal(0.00));
+		this.setSaldo(BigDecimal.ZERO);
 	}
 	
 	

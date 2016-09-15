@@ -76,7 +76,7 @@ public class DaoMovimentacao implements DaoMov{
 				ps.setDate(3, new java.sql.Date(d.getTime()));
 				ps.setTime(4, new java.sql.Time(d.getTime()));
 				ps.setBigDecimal(5, valor);
-				ps.setString(6, "DEPOSITO");
+				ps.setString(6, "Depósito");
 				ps.executeUpdate();
 				Funcoes.msgConfirma("Depósito efetuado com sucesso !");
 			}else{
@@ -89,7 +89,7 @@ public class DaoMovimentacao implements DaoMov{
 	
 	@Override
 	public BigDecimal saldoAtual(String k, String agencia){
-		BigDecimal saldo = new BigDecimal(0.0);
+		BigDecimal saldo = BigDecimal.ZERO;
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
 					.clientPrepareStatement("SELECT SUM(VALOR) AS SALDO FROM CONTAS_MOVIMENTO WHERE CONTA_NUMERO = ?");
@@ -135,50 +135,46 @@ public class DaoMovimentacao implements DaoMov{
 		Conta conta = new Conta(); 
 		
 		conta = daoConta.buscar(contaOri);
-		if((conta.getTipoConta() == TipoConta.CORRENTE) || (conta.getTipoConta() == TipoConta.ELETRONICA)){
-			if(daoConta.existeConta(contaOri) && daoConta.existeConta(contaDest)){			
-				if(temSaldo(contaOri, contaOri)){
-					BigDecimal saldoAtual = new BigDecimal(0.0);
-					saldoAtual = saldoAtual(contaOri, contaOri);
-					if(saldoAtual.compareTo(valor) >= 0){
-						try {
-							PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("INSERT INTO CONTAS_MOVIMENTO (CONTA_NUMERO,TIPO_MOVIMENTO,DATA,HORA,VALOR,DESCRICAO) VALUES (?,?,?,?,?,?)");
-							ps.setString(1, contaOri);
-							ps.setString(2, "TS");
-							Date d = new Date();
-							ps.setDate(3, new java.sql.Date(d.getTime()));
-							ps.setTime(4, new java.sql.Time(d.getTime()));
-							  // kkkk adaptação técnica
-							ps.setBigDecimal(5, valor.subtract(valor.add(valor)));
-							ps.setString(6, "Transferencia para conta ".concat(contaDest).concat(" agencia ").concat(agenciaDest));
-							ps.executeUpdate();
-							Funcoes.msgConfirma("Transferencia efetuado com sucesso !");
-							
-							//depositar contaDestino
-							ps.setString(1, contaDest);
-							ps.setString(2, "TE");
-							ps.setDate(3, new java.sql.Date(d.getTime()));
-							ps.setTime(4, new java.sql.Time(d.getTime()));
-							ps.setBigDecimal(5, valor);
-							ps.setString(6, "Transferencia recebida da conta ".concat(contaOri).concat(" agencia ").concat(agenciaOri));
-							ps.executeUpdate();
-							Funcoes.msgConfirma("Depósito efetuado com sucesso !");							
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}else{
-						Funcoes.msgAviso("Saldo insuficiente !");
+		if(daoConta.existeConta(contaOri) && daoConta.existeConta(contaDest)){			
+			if(temSaldo(contaOri, contaOri)){
+				BigDecimal saldoAtual = new BigDecimal(0.0);
+				saldoAtual = saldoAtual(contaOri, contaOri);
+				if(saldoAtual.compareTo(valor) >= 0){
+					try {
+						PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+								.clientPrepareStatement("INSERT INTO CONTAS_MOVIMENTO (CONTA_NUMERO,TIPO_MOVIMENTO,DATA,HORA,VALOR,DESCRICAO) VALUES (?,?,?,?,?,?)");
+						ps.setString(1, contaOri);
+						ps.setString(2, "TS");
+						Date d = new Date();
+						ps.setDate(3, new java.sql.Date(d.getTime()));
+						ps.setTime(4, new java.sql.Time(d.getTime()));
+						  // kkkk adaptação técnica
+						ps.setBigDecimal(5, valor.subtract(valor.add(valor)));
+						ps.setString(6, "Transferencia para conta ".concat(contaDest).concat(" agencia ").concat(agenciaDest));
+						ps.executeUpdate();
+						
+						//depositar contaDestino
+						ps.setString(1, contaDest);
+						ps.setString(2, "TE");
+						ps.setDate(3, new java.sql.Date(d.getTime()));
+						ps.setTime(4, new java.sql.Time(d.getTime()));
+						ps.setBigDecimal(5, valor);
+						ps.setString(6, "Transferencia recebida da conta ".concat(contaOri).concat(" agencia ").concat(agenciaOri));
+						ps.executeUpdate();
+						
+
+						Funcoes.msgConfirma("Transferência efetuada com sucesso!");
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}else{
 					Funcoes.msgAviso("Saldo insuficiente !");
 				}
 			}else{
-				Funcoes.msgErro("Conta inexistente !");
+				Funcoes.msgAviso("Saldo insuficiente !");
 			}
-		}else if (conta.getTipoConta() == TipoConta.POUPANÇA) {
-			Funcoes.msgAviso("Não é possivel efetuar transferencia em conta poupança.");
-		}
-		
+		}else{
+			Funcoes.msgErro("Conta inexistente !");
+		}		
 	}
 }

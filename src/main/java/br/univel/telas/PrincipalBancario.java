@@ -27,7 +27,7 @@ public class PrincipalBancario extends PanelAbstrato{
 		JButton btnNova = new JButton("2 - Nova Conta");
 		btnNova.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaNovaConta = getTelaPadrao();
+				TelaPadrao telaNovaConta = new TelaPadrao(TipoLogin.BANCARIO, new CadastroConta());
 				telaNovaConta.setSize(600, 500);
 				telaNovaConta.setLocationRelativeTo(null);
 				telaNovaConta.setVisible(true);			
@@ -38,7 +38,7 @@ public class PrincipalBancario extends PanelAbstrato{
 		JButton btnClientes = new JButton("3 - Clientes");
 		btnClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaClientes = getTelaPadrao();
+				TelaPadrao telaClientes = new TelaPadrao(TipoLogin.BANCARIO, new PsqContas());
 				telaClientes.setSize(800, 450);
 				telaClientes.setLocationRelativeTo(null);
 				telaClientes.setVisible(true);						
@@ -49,7 +49,7 @@ public class PrincipalBancario extends PanelAbstrato{
 		JButton btnAgncias = new JButton("6 - Ag\u00EAncias");
 		btnAgncias.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaAgencias = getTelaPadrao();
+				TelaPadrao telaAgencias = new TelaPadrao(TipoLogin.BANCARIO, new PsqAgencias());
 				telaAgencias.setSize(700, 450);
 				telaAgencias.setLocationRelativeTo(null);
 				telaAgencias.setVisible(true);					
@@ -60,7 +60,7 @@ public class PrincipalBancario extends PanelAbstrato{
 		JButton btnBalanos = new JButton("5 - Balan\u00E7os");
 		btnBalanos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaBalanco = getTelaPadrao();
+				TelaPadrao telaBalanco = new TelaPadrao(TipoLogin.BANCARIO, new Balanco());
 				telaBalanco.setSize(800, 600);
 				telaBalanco.setLocationRelativeTo(null);
 				telaBalanco.setVisible(true);					
@@ -72,7 +72,7 @@ public class PrincipalBancario extends PanelAbstrato{
 		JButton btnProfissionais = new JButton("4 - Profissionais");
 		btnProfissionais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaBancarios = getTelaPadrao();
+				TelaPadrao telaBancarios = new TelaPadrao(TipoLogin.BANCARIO, new PsqProfissionais());
 				telaBancarios.setSize(600, 500);
 				telaBancarios.setLocationRelativeTo(null);
 				telaBancarios.setVisible(true);			

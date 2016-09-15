@@ -11,6 +11,9 @@ import java.awt.Font;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import br.univel.classes.dao.DaoConta;
+import br.univel.classes.dao.DaoProfissional;
+import br.univel.enuns.TipoLogin;
 import br.univel.funcoes.Funcoes;
 
 import java.awt.Color;
@@ -19,7 +22,24 @@ import java.awt.event.ActionEvent;
 
 public class TecladoSenhaCliente extends JFrame{
 	private JPasswordField txtSenha;
+	private TelaPadrao     telaAnterior; 
 	
+	public JPasswordField getTxtSenha() {
+		return txtSenha;
+	}
+
+	public void setTxtSenha(JPasswordField txtSenha) {
+		this.txtSenha = txtSenha;
+	}
+
+	public TelaPadrao getTelaAnterior() {
+		return telaAnterior;
+	}
+
+	public void setTelaAnterior(TelaPadrao telaAnterior) {
+		this.telaAnterior = telaAnterior;
+	}
+
 	public TecladoSenhaCliente() {
 		
 		txtSenha = new JPasswordField();
@@ -42,6 +62,22 @@ public class TecladoSenhaCliente extends JFrame{
 		JButton btnConfirmar = new JButton("Confirmar");
 		btnConfirmar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				boolean resultado = false;
+				
+				if(telaAnterior.getTipoLogin() == TipoLogin.BANCARIO){					
+					DaoProfissional daoProfissional = new DaoProfissional();
+					resultado = daoProfissional.validarLogin(TelaPadrao.profissional.getUsername(), txtSenha.getText());															
+				}else{
+					DaoConta daoConta = new DaoConta();
+					resultado = daoConta.validarLogin(TelaPadrao.conta.getCpf(), txtSenha.getText());
+				}
+				
+				if(resultado){
+					dispose();
+				}else{
+					Funcoes.msgAviso("Usuário/Senha inválidos.");
+				}				
 				
 			}
 		});

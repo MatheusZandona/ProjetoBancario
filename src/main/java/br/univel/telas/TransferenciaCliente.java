@@ -1,6 +1,5 @@
 package br.univel.telas;
 
-import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
@@ -9,10 +8,7 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
-
-import com.sun.javafx.font.Disposer;
-
-import br.univel.classes.abstratas.PanelAbstrato;
+import br.univel.classes.abstratas.PanelFilhoMenu;
 import br.univel.classes.dao.DaoMovimentacao;
 
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -22,7 +18,7 @@ import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.awt.event.ActionEvent;
 
-public class TransferenciaCliente extends PanelAbstrato{
+public class TransferenciaCliente extends PanelFilhoMenu{
 	private JTextField txtAgencia;
 	private JTextField txtConta;
 	private JTextField txtTitular;

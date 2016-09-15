@@ -1,6 +1,5 @@
 package br.univel.telas;
 
-import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -9,9 +8,8 @@ import java.math.BigDecimal;
 
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import br.univel.classes.abstratas.PanelAbstrato;
+import br.univel.classes.abstratas.PanelFilhoMenu;
 import br.univel.classes.dao.DaoMovimentacao;
-import br.univel.enuns.TipoLogin;
 
 import javax.swing.JLabel;
 import javax.swing.JFormattedTextField;
@@ -19,7 +17,7 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class SaqueCliente extends PanelAbstrato{
+public class SaqueCliente extends PanelFilhoMenu{
 	
 	public SaqueCliente() {
 		

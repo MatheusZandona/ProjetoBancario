@@ -63,8 +63,10 @@ public class PrincipalCliente extends PanelAbstrato{
 		btnSaque = new JButton("1 - Saques");
 		btnSaque.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				SaqueCliente panel = new SaqueCliente();
+				panel.setTelaMenu(getTelaPadrao());
 				
-				TelaPadrao telaSaque = new TelaPadrao(TipoLogin.CLIENTE, new SaqueCliente());
+				TelaPadrao telaSaque = new TelaPadrao(TipoLogin.CLIENTE, panel);
 				telaSaque.setSize(600, 500);
 				telaSaque.setLocationRelativeTo(null);
 				telaSaque.setVisible(true);					
@@ -86,7 +88,11 @@ public class PrincipalCliente extends PanelAbstrato{
 		btnDepositos = new JButton("3 - Depósitos");
 		btnDepositos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaDeposito = new TelaPadrao(TipoLogin.CLIENTE, new DepositoCliente());
+				
+				DepositoCliente panel = new DepositoCliente();
+				panel.setTelaMenu(getTelaPadrao());
+				
+				TelaPadrao telaDeposito = new TelaPadrao(TipoLogin.CLIENTE, panel);
 				telaDeposito.setSize(600, 500);
 				telaDeposito.setLocationRelativeTo(null);
 				telaDeposito.setVisible(true);
@@ -97,7 +103,12 @@ public class PrincipalCliente extends PanelAbstrato{
 		btnTransf = new JButton("4 - Transferências");
 		btnTransf.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaTransferencia = new TelaPadrao(TipoLogin.CLIENTE, new TransferenciaCliente());
+
+				TransferenciaCliente panel = new TransferenciaCliente();
+				panel.setTelaMenu(getTelaPadrao());
+			
+				
+				TelaPadrao telaTransferencia = new TelaPadrao(TipoLogin.CLIENTE, panel);
 				telaTransferencia.setSize(600, 500);
 				telaTransferencia.setLocationRelativeTo(null);
 				telaTransferencia.setVisible(true);				
@@ -108,7 +119,11 @@ public class PrincipalCliente extends PanelAbstrato{
 		btnPagamentos = new JButton("5 - Pagamentos");
 		btnPagamentos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaPadrao telaPagamentos = new TelaPadrao(TipoLogin.CLIENTE, new PagamentoCliente());
+				PagamentoCliente panel = new PagamentoCliente();
+				panel.setTelaMenu(getTelaPadrao());
+				
+				
+				TelaPadrao telaPagamentos = new TelaPadrao(TipoLogin.CLIENTE, panel);
 				telaPagamentos.setSize(600, 500);
 				telaPagamentos.setLocationRelativeTo(null);
 				telaPagamentos.setVisible(true);								
