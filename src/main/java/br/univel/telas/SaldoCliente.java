@@ -1,20 +1,26 @@
 package br.univel.telas;
 
-import javax.swing.JPanel;
+
 import javax.swing.JScrollPane;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTable;
 
+import br.univel.classes.Movimentacao;
 import br.univel.classes.abstratas.PanelAbstrato;
+import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.modelos.ModeloSaldoCliente;
 
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -22,6 +28,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.awt.event.ActionEvent;
 
 public class SaldoCliente extends PanelAbstrato{
@@ -31,8 +38,11 @@ public class SaldoCliente extends PanelAbstrato{
 	private Date       dataInicial ;
 	private Date       dataFinal;  
 	private SimpleDateFormat format; 	
-	private Calendar 		 calendar;
-	
+	private Calendar   calendar;
+	private List<Movimentacao> lista = new ArrayList<Movimentacao>();
+	private DaoMovimentacao dao  = new DaoMovimentacao();
+	private NumberFormat formatNumber = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+	private JLabel lblVlrSaldo;
 	
 	public Date getDataInicial() {
 		return dataInicial;
@@ -74,7 +84,8 @@ public class SaldoCliente extends PanelAbstrato{
 				calendar.add(calendar.YEAR, -1);
 				
 				dataInicial = calendar.getTime();				
-				setDataInicial(dataInicial);					
+				setDataInicial(dataInicial);	
+				montarConsulta();
 			}
 		});
 		
@@ -90,7 +101,8 @@ public class SaldoCliente extends PanelAbstrato{
 				calendar.add(calendar.MONTH, -1);
 				
 				dataInicial = calendar.getTime();				
-				setDataInicial(dataInicial);					
+				setDataInicial(dataInicial);	
+				montarConsulta();
 			}
 		});
 		
@@ -106,7 +118,8 @@ public class SaldoCliente extends PanelAbstrato{
 				calendar.add(calendar.DAY_OF_MONTH, -1);
 				
 				dataInicial = calendar.getTime();				
-				setDataInicial(dataInicial);						
+				setDataInicial(dataInicial);		
+				montarConsulta();
 			}
 		});
 		
@@ -122,7 +135,8 @@ public class SaldoCliente extends PanelAbstrato{
 				calendar.add(calendar.DAY_OF_MONTH, 1);
 				
 				dataFinal = calendar.getTime();				
-				setDataFinal(dataFinal);					
+				setDataFinal(dataFinal);			
+				montarConsulta();
 			}
 		});
 		
@@ -138,7 +152,8 @@ public class SaldoCliente extends PanelAbstrato{
 				calendar.add(calendar.MONTH, 1);
 				
 				dataFinal = calendar.getTime();				
-				setDataFinal(dataFinal);				
+				setDataFinal(dataFinal);	
+				montarConsulta();
 			}
 		});
 		
@@ -154,17 +169,18 @@ public class SaldoCliente extends PanelAbstrato{
 				calendar.add(calendar.YEAR, 1);
 				
 				dataFinal = calendar.getTime();				
-				setDataFinal(dataFinal);								
+				setDataFinal(dataFinal);	
+				montarConsulta();
 							
 			}
 		});
 		
 		JButton btnImprimir = new JButton("Imprimir");
 		
-		JLabel lblSaldoPerodo = new JLabel("Saldo Per\u00EDodo R$");
+		JLabel lblSaldoPerodo = new JLabel("Saldo Per\u00EDodo ");
 		lblSaldoPerodo.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
-		JLabel lblVlrSaldo = new JLabel("0,00");
+		lblVlrSaldo = new JLabel("0,00");
 		lblVlrSaldo.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblVlrSaldo.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
@@ -253,12 +269,20 @@ public class SaldoCliente extends PanelAbstrato{
 	}
 	
 	public void montarConsulta(){	
-		//lista.clear();
-		//lista = dp.listarTodos();		
-		ModeloSaldoCliente modelo = new ModeloSaldoCliente();//instancia um modelo de tabela
-		
+		lista.clear();
+		lista = dao.listarOperacoesConta(this.dataInicial, this.dataFinal);		
+		ModeloSaldoCliente modelo = new ModeloSaldoCliente(lista);//instancia um modelo de tabela
+
 		tbGrid.setRowSorter(null);
-		tbGrid.setModel(modelo);//seta a tabela			
+		tbGrid.setModel(modelo);//seta a tabela
+		
+		//atualiza total
+		BigDecimal saldo = BigDecimal.ZERO;
+		for (Movimentacao movimentacao : lista) {
+			saldo = saldo.add(movimentacao.getValor());
+		}
+		
+		lblVlrSaldo.setText(formatNumber.format(saldo));
 	}
 		
 }

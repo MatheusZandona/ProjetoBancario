@@ -2,19 +2,17 @@ package br.univel.classes.dao;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
-
-import org.exolab.castor.types.Time;
-
+import java.util.List;
 import com.mysql.jdbc.PreparedStatement;
-
 import br.univel.classes.Conta;
+import br.univel.classes.Movimentacao;
 import br.univel.classes.bd.ConexaoBD;
 import br.univel.enuns.TipoConta;
 import br.univel.funcoes.Funcoes;
 import br.univel.interfaces.DaoMov;
+import br.univel.telas.TelaPadrao;
 
 public class DaoMovimentacao implements DaoMov{
 	
@@ -176,5 +174,39 @@ public class DaoMovimentacao implements DaoMov{
 		}else{
 			Funcoes.msgErro("Conta inexistente !");
 		}		
+	}
+
+	@Override 
+	public List<Movimentacao> listarOperacoesConta(Date dataInicial, Date dataFinal) {
+		ArrayList<Movimentacao> listaOperacoes = new ArrayList<>();
+		DaoMovimentacao dao = new DaoMovimentacao();
+		try {
+			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+									.clientPrepareStatement("SELECT * FROM CONTAS_MOVIMENTO WHERE CONTA_NUMERO = ? AND DATA BETWEEN ? AND ?");
+			ps.setString(1, TelaPadrao.conta.getNumero());
+			ps.setDate(2, new java.sql.Date(dataInicial.getTime()));
+			ps.setDate(3, new java.sql.Date(dataFinal.getTime()));
+			ResultSet result =  ps.executeQuery();
+			
+			while(result.next()){
+				Movimentacao mov = new Movimentacao();
+				mov.setConta(new DaoConta().buscar(result.getString("conta_numero")));
+				mov.setData(result.getDate("data"));
+				mov.setHora(result.getTime("hora"));
+				mov.setDescricao(result.getString("descricao"));
+				mov.setValor(result.getBigDecimal("valor"));
+				mov.setTipoM(result.getString("tipo_movimento"));
+
+				listaOperacoes.add(mov);
+			}
+			
+			
+			ps.close();
+			result.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listaOperacoes;
+
 	}
 }

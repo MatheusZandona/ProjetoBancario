@@ -8,7 +8,7 @@ import br.univel.classes.Profissional;
 
 public class ModeloProfissionais extends AbstractTableModel {
 	
-	List<Profissional> lista;
+	private List<Profissional> lista;
 
 	public ModeloProfissionais(List<Profissional> lista) {
 		this.lista = lista;
