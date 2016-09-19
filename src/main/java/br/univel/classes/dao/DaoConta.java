@@ -234,6 +234,7 @@ public class DaoConta implements Dao<Conta, String>{
 					.clientPrepareStatement("SELECT * FROM CONTAS WHERE CPF = ? AND SENHA_ACESSO = ?");
 			ps.setString(1, username);
 			ps.setString(2, senha);
+			//ps.setString(2, new Hash().hashMD5(senha));
 			ResultSet result =  ps.executeQuery();
 			if(result.next()){
 				TelaPadrao.conta = new Conta();

@@ -12,7 +12,7 @@ public class Hash {
 	    return new BigInteger(1,m.digest()).toString(16);
 	}
 	
-	public String sha256(String texto) throws NoSuchAlgorithmException{
+	public String hashSHA256(String texto) throws NoSuchAlgorithmException{
 		MessageDigest m=MessageDigest.getInstance("SHA256");
 	    m.update(texto.getBytes(),0,texto.length());
 	    return new BigInteger(1,m.digest()).toString(16);

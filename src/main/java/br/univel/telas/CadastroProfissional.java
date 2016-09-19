@@ -132,8 +132,6 @@ public class CadastroProfissional extends PanelAbstrato{
 			txtNome.setText(profissional.getNome());
 			txtIdade.setText(profissional.getIdade().toString());
 			txtUserName.setText(profissional.getUsername());
-			txtSenhaConta.setText(profissional.getSenhaAcesso());
-			txtSenhaOp.setText(profissional.getSenhaOperacoes());
 		}		
 	}
 	
@@ -143,6 +141,7 @@ public class CadastroProfissional extends PanelAbstrato{
 		
 		if(!editando){
 			profissional = new Profissional();
+			profissional.setId(0);
 		}
 		
 		ProfissionalBuilder builder = new ProfissionalBuilder();

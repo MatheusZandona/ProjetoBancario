@@ -21,6 +21,7 @@ import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.classes.dao.DaoProfissional;
 import br.univel.enuns.TipoConta;
 import br.univel.enuns.TipoLogin;
+import br.univel.funcoes.Funcoes;
 import br.univel.interfaces.DaoMov;
 
 import javax.swing.JButton;
@@ -77,7 +78,7 @@ public class Login extends JFrame{
 		});
 		RBCliente.setSelected(true);
 		
-		JRadioButton RBFuncionario = new JRadioButton("Funcionario");
+		JRadioButton RBFuncionario = new JRadioButton("Funcionário");
 		buttonGroup.add(RBFuncionario);
 		RBFuncionario.addMouseListener(new MouseAdapter() {
 			@Override
@@ -98,6 +99,8 @@ public class Login extends JFrame{
 							painelCliente.setSize(600, 500);
 							painelCliente.setLocationRelativeTo(null);
 							painelCliente.setVisible(true);
+						}else{
+							Funcoes.msgAviso("Usuário/senha não encontrados.");
 						}
 					}else{
 						DaoProfissional dao = new DaoProfissional();
@@ -106,6 +109,8 @@ public class Login extends JFrame{
 							painelBancario.setSize(600, 500);
 							painelBancario.setLocationRelativeTo(null);
 							painelBancario.setVisible(true);
+						}else{
+							Funcoes.msgAviso("Usuário/senha não encontrados.");
 						}
 						
 					}

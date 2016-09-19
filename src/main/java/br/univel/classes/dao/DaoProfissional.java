@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 import com.mysql.jdbc.PreparedStatement;
 
+import br.univel.classes.Hash;
 import br.univel.classes.Profissional;
 import br.univel.classes.bd.ConexaoBD;
 import br.univel.enuns.TipoLogin;
@@ -28,7 +29,7 @@ public class DaoProfissional implements Dao<Profissional, String>{
 			ps1.setString(1, t.getUsername());
 			ps1.setString(2, t.getNome());
 			ps1.setInt(3, t.getIdade());
-			ps1.setString(4, t.getSenhaAcesso());
+			ps1.setString(4, new Hash().hashSHA256(t.getUsername().concat(t.getSenhaAcesso())));
 			ps1.setString(5, t.getSenhaOperacoes());
 			ps1.executeUpdate();
 		} catch (Exception e) {
@@ -51,7 +52,7 @@ public class DaoProfissional implements Dao<Profissional, String>{
 				profissional.setIdade(result.getInt("idade"));
 				profissional.setSenhaAcesso(result.getString("senha_acesso"));
 				profissional.setSenhaOperacoes(result.getString("senha_op"));
-				
+				profissional.setId(result.getInt("id"));
 			}
 			
 			ps.close();
@@ -65,24 +66,13 @@ public class DaoProfissional implements Dao<Profissional, String>{
 	@Override
 	public void atualizar(Profissional t) {
 		try {
-//			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-//					.clientPrepareStatement("SELECT * FROM PROFISSIONAIS WHERE ID = ?");
-//			
-//			ps.setInt(1, t.getId());
-//			ResultSet result = ps.executeQuery();
-//			
-//			ps.close();
-//			if(result.next()){
-//				JOptionPane.showMessageDialog(null, "Já existe um profissional com o mesmo USERNAME.");
-//				return;
-//			}
 			
 			PreparedStatement ps1 = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
 					.clientPrepareStatement("UPDATE PROFISSIONAIS SET NOME = ?, IDADE = ?, SENHA_ACESSO = ?, SENHA_OP = ?, USERNAME = ? WHERE ID = ?");
 			
 			ps1.setString(1, t.getNome());
-			ps1.setInt(2, t.getIdade());
-			ps1.setString(3, t.getSenhaAcesso());
+			ps1.setInt(2, t.getIdade());		
+			ps1.setString(3, new Hash().hashSHA256(t.getUsername().concat(t.getSenhaAcesso())));
 			ps1.setString(4, t.getSenhaOperacoes());
 			ps1.setString(5, t.getUsername());
 			ps1.setInt(6, t.getId());
@@ -144,6 +134,7 @@ public class DaoProfissional implements Dao<Profissional, String>{
 					.clientPrepareStatement("SELECT * FROM PROFISSIONAIS WHERE USERNAME = ? AND SENHA_ACESSO = ?");
 			ps.setString(1, username);
 			ps.setString(2, senha);
+			//ps.setString(2, new Hash().hashSHA256(username.concat(senha)));
 			
 			ResultSet result =  ps.executeQuery();
 			if(result.next()){
