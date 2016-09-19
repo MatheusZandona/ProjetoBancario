@@ -19,4 +19,5 @@ public interface DaoMov {
 	public boolean temSaldo(String conta,  String agencia);
 	public void transferir(BigDecimal valor, String contaDest, String agenciaDest, String contaOri, String agenciaOri, String senha);
 	public List<Movimentacao> listarOperacoesConta(Date dataInicial, Date dataFinal);
+	public List<Movimentacao> listarOperacoesAgencia(String agencia, Date dataInicial, Date dataFinal);
 }

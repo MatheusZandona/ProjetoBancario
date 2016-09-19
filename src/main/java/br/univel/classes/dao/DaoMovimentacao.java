@@ -209,4 +209,38 @@ public class DaoMovimentacao implements DaoMov{
 		return listaOperacoes;
 
 	}
+
+	@Override
+	public List<Movimentacao> listarOperacoesAgencia(String agencia, Date dataInicial, Date dataFinal) {
+		ArrayList<Movimentacao> listaOperacoes = new ArrayList<>();
+		DaoMovimentacao dao = new DaoMovimentacao();
+		try {
+			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+									.clientPrepareStatement("SELECT CM.*, C.AGENCIA FROM CONTAS_MOVIMENTO CM INNER JOIN CONTAS C ON C.NUMERO = CM.CONTA_NUMERO WHERE AGENCIA = ? AND DATA BETWEEN ? AND ?");
+			ps.setString(1, agencia);
+			ps.setDate(2, new java.sql.Date(dataInicial.getTime()));
+			ps.setDate(3, new java.sql.Date(dataFinal.getTime()));
+			ResultSet result =  ps.executeQuery();
+			
+			while(result.next()){
+				Movimentacao mov = new Movimentacao();
+				mov.setConta(new DaoConta().buscar(result.getString("conta_numero")));
+				mov.setData(result.getDate("data"));
+				mov.setHora(result.getTime("hora"));
+				mov.setDescricao(result.getString("descricao"));
+				mov.setValor(result.getBigDecimal("valor"));
+				mov.setTipoM(result.getString("tipo_movimento"));
+
+				listaOperacoes.add(mov);
+			}
+			
+			
+			ps.close();
+			result.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listaOperacoes;
+
+	}
 }

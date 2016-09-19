@@ -1,6 +1,5 @@
 package br.univel.modelos;
 
-import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;

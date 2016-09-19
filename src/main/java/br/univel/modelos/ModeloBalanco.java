@@ -1,9 +1,24 @@
 package br.univel.modelos;
 
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.Locale;
+
 import javax.swing.table.AbstractTableModel;
 
-public class ModeloBalanco extends AbstractTableModel{
+import br.univel.classes.Movimentacao;
 
+public class ModeloBalanco extends AbstractTableModel{
+	
+	private List<Movimentacao> lista;
+	private NumberFormat formatNumber;
+	
+
+	public ModeloBalanco(List<Movimentacao> lista) {
+		this.lista = lista;
+		formatNumber = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+	}		
+	
 	@Override
 	public int getColumnCount() {
 		return 4;
@@ -11,12 +26,37 @@ public class ModeloBalanco extends AbstractTableModel{
 
 	@Override
 	public int getRowCount() {
-		return 2;
+		return lista.size();
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		return null;
+		Movimentacao mov = lista.get(rowIndex);
+		
+		switch(columnIndex) {
+			case 0:
+				return mov.getConta().getAgencia().getNumero();
+			case 1:
+				return mov.getConta().getNumero();
+			case 2:
+				if(mov.getTipoM().equals("D")){
+					return "Depósito";
+				}else if(mov.getTipoM().equals("S")){
+					return "Saque";
+				}else if(mov.getTipoM().equals("TS")){
+					return "Transferência(Saída)";
+				}else if(mov.getTipoM().equals("TE")){
+					return "Transferência(Entrada)";
+				}else if(mov.getTipoM().equals("PG")){
+					return "Pagamento";
+				}else{
+					return mov.getTipoM();
+				}
+			case 3:
+				return formatNumber.format(mov.getValor());
+			default:
+				return "";
+		}
 	}
 
 	@Override

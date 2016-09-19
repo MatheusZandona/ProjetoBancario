@@ -131,20 +131,6 @@ public class SaqueCliente extends PanelFilhoMenu{
 	private void Sacar( BigDecimal valor ){
 		DaoMovimentacao daoMov = new DaoMovimentacao();
 		daoMov.sacar(valor, TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero(), "11");
-		
-		
-//		TecladoSenhaCliente teclado = null;
-//		teclado = new TecladoSenhaCliente();
-//		teclado.setSize(515, 200);
-//		teclado.setLocationRelativeTo(null);
-//		teclado.setVisible(true);	
-//		
-//		
-//		TelaPadrao telaSaldo = null;
-//		telaSaldo = new TelaPadrao(TipoLogin.CLIENTE, new ConfirmaOperacao(telaSaldo));
-//		telaSaldo.setSize(600, 400);
-//		telaSaldo.setLocationRelativeTo(null);
-//		telaSaldo.setVisible(true);				
-		
+					
 	}
 }
