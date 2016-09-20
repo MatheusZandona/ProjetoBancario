@@ -10,6 +10,8 @@ import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
 import br.univel.classes.abstratas.PanelFilhoMenu;
 import br.univel.classes.dao.DaoMovimentacao;
+import br.univel.funcoes.Funcoes;
+import br.univel.observable.Saldo;
 
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
@@ -17,6 +19,8 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class TransferenciaCliente extends PanelFilhoMenu{
 	private JTextField txtAgencia;
@@ -49,7 +53,16 @@ public class TransferenciaCliente extends PanelFilhoMenu{
 		txtTitular.setColumns(10);
 		
 		txtValor = new JFormattedTextField();
-		txtValor.setText("0,00");
+		txtValor.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				String caracteres="0987654321.";
+				if(!caracteres.contains(e.getKeyChar()+"")){
+					e.consume();
+				}
+			}
+		});
+		txtValor.setText("0.00");
 		txtValor.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtValor.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
@@ -60,6 +73,9 @@ public class TransferenciaCliente extends PanelFilhoMenu{
 			public void actionPerformed(ActionEvent arg0) {
 				transferir();
 				limparCampos();
+				if(!Funcoes.msgConfirma("Deseja efetuar outra transferencia ?")){
+					getTelaPadrao().dispose();
+				}
 			}
 		});
 		btnConfirme.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -135,12 +151,18 @@ public class TransferenciaCliente extends PanelFilhoMenu{
 	public void transferir(){
 		DaoMovimentacao daoMov = new DaoMovimentacao();
 		daoMov.transferir(new BigDecimal(txtValor.getText()), txtConta.getText(), txtAgencia.getText(), TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero(), "10");
+		
+		Saldo saldo = new Saldo();
+		saldo.addObservers(getTelaPadrao());
+		saldo.addObservers(getTelaMenu());
+		saldo.alterarSaldo();
+		
 	}
 	
 	public void limparCampos(){
 		txtAgencia.setText("");
 		txtConta.setText("");
-		txtValor.setText("0,00");
+		txtValor.setText("0.00");
 		txtTitular.setText("");
 	}
 }

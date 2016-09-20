@@ -23,7 +23,7 @@ public class DaoMovimentacao implements DaoMov{
 		Conta conta = new Conta(); 
 		
 		conta = daoC.buscar(numConta);
-		if(conta.getTipoConta() == TipoConta.CORRENTE){
+		if(conta.getTipoConta() != TipoConta.ELETRONICA){
 			if(daoC.existeConta(numConta)){			
 				if(temSaldo(numConta, agencia)){
 					BigDecimal saldoAtual = new BigDecimal(0.0);
@@ -41,7 +41,7 @@ public class DaoMovimentacao implements DaoMov{
 							ps.setBigDecimal(5, valor);
 							ps.setString(6, "SAQUE");
 							ps.executeUpdate();
-							Funcoes.msgConfirma("Saque efetuado com sucesso !");
+							Funcoes.msgInforma("Saque efetuado com sucesso !");
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -76,7 +76,7 @@ public class DaoMovimentacao implements DaoMov{
 				ps.setBigDecimal(5, valor);
 				ps.setString(6, "Depósito");
 				ps.executeUpdate();
-				Funcoes.msgConfirma("Depósito efetuado com sucesso !");
+				Funcoes.msgInforma("Depósito efetuado com sucesso !");
 			}else{
 				Funcoes.msgErro("Conta inexistente !");
 			}
@@ -90,8 +90,11 @@ public class DaoMovimentacao implements DaoMov{
 		BigDecimal saldo = BigDecimal.ZERO;
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("SELECT SUM(VALOR) AS SALDO FROM CONTAS_MOVIMENTO WHERE CONTA_NUMERO = ?");
+					.clientPrepareStatement("SELECT SUM(CONTAS_MOVIMENTO.VALOR) AS SALDO FROM CONTAS_MOVIMENTO "
+							+ "INNER JOIN CONTAS ON CONTAS.NUMERO = CONTAS_MOVIMENTO.CONTA_NUMERO "
+							+ "WHERE CONTAS_MOVIMENTO.CONTA_NUMERO = ? AND CONTAS.AGENCIA = ?");
 			ps.setString(1, k);
+			ps.setString(2, agencia);
 			ResultSet result =  ps.executeQuery();
 			if(result.next()){
 				saldo = result.getBigDecimal("saldo");
@@ -109,8 +112,11 @@ public class DaoMovimentacao implements DaoMov{
 		double saldo =  0;
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("SELECT SUM(VALOR) AS SALDO FROM CONTAS_MOVIMENTO WHERE CONTA_NUMERO = ?");
+					.clientPrepareStatement("SELECT SUM(CONTAS_MOVIMENTO.VALOR) AS SALDO FROM CONTAS_MOVIMENTO "
+							+ "INNER JOIN CONTAS ON CONTAS.NUMERO = CONTAS_MOVIMENTO.CONTA_NUMERO "
+							+ "WHERE CONTAS_MOVIMENTO.CONTA_NUMERO = ? AND CONTAS.AGENCIA = ?");
 			ps.setString(1, k);
+			ps.setString(2, agencia);
 			ResultSet result =  ps.executeQuery();
 			if(result.next()){
 				saldo = result.getDouble("saldo");
@@ -161,7 +167,7 @@ public class DaoMovimentacao implements DaoMov{
 						ps.executeUpdate();
 						
 
-						Funcoes.msgConfirma("Transferência efetuada com sucesso!");
+						Funcoes.msgInforma("Transferência efetuada com sucesso!");
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -242,5 +248,37 @@ public class DaoMovimentacao implements DaoMov{
 		}
 		return listaOperacoes;
 
+	}
+
+	@Override
+	public void pagar(String codigoBarras, BigDecimal valor) {
+		try {
+			DaoConta daoC = new DaoConta();
+			if(temSaldo(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero())){
+				BigDecimal saldoAtual = new BigDecimal(0.0);
+				saldoAtual = saldoAtual(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero());
+				
+				if(saldoAtual.compareTo(valor) >= 0){
+					PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+							.clientPrepareStatement("INSERT INTO CONTAS_MOVIMENTO (CONTA_NUMERO,TIPO_MOVIMENTO,DATA,HORA,VALOR,DESCRICAO) VALUES (?,?,?,?,?,?)");
+					ps.setString(1, TelaPadrao.conta.getNumero());
+					ps.setString(2, "PG");
+					Date d = new Date();
+					ps.setDate(3, new java.sql.Date(d.getTime()));
+					ps.setTime(4, new java.sql.Time(d.getTime()));
+					valor = valor.subtract(valor.add(valor));  // kkkk adaptação técnica
+					ps.setBigDecimal(5, valor);
+					ps.setString(6, "Pagamento do documento ".concat(codigoBarras));
+					ps.executeUpdate();
+					Funcoes.msgInforma("Pagamento efetuado com sucesso !");
+				}else{
+					Funcoes.msgAviso("Saldo insuficiente !");
+				}
+			}else{
+				Funcoes.msgAviso("Não consta saldo na sua conta !");	
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -2,8 +2,11 @@ package br.univel.telas;
 
 import javax.swing.JButton;
 import br.univel.classes.abstratas.PanelAbstrato;
+import br.univel.classes.dao.DaoConta;
+import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.enuns.TipoConta;
 import br.univel.enuns.TipoLogin;
+import br.univel.funcoes.Funcoes;
 import br.univel.observable.Saldo;
 
 import java.awt.Font;
@@ -132,6 +135,16 @@ public class PrincipalCliente extends PanelAbstrato{
 		btnPagamentos.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
 		btnFinalizar = new JButton("6 - Finalizar");
+		btnFinalizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				finalizar();
+				
+				Saldo saldo = new Saldo();
+				saldo.addObservers(getTelaPadrao());
+//				saldo.addObservers(getTelaMenu());
+				saldo.alterarSaldo();
+			}
+		});
 		btnFinalizar.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
 		GroupLayout groupLayout = new GroupLayout(this);
@@ -176,6 +189,44 @@ public class PrincipalCliente extends PanelAbstrato{
 		// $hide<<$			
 
 	}
-	
 
+	protected void finalizar() {
+		DaoConta daoC = new DaoConta();
+		DaoMovimentacao daoM = new DaoMovimentacao();
+		
+		if(daoM.temSaldo(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero())){
+			BigDecimal saldoAtual = daoM.saldoAtual(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero());
+
+			if(saldoAtual.compareTo(new BigDecimal("0.00")) > 0){
+				if(Funcoes.msgConfirma("Você tem um crédito de ".concat(saldoAtual.toString()).concat(". Para "
+						+ "finalizar sua conta é necessário ter um saldo de 0.00 ! Deseja sacar esse valor ?"))){
+					daoM.sacar(saldoAtual, TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero(), "");
+					if(Funcoes.msgConfirma("Tem certeza que deseja finalizar sua conta ?")){
+						daoC.excluir(TelaPadrao.conta.getNumero());
+						getTelaPadrao().dispose();
+					}
+				}
+			}
+		}else{
+			BigDecimal saldoAtual = daoM.saldoAtual(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero());
+			if(saldoAtual.compareTo(new BigDecimal("0.00")) < 0){
+				if(Funcoes.msgConfirma("Você tem um défite de R$ ".concat(saldoAtual.toString()).concat(". Para "
+						+ "finalizar sua conta é necessário ter um saldo de 0.00 ! Deseja depositar esse valor ?"))){
+					saldoAtual = saldoAtual.multiply(new BigDecimal(-1));
+					daoM.depositar(saldoAtual, TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero());
+					if(Funcoes.msgConfirma("Tem certeza que deseja finalizar sua conta ?")){
+						daoC.excluir(TelaPadrao.conta.getNumero());
+						getTelaPadrao().dispose();
+					}
+				}
+			}else{
+				if(Funcoes.msgConfirma("Tem certeza que deseja finalizar sua conta ?")){
+					daoC.excluir(TelaPadrao.conta.getNumero());
+					getTelaPadrao().dispose();
+				}
+			}
+		}
+	}
+	
+	
 }

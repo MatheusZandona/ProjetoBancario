@@ -13,7 +13,7 @@ public class Conta extends Pessoa{
 	private String     numero;
 	private Date       dtAbertura;
 	private BigDecimal saldo;
-	
+	private Integer     status;  // 0 = ativo  1 = inativo
 
 	public Conta(){
 		this.setTipoLogin(TipoLogin.CLIENTE);
@@ -76,6 +76,16 @@ public class Conta extends Pessoa{
 
 	public void setDtAbertura(Date dtAbertura) {
 		this.dtAbertura = dtAbertura;
+	}
+
+
+	public Integer getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 	
 }

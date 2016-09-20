@@ -27,7 +27,7 @@ public class DaoConta implements Dao<Conta, String>{
 	public void salvar(Conta t) {
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("INSERT INTO CONTAS VALUES (?,?,?,?,?,?,?,?,?)");
+									.clientPrepareStatement("INSERT INTO CONTAS (NUMERO, TIPO, NOME_TITULAR, IDADE, CPF, AGENCIA, DT_ABERTURA, SENHA_ACESSO, SENHA_OP, STATUS) VALUES (?,?,?,?,?,?,?,?,?,?)");
 			ps.setString(1, t.getNumero());
 			ps.setInt(2, t.getTipoConta().ordinal());
 			ps.setString(3, t.getNome());
@@ -37,6 +37,7 @@ public class DaoConta implements Dao<Conta, String>{
 			ps.setDate(7, new java.sql.Date(t.getDtAbertura().getTime()));
 			ps.setString(8, new Hash().hashMD5(t.getSenhaAcesso()));
 			ps.setString(9, t.getSenhaOperacoes());
+			ps.setInt(10, 0);
 			ps.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -83,7 +84,7 @@ public class DaoConta implements Dao<Conta, String>{
 				
 				conta.setSenhaAcesso(result.getString("senha_acesso"));	
 				conta.setSenhaOperacoes(result.getString("senha_op"));	
-				
+				conta.setStatus(result.getInt("status"));
 			}
 			
 			ps.close();
@@ -129,9 +130,10 @@ public class DaoConta implements Dao<Conta, String>{
 	public void excluir(String k) {
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("DELETE FROM CONTAS WHERE NUMERO = ?");
+					.clientPrepareStatement("UPDATE CONTAS SET STATUS = ? WHERE NUMERO = ?");
 			
-			ps.setString(1, k);
+			ps.setInt(1, 1);
+			ps.setString(2, k);
 			
 			ps.executeUpdate();
 			ps.close();
@@ -180,7 +182,8 @@ public class DaoConta implements Dao<Conta, String>{
 				
 				conta.setSenhaAcesso(result.getString("senha_acesso"));	
 				conta.setSenhaOperacoes(result.getString("senha_op"));	
-
+				conta.setStatus(result.getInt("status"));
+				
 				contas.add(conta);
 			}
 			
@@ -231,10 +234,11 @@ public class DaoConta implements Dao<Conta, String>{
 		boolean resultado = false;
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("SELECT * FROM CONTAS WHERE CPF = ? AND SENHA_ACESSO = ?");
+					.clientPrepareStatement("SELECT * FROM CONTAS WHERE CPF = ? AND SENHA_ACESSO = ? "
+							+ " AND STATUS = 0");
 			ps.setString(1, username);
-			ps.setString(2, senha);
-			//ps.setString(2, new Hash().hashMD5(senha));
+//			ps.setString(2, senha);
+			ps.setString(2, new Hash().hashMD5(senha));
 			ResultSet result =  ps.executeQuery();
 			if(result.next()){
 				TelaPadrao.conta = new Conta();
@@ -280,7 +284,7 @@ public class DaoConta implements Dao<Conta, String>{
 		boolean resultado = false;
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("SELECT * FROM CONTAS WHERE NUMERO = ?");
+					.clientPrepareStatement("SELECT * FROM CONTAS WHERE NUMERO = ? AND STATUS = 0");
 			ps.setString(1, conta);
 			ResultSet result =  ps.executeQuery();
 			if(result.next()){

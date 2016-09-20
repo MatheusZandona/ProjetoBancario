@@ -29,6 +29,8 @@ public class DepositoCliente extends PanelFilhoMenu{
 	private JTextField txtAgencia;
 	private JTextField txtConta;
 	private JTextField txtTitular;
+	private JComboBox cbbTipoConta;
+	JFormattedTextField txtValor;
 	
 	private TelaPadrao tp;
 	
@@ -46,20 +48,18 @@ public class DepositoCliente extends PanelFilhoMenu{
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if(chkContaLogada.isSelected()){
-					txtAgencia.setEditable(false);
-					txtConta.setEditable(false);
-					txtTitular.setEditable(false);
+					setDestLogado();
+					desabilitaCampos();
 				}else{
-					txtAgencia.setEditable(true);
-					txtConta.setEditable(true);
-					txtTitular.setEditable(true);
+					limparCampos();
+					habilitaCampos();
 				}
 			}
 		});
 		chkContaLogada.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		chkContaLogada.setSelected(true);
 		
-		JFormattedTextField txtValor = new JFormattedTextField();
+		txtValor = new JFormattedTextField();
 		txtValor.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtValor.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtValor.setText("0,00");
@@ -78,7 +78,7 @@ public class DepositoCliente extends PanelFilhoMenu{
 		
 		JLabel lblTipoConta = new JLabel("Tipo Conta");
 		
-		JComboBox cbbTipoConta = new JComboBox();
+		cbbTipoConta = new JComboBox();
 		cbbTipoConta.setMaximumRowCount(3);
 		cbbTipoConta.setModel(new DefaultComboBoxModel(new String[] {"Conta Corrente", "Conta Poupan\u00E7a", "Conta Eletr\u00F4nica"}));
 		cbbTipoConta.setSelectedIndex(0);
@@ -90,18 +90,29 @@ public class DepositoCliente extends PanelFilhoMenu{
 				if(chkContaLogada.isSelected()){					
 					daoMov.depositar(new BigDecimal(txtValor.getText()), TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero());
 					
-					Saldo saldo = new Saldo();
-					saldo.addObservers(getTelaPadrao());
-					saldo.addObservers(getTelaMenu());
-					saldo.alterarSaldo();				
-					getTelaPadrao().dispose();
 				}else{
 					if(!txtConta.getText().equals("") && !txtAgencia.getText().equals("")){
 						daoMov.depositar(new BigDecimal(txtValor.getText()), txtConta.getText(), txtAgencia.getText());
 						getTelaPadrao().dispose();
+						
+						Saldo saldo = new Saldo();
+						saldo.addObservers(getTelaPadrao());
+						saldo.addObservers(getTelaMenu());
+						saldo.alterarSaldo();
 					}else{
 						Funcoes.msgAviso("É necessário informar conta e agência.");
 					}
+				}
+				
+				limparCampos();
+				
+				Saldo saldo = new Saldo();
+				saldo.addObservers(getTelaPadrao());
+				saldo.addObservers(getTelaMenu());
+				saldo.alterarSaldo();
+				
+				if(!Funcoes.msgConfirma("Deseja efetuar outro depósito ?")){
+					getTelaPadrao().dispose();
 				}
 				
 			}
@@ -173,6 +184,35 @@ public class DepositoCliente extends PanelFilhoMenu{
 					.addContainerGap(97, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
+	}
+	
+	private void limparCampos(){
+		txtAgencia.setText("");
+		txtConta.setText("");
+		txtTitular.setText("");
+		txtValor.setText("0.00");
+		cbbTipoConta.setSelectedIndex(-1);
+	}
+	
+	private void setDestLogado(){
+		txtAgencia.setText(TelaPadrao.conta.getAgencia().getNumero());
+		txtConta.setText(TelaPadrao.conta.getNumero());
+		txtTitular.setText(TelaPadrao.conta.getNome());
+		cbbTipoConta.setSelectedIndex(TelaPadrao.conta.getTipoConta().ordinal());
+	}
+	
+	private void desabilitaCampos(){
+		txtAgencia.setEditable(false);
+		txtConta.setEditable(false);
+		txtTitular.setEditable(false);
+		cbbTipoConta.setEnabled(false);
+	}
+	
+	private void habilitaCampos(){
+		txtAgencia.setEditable(true);
+		txtConta.setEditable(true);
+		txtTitular.setEditable(true);
+		cbbTipoConta.setEnabled(true);
 	}
 	
 }

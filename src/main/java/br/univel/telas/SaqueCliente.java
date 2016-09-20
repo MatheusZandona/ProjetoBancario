@@ -10,14 +10,20 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.univel.classes.abstratas.PanelFilhoMenu;
 import br.univel.classes.dao.DaoMovimentacao;
+import br.univel.funcoes.Funcoes;
+import br.univel.observable.Saldo;
 
 import javax.swing.JLabel;
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class SaqueCliente extends PanelFilhoMenu{
+	
+	JFormattedTextField txtValor;
 	
 	public SaqueCliente() {
 		
@@ -25,6 +31,9 @@ public class SaqueCliente extends PanelFilhoMenu{
 		btn50reais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Sacar(new BigDecimal(50.00));
+				if(!Funcoes.msgConfirma("Deseja efetuar outro saque ?")){
+					getTelaPadrao().dispose();
+				}
 			}
 		});
 		btn50reais.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -32,7 +41,10 @@ public class SaqueCliente extends PanelFilhoMenu{
 		JButton btn100reais = new JButton("R$ 100,00");
 		btn100reais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Sacar(new BigDecimal(100.00));				
+				Sacar(new BigDecimal(100.00));
+				if(!Funcoes.msgConfirma("Deseja efetuar outro saque ?")){
+					getTelaPadrao().dispose();
+				}
 			}
 		});
 		btn100reais.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -40,21 +52,37 @@ public class SaqueCliente extends PanelFilhoMenu{
 		JButton btn500reais = new JButton("R$ 500,00");
 		btn500reais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Sacar(new BigDecimal(500.00));				
+				Sacar(new BigDecimal(500.00));
+				if(!Funcoes.msgConfirma("Deseja efetuar outro saque ?")){
+					getTelaPadrao().dispose();
+				}
 			}
 		});
 		btn500reais.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
 		JLabel lblInformeOutroValor = new JLabel("Informe outro valor");
 		
-		JFormattedTextField txtValor = new JFormattedTextField();
+		txtValor = new JFormattedTextField();
+		txtValor.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				String caracteres="0987654321.";
+				if(!caracteres.contains(arg0.getKeyChar()+"")){
+					arg0.consume();
+				}
+			}
+		});
 		txtValor.setHorizontalAlignment(SwingConstants.RIGHT);
-		txtValor.setText("0,00");		
+		txtValor.setText("0.00");		
 		
 		JButton btnConfirme = new JButton("Confirme");
 		btnConfirme.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Sacar(new BigDecimal(txtValor.getText()));				
+				Sacar(new BigDecimal(txtValor.getText()));	
+				
+				if(!Funcoes.msgConfirma("Deseja efetuar outro saque ?")){
+					getTelaPadrao().dispose();
+				}
 			}
 		});
 		btnConfirme.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -62,7 +90,10 @@ public class SaqueCliente extends PanelFilhoMenu{
 		JButton btn300reais = new JButton("R$ 300,00");
 		btn300reais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Sacar(new BigDecimal(300.00));				
+				Sacar(new BigDecimal(300.00));
+				if(!Funcoes.msgConfirma("Deseja efetuar outro saque ?")){
+					getTelaPadrao().dispose();
+				}
 			}
 		});
 		btn300reais.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -70,7 +101,11 @@ public class SaqueCliente extends PanelFilhoMenu{
 		JButton btn200reais = new JButton("R$ 200,00");
 		btn200reais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Sacar(new BigDecimal(200.00));								
+				Sacar(new BigDecimal(200.00));	
+				limparCampos();
+				if(!Funcoes.msgConfirma("Deseja efetuar outro saque ?")){
+					getTelaPadrao().dispose();
+				}
 			}
 		});
 		btn200reais.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -128,9 +163,17 @@ public class SaqueCliente extends PanelFilhoMenu{
 		setLayout(groupLayout);
 	}
 	
+	protected void limparCampos() {
+		txtValor.setText("0.00");
+	}
+
 	private void Sacar( BigDecimal valor ){
 		DaoMovimentacao daoMov = new DaoMovimentacao();
 		daoMov.sacar(valor, TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero(), "11");
 					
+		Saldo saldo = new Saldo();
+		saldo.addObservers(getTelaPadrao());
+		saldo.addObservers(getTelaMenu());
+		saldo.alterarSaldo();
 	}
 }

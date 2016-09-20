@@ -20,4 +20,5 @@ public interface DaoMov {
 	public void transferir(BigDecimal valor, String contaDest, String agenciaDest, String contaOri, String agenciaOri, String senha);
 	public List<Movimentacao> listarOperacoesConta(Date dataInicial, Date dataFinal);
 	public List<Movimentacao> listarOperacoesAgencia(String agencia, Date dataInicial, Date dataFinal);
+	public void pagar(String codigoBarras, BigDecimal valor);
 }
