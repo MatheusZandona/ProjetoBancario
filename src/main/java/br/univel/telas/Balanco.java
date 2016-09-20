@@ -22,12 +22,13 @@ import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.univel.classes.Agencia;
-import br.univel.classes.ExecRelatorio;
 import br.univel.classes.Movimentacao;
 import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.dao.DaoAgencia;
 import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.modelos.ModeloBalanco;
+import br.univel.relatorios.ExecRelatorio;
+
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
@@ -186,7 +187,7 @@ public class Balanco extends PanelAbstrato{
 		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ExecRelatorio relatorio = new ExecRelatorio();
-				relatorio.executarRelatorio("balanco_report.jasper");
+				relatorio.executarRelatorioDB("balanco_report.jasper");
 				
 			}
 		});

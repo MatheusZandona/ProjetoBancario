@@ -6,11 +6,11 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTable;
 
-import br.univel.classes.ExecRelatorio;
 import br.univel.classes.Movimentacao;
 import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.modelos.ModeloSaldoCliente;
+import br.univel.relatorios.ExecRelatorio;
 
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -180,7 +180,7 @@ public class SaldoCliente extends PanelAbstrato{
 		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ExecRelatorio relatorio = new ExecRelatorio();
-				relatorio.executarRelatorio("saldoCliente_report.jasper");				
+				relatorio.executarRelatorioDB("saldoCliente_report.jasper");				
 			}
 		});
 		

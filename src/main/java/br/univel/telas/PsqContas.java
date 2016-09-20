@@ -13,10 +13,11 @@ import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.univel.classes.Conta;
-import br.univel.classes.ExecRelatorio;
 import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.dao.DaoConta;
 import br.univel.modelos.ModeloConta;
+import br.univel.relatorios.ExecRelatorio;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -38,7 +39,7 @@ public class PsqContas extends PanelAbstrato{
 		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ExecRelatorio relatorio = new ExecRelatorio();
-				relatorio.executarRelatorio("contas_report.jasper");
+				relatorio.executarRelatorioDB("contas_report.jasper");
 				
 			}
 		});

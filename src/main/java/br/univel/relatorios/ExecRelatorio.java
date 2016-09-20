@@ -1,4 +1,4 @@
-package br.univel.classes;
+package br.univel.relatorios;
 
 import java.sql.SQLException;
 
@@ -12,18 +12,24 @@ import net.sf.jasperreports.view.JasperViewer;
 
 public class ExecRelatorio {
 	
-	public boolean executarRelatorio(String arquivo){					
+	public boolean executarRelatorioDB(String nomeArquivo){					
 		boolean resultado = false;
 		
 		JasperPrint jp = null;
+		nomeArquivo  = this.getClass()
+					   .getClassLoader()
+					   .getResource("")
+					   .getPath()
+					   .concat("/br/univel/relatorios/")
+					   .concat(nomeArquivo);  
+		
 		try {
-			jp = JasperFillManager.fillReport(arquivo, null, ConexaoBD.getInstance().abrirConexao());
+			jp = JasperFillManager.fillReport(nomeArquivo, null, ConexaoBD.getInstance().abrirConexao());
 		} catch (SQLException | JRException e1) {
 			e1.printStackTrace();
 		}
-
+		
 		JasperViewer jasperViewer = new JasperViewer(jp, false);
-
 		jasperViewer.setBounds(50, 50, 320, 240);
 		jasperViewer.setLocationRelativeTo(null);
 		jasperViewer.setExtendedState(JFrame.MAXIMIZED_BOTH);
