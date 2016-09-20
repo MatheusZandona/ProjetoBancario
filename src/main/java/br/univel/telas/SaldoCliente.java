@@ -6,6 +6,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTable;
 
+import br.univel.classes.ExecRelatorio;
 import br.univel.classes.Movimentacao;
 import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.dao.DaoMovimentacao;
@@ -176,6 +177,12 @@ public class SaldoCliente extends PanelAbstrato{
 		});
 		
 		JButton btnImprimir = new JButton("Imprimir");
+		btnImprimir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ExecRelatorio relatorio = new ExecRelatorio();
+				relatorio.executarRelatorio("saldoCliente_report.jasper");				
+			}
+		});
 		
 		JLabel lblSaldoPerodo = new JLabel("Saldo Per\u00EDodo ");
 		lblSaldoPerodo.setFont(new Font("Tahoma", Font.BOLD, 12));

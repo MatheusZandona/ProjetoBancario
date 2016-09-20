@@ -149,7 +149,14 @@ public class DaoConta implements Dao<Conta, String>{
 		Agencia ag;
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("SELECT * FROM CONTAS");
+									.clientPrepareStatement("SELECT "
+															.concat("	C.*, ") 
+															.concat("   COALESCE(SUM(VALOR), 0) AS SALDO ")
+															.concat("FROM CONTAS C ")
+															.concat("LEFT JOIN CONTAS_MOVIMENTO CM ON CM.CONTA_NUMERO = C.NUMERO ")
+															.concat("WHERE STATUS = 0 ")
+															.concat("GROUP BY 1,2,3,4,5 ")
+															.concat("ORDER BY DT_ABERTURA, C.NUMERO "));
 			ResultSet result =  ps.executeQuery();
 			
 			while(result.next()){
@@ -158,7 +165,9 @@ public class DaoConta implements Dao<Conta, String>{
 				conta.setNome(result.getString("nome_titular"));
 				conta.setIdade(result.getInt("idade"));
 				conta.setCpf(result.getString("cpf"));				
-
+				conta.setSaldo(result.getBigDecimal("SALDO"));
+				
+				
 				ag = new Agencia();
 				ag = DaoAG.buscar(result.getString("agencia"));
 				conta.setAgencia(ag);
@@ -237,7 +246,6 @@ public class DaoConta implements Dao<Conta, String>{
 					.clientPrepareStatement("SELECT * FROM CONTAS WHERE CPF = ? AND SENHA_ACESSO = ? "
 							+ " AND STATUS = 0");
 			ps.setString(1, username);
-//			ps.setString(2, senha);
 			ps.setString(2, new Hash().hashMD5(senha));
 			ResultSet result =  ps.executeQuery();
 			if(result.next()){

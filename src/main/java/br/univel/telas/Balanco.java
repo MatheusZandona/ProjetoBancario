@@ -22,6 +22,7 @@ import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.univel.classes.Agencia;
+import br.univel.classes.ExecRelatorio;
 import br.univel.classes.Movimentacao;
 import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.dao.DaoAgencia;
@@ -39,7 +40,7 @@ public class Balanco extends PanelAbstrato{
 	private Date       dataInicial ;
 	private Date       dataFinal;  
 	private SimpleDateFormat format; 	
-	private Calendar 		 calendar;
+	private Calendar  calendar;
 	private List<Movimentacao> lista = new ArrayList<Movimentacao>();
 	private DaoMovimentacao dao  = new DaoMovimentacao();
 	private NumberFormat formatNumber = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
@@ -182,6 +183,13 @@ public class Balanco extends PanelAbstrato{
 		});
 		
 		JButton btnImprimir = new JButton("Imprimir");
+		btnImprimir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ExecRelatorio relatorio = new ExecRelatorio();
+				relatorio.executarRelatorio("balanco_report.jasper");
+				
+			}
+		});
 		
 		JLabel lblsaldoPerodoR = new JLabel("(=)Saldo Per\u00EDodo");
 		lblsaldoPerodoR.setFont(new Font("Tahoma", Font.BOLD, 12));
