@@ -66,6 +66,7 @@ public class PsqContas extends PanelAbstrato{
 		montarConsulta();
 		// $hide<<$			
 	}
+	
 	private void montarConsulta() {
 		lista.clear();
 		lista = dao.listarTodos();
