@@ -91,9 +91,17 @@ public class Login extends JFrame{
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					if(RBCliente.isSelected()){
-						DaoConta dao = new DaoConta();
-						if(dao.validarLogin(txtUsername.getText(), txtSenha.getText())){
+						DaoConta daoC = new DaoConta();
+						if(daoC.validarLogin(txtUsername.getText(), txtSenha.getText())){
 							DaoMovimentacao daoMov = new DaoMovimentacao();
+							
+							Conta c = new Conta();
+							
+							c = daoC.buscarLogin(txtUsername.getText(), txtSenha.getText());
+							
+							TelaPadrao.conta = new Conta();
+							TelaPadrao.conta = c;
+							
 							TelaPadrao.conta.setSaldo(daoMov.saldoAtual(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero()));
 							TelaPadrao painelCliente = new TelaPadrao(TipoLogin.CLIENTE, new PrincipalCliente(TelaPadrao.conta.getTipoConta()));
 							painelCliente.setSize(600, 500);

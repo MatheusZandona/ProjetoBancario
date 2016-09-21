@@ -249,36 +249,6 @@ public class DaoConta implements Dao<Conta, String>{
 			ps.setString(2, new Hash().hashMD5(senha));
 			ResultSet result =  ps.executeQuery();
 			if(result.next()){
-				TelaPadrao.conta = new Conta();
-				TelaPadrao.conta.setNumero(result.getString("numero"));
-				TelaPadrao.conta.setNome(result.getString("nome_titular"));
-				TelaPadrao.conta.setIdade(result.getInt("idade"));
-				TelaPadrao.conta.setSenhaAcesso(result.getString("senha_acesso"));
-				TelaPadrao.conta.setSenhaOperacoes(result.getString("senha_op"));
-				
-				Agencia ag = new Agencia();
-				DaoAgencia daoAG = new DaoAgencia();
-				ag = daoAG.buscar(result.getString("agencia"));
-				TelaPadrao.conta.setAgencia(ag);
-				
-				TelaPadrao.conta.setCpf(result.getString("cpf"));
-				TelaPadrao.conta.setDtAbertura(result.getDate("dt_abertura"));
-				TelaPadrao.conta.setSaldo(BigDecimal.ZERO);
-				
-				switch (result.getInt("tipo")) {
-				case 0:
-					TelaPadrao.conta.setTipoConta(TipoConta.CORRENTE);
-					break;
-				case 1:
-					TelaPadrao.conta.setTipoConta(TipoConta.POUPANÇA);
-					break;
-				case 2:
-					TelaPadrao.conta.setTipoConta(TipoConta.ELETRONICA);
-					break;
-
-				default:
-					break;
-				}
 				
 				resultado = true;
 			}
@@ -324,5 +294,57 @@ public class DaoConta implements Dao<Conta, String>{
 			e.printStackTrace();
 		}
 		return resultado;
+	}
+	
+	public Conta buscarLogin(String user, String password){
+		Conta conta = new Conta();
+		DaoAgencia daoAG = new DaoAgencia();
+		Agencia ag;
+		try {
+			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+					.clientPrepareStatement("SELECT * FROM CONTAS WHERE CPF = ? AND SENHA_ACESSO = ? "
+							+ " AND STATUS = 0");
+			ps.setString(1, user);
+			ps.setString(2, new Hash().hashMD5(password));
+			ResultSet result =  ps.executeQuery();
+			
+			while(result.next()){
+				conta.setNumero(result.getString("numero"));
+				conta.setNome(result.getString("nome_titular"));
+				conta.setIdade(result.getInt("idade"));
+				conta.setCpf(result.getString("cpf"));				
+
+				ag = new Agencia();
+				ag = daoAG.buscar(result.getString("agencia"));
+				conta.setAgencia(ag);
+
+				conta.setDtAbertura(result.getDate("dt_abertura"));
+				
+				switch (result.getInt("tipo")) {
+				case 0:
+					conta.setTipoConta(TipoConta.CORRENTE);
+					break;
+				case 1:
+					conta.setTipoConta(TipoConta.POUPANÇA);
+					break;
+				case 2:
+					conta.setTipoConta(TipoConta.ELETRONICA);
+					break;
+
+				default:
+					break;
+				}
+				
+				conta.setSenhaAcesso(result.getString("senha_acesso"));	
+				conta.setSenhaOperacoes(result.getString("senha_op"));	
+				conta.setStatus(result.getInt("status"));
+			}
+			
+			ps.close();
+			result.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return conta;
 	}
 }
