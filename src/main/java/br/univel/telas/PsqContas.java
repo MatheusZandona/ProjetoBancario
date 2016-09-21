@@ -17,6 +17,7 @@ import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.dao.DaoConta;
 import br.univel.modelos.ModeloConta;
 import br.univel.relatorios.ExecRelatorio;
+import br.univel.relatorios.datasource.ContaJRDataSource;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -39,7 +40,7 @@ public class PsqContas extends PanelAbstrato{
 		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ExecRelatorio relatorio = new ExecRelatorio();
-				relatorio.executarRelatorioDB("contas_report.jasper");
+				relatorio.executarRelatorio("contas_report.jasper", new ContaJRDataSource(lista));
 				
 			}
 		});

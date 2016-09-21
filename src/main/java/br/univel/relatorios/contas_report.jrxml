@@ -1,35 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.2.final using JasperReports Library version 6.2.2  -->
-<!-- 2016-09-20T19:40:51 -->
+<!-- 2016-09-21T19:56:22 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contas_report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="90c7015b-1472-4db6-9611-93fe49825c98">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Banco"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<queryString>
-		<![CDATA[SELECT  CASE TIPO
-		WHEN 0 THEN 'CC'
-		WHEN 1 THEN 'CP'
-		WHEN 2 THEN 'CE'
-	END AS TIPO,	         
-	AGENCIA, NUMERO, NOME_TITULAR, DT_ABERTURA, 
-        COALESCE(SUM(VALOR), 0) AS SALDO
-FROM CONTAS C
-LEFT JOIN CONTAS_MOVIMENTO CM ON CM.CONTA_NUMERO = C.NUMERO
-WHERE
-  STATUS = 0
-GROUP BY 1,2,3,4,5
-ORDER BY DT_ABERTURA, C.NUMERO]]>
+		<![CDATA[]]>
 	</queryString>
 	<field name="TIPO" class="java.lang.String"/>
 	<field name="AGENCIA" class="java.lang.String"/>
 	<field name="NUMERO" class="java.lang.String"/>
 	<field name="NOME_TITULAR" class="java.lang.String"/>
 	<field name="DT_ABERTURA" class="java.sql.Date"/>
-	<field name="SALDO" class="java.lang.Double"/>
+	<field name="SALDO" class="java.math.BigDecimal"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="50" splitType="Stretch">
+		<band height="100" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="420" y="0" width="70" height="20" uuid="f54e2f1d-0f7c-4558-acda-5f0767c6d93d"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
@@ -41,7 +29,7 @@ ORDER BY DT_ABERTURA, C.NUMERO]]>
 			<staticText>
 				<reportElement x="0" y="0" width="200" height="30" uuid="3758b1a1-4065-4e4f-85b0-1a2a6c26b5c7"/>
 				<textElement>
-					<font size="22" isBold="true"/>
+					<font size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[BANCO TADS]]></text>
 			</staticText>
@@ -52,13 +40,17 @@ ORDER BY DT_ABERTURA, C.NUMERO]]>
 				</textElement>
 				<text><![CDATA[Aqui sua nota não vai ser zero!]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="200" y="50" width="220" height="20" uuid="e8c27db3-b8b3-46c7-81fd-7feed19021f5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relatório de Contas]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="26" splitType="Stretch">
-			<rectangle>
-				<reportElement x="-20" y="3" width="595" height="17" uuid="e38a205b-f725-4e57-9353-658a9ab2fb3c"/>
-			</rectangle>
+		<band height="24" splitType="Stretch">
 			<staticText>
 				<reportElement x="240" y="5" width="160" height="15" uuid="8c8377bf-906a-4f15-9311-35576d4105ac"/>
 				<textElement>
@@ -106,44 +98,42 @@ ORDER BY DT_ABERTURA, C.NUMERO]]>
 	<detail>
 		<band height="22" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="60" height="20" uuid="c7f38059-0829-43c8-a34c-a830093f1fdf"/>
+				<reportElement x="0" y="0" width="60" height="15" uuid="c7f38059-0829-43c8-a34c-a830093f1fdf"/>
 				<textFieldExpression><![CDATA[$F{TIPO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="70" y="0" width="70" height="20" uuid="46b54603-a8fb-4d68-9a1c-c2160fd57743"/>
+				<reportElement x="70" y="0" width="70" height="15" uuid="46b54603-a8fb-4d68-9a1c-c2160fd57743"/>
 				<textFieldExpression><![CDATA[$F{AGENCIA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="150" y="0" width="80" height="20" uuid="cb896aff-3fa8-4932-8320-cbf45f5e6aee"/>
+				<reportElement x="150" y="0" width="80" height="15" uuid="cb896aff-3fa8-4932-8320-cbf45f5e6aee"/>
 				<textFieldExpression><![CDATA[$F{NUMERO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="240" y="0" width="160" height="20" uuid="ba9c42a7-1250-4851-a3c5-dda0ed63548d"/>
+				<reportElement x="240" y="0" width="160" height="15" uuid="ba9c42a7-1250-4851-a3c5-dda0ed63548d"/>
 				<textFieldExpression><![CDATA[$F{NOME_TITULAR}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="410" y="0" width="80" height="20" uuid="04c50443-1705-4682-bde1-ebd07541be77"/>
+				<reportElement x="410" y="0" width="80" height="15" uuid="04c50443-1705-4682-bde1-ebd07541be77">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{DT_ABERTURA}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="500" y="0" width="60" height="20" uuid="f7aec501-8568-46be-aa87-1b01d39d7cab"/>
+				<reportElement x="500" y="0" width="60" height="15" uuid="f7aec501-8568-46be-aa87-1b01d39d7cab"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{SALDO}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="34" splitType="Stretch">
+		<band height="19" splitType="Stretch">
 			<textField>
-				<reportElement x="170" y="0" width="100" height="30" uuid="0beebf9e-801c-482b-b488-5298c58b74fe"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Report">
-				<reportElement x="270" y="0" width="100" height="30" uuid="68d7824d-b2c7-424b-9c8a-a08c5cd37205"/>
-				<textElement textAlignment="Left"/>
-				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<reportElement x="270" y="0" width="100" height="15" uuid="dce1ee33-56a2-4593-b276-fe9f9720cb17">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
