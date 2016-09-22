@@ -11,6 +11,7 @@ import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.modelos.ModeloSaldoCliente;
 import br.univel.relatorios.ExecRelatorio;
+import br.univel.relatorios.datasource.SaldoClienteJRDataSource;
 
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -180,7 +181,7 @@ public class SaldoCliente extends PanelAbstrato{
 		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ExecRelatorio relatorio = new ExecRelatorio();
-				relatorio.executarRelatorioDB("saldoCliente_report.jasper");				
+				relatorio.executarRelatorio("saldoCliente_report.jasper", new SaldoClienteJRDataSource(lista));				
 			}
 		});
 		
