@@ -28,6 +28,7 @@ import br.univel.classes.dao.DaoAgencia;
 import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.modelos.ModeloBalanco;
 import br.univel.relatorios.ExecRelatorio;
+import br.univel.relatorios.datasource.BalancoJRDataSource;
 
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
@@ -187,7 +188,7 @@ public class Balanco extends PanelAbstrato{
 		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ExecRelatorio relatorio = new ExecRelatorio();
-				relatorio.executarRelatorioDB("balanco_report.jasper");
+				relatorio.executarRelatorio("balanco_report.jasper", new BalancoJRDataSource(lista));
 				
 			}
 		});
