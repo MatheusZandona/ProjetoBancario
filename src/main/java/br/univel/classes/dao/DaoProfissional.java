@@ -124,7 +124,7 @@ public class DaoProfissional implements Dao<Profissional, String>{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return profissionais;
+		return profissionais; 
 	}
 	
 	public boolean validarLogin(String username, String senha){
