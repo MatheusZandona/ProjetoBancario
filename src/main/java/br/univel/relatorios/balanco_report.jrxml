@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.2.final using JasperReports Library version 6.2.2  -->
-<!-- 2016-09-21T23:13:15 -->
+<!-- 2016-09-22T00:01:48 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="balanco_report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="3dd202b8-e53a-4e4f-ac77-3818fba100b2">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="net.sf.jasperreports.data.adapter" value="balanco_DataAdapter.xml"/>
+	<parameter name="periodo" class="java.lang.String"/>
+	<parameter name="depositos" class="java.lang.String"/>
+	<parameter name="saques" class="java.lang.String"/>
+	<parameter name="saldo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -24,7 +28,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="76" splitType="Stretch">
+		<band height="92" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="20" width="200" height="20" uuid="c7c9e24e-ac48-4da8-81a3-7f514fabc904"/>
 				<textElement>
@@ -54,6 +58,11 @@
 				</textElement>
 				<text><![CDATA[Relatório de Balanço]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="200" y="70" width="220" height="20" uuid="ce0501a0-258d-4369-9f87-9182b33abd18"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{periodo}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -128,25 +137,34 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="19" splitType="Stretch">
-			<textField pattern="#,##0.00">
-				<reportElement x="460" y="0" width="100" height="15" uuid="710a36bd-4582-44b9-af63-6db230abe9bf">
+		<band height="70" splitType="Stretch">
+			<textField>
+				<reportElement x="340" y="15" width="220" height="15" uuid="a9068598-bff8-4c0c-873d-171dc09694c5">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{Saldo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{depositos}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="360" y="0" width="100" height="15" uuid="c5d47697-27e8-4c24-ab70-1319b00cc926">
+			<textField>
+				<reportElement x="340" y="30" width="220" height="15" uuid="cee36257-ff3a-4224-a9d7-91edafbc73c5">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Saldo Período]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$P{saques}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="340" y="50" width="220" height="15" uuid="ff04bc1c-1693-4a91-8037-6fe50163595c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{saldo}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

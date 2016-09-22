@@ -1,5 +1,7 @@
 package br.univel.relatorios;
 
+import java.util.Map;
+
 import javax.swing.JFrame;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -9,7 +11,7 @@ import net.sf.jasperreports.view.JasperViewer;
 
 public class ExecRelatorio {
 	
-	public boolean executarRelatorio(String nomeArquivo, JRDataSource datasource){					
+	public boolean executarRelatorio(String nomeArquivo, Map parameters, JRDataSource datasource){					
 		boolean resultado = false;
 		
 		JasperPrint jp = null;
@@ -21,7 +23,7 @@ public class ExecRelatorio {
 					   .concat(nomeArquivo);  
 		
 		try {
-			jp = JasperFillManager.fillReport(nomeArquivo, null, datasource);
+			jp = JasperFillManager.fillReport(nomeArquivo, parameters, datasource);
 		} catch (JRException e1) {
 			e1.printStackTrace();
 		}

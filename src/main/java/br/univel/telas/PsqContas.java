@@ -40,7 +40,7 @@ public class PsqContas extends PanelAbstrato{
 		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ExecRelatorio relatorio = new ExecRelatorio();
-				relatorio.executarRelatorio("contas_report.jasper", new ContaJRDataSource(lista));
+				relatorio.executarRelatorio("contas_report.jasper", null, new ContaJRDataSource(lista));
 				
 			}
 		});

@@ -21,8 +21,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -181,7 +183,13 @@ public class SaldoCliente extends PanelAbstrato{
 		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ExecRelatorio relatorio = new ExecRelatorio();
-				relatorio.executarRelatorio("saldoCliente_report.jasper", new SaldoClienteJRDataSource(lista));				
+				Map parameters = new HashMap();
+				parameters.put("periodo", "Período ".concat(txtDataIni.getText()).concat(" a ").concat(txtDataFim.getText()));
+				parameters.put("agencia", "Agência: ".concat(TelaPadrao.conta.getAgencia().getNumero()));
+				parameters.put("conta", "Conta: ".concat(TelaPadrao.conta.getNumero()));
+				parameters.put("saldo", "Saldo: ".concat(TelaPadrao.conta.getSaldo().toString()));
+				
+				relatorio.executarRelatorio("saldoCliente_report.jasper", parameters, new SaldoClienteJRDataSource(lista));				
 			}
 		});
 		

@@ -9,8 +9,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -188,7 +190,13 @@ public class Balanco extends PanelAbstrato{
 		btnImprimir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ExecRelatorio relatorio = new ExecRelatorio();
-				relatorio.executarRelatorio("balanco_report.jasper", new BalancoJRDataSource(lista));
+				Map parameters = new HashMap();
+				parameters.put("periodo", "Período ".concat(txtDataIni.getText()).concat(" a ").concat(txtDataFim.getText()));
+				parameters.put("depositos", "Total Depósitos: ".concat(lblTotalDepositos.getText()));				
+				parameters.put("saques", "Total Saques: ".concat(lblTotalSaques.getText()));				
+				parameters.put("saldo", "Saldo Período: ".concat(lblSaldo.getText()));						
+				
+				relatorio.executarRelatorio("balanco_report.jasper", parameters, new BalancoJRDataSource(lista));
 				
 			}
 		});
