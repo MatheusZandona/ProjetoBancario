@@ -183,6 +183,10 @@ public class CadastroProfissional extends PanelAbstrato{
 			txtSenhaOp.setFocusable(true);
 			Funcoes.msgAviso("Senha Op deve conter ao menos 1 caracter.");
 			return false;
+		}else if (txtSenhaOp.getText().length() != 8) {
+			txtSenhaOp.setFocusable(true);
+			Funcoes.msgAviso("Senha Op deve conter 8 digitos.");
+			return false;
 		}else{
 			return true;
 		}

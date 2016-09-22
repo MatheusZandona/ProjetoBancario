@@ -29,7 +29,7 @@ public class DaoProfissional implements Dao<Profissional, String>{
 			ps1.setString(1, t.getUsername());
 			ps1.setString(2, t.getNome());
 			ps1.setInt(3, t.getIdade());
-			ps1.setString(4, new Hash().hashSHA256(t.getUsername().concat(t.getSenhaAcesso())));
+			ps1.setString(4,  new Hash().hashMD5(t.getSenhaAcesso()));
 			ps1.setString(5, t.getSenhaOperacoes());
 			ps1.executeUpdate();
 		} catch (Exception e) {
@@ -133,8 +133,8 @@ public class DaoProfissional implements Dao<Profissional, String>{
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
 					.clientPrepareStatement("SELECT * FROM PROFISSIONAIS WHERE USERNAME = ? AND SENHA_ACESSO = ?");
 			ps.setString(1, username);
-			ps.setString(2, senha);
-			//ps.setString(2, new Hash().hashSHA256(username.concat(senha)));
+//			ps.setString(2, senha);
+			ps.setString(2, new Hash().hashMD5(senha));
 			
 			ResultSet result =  ps.executeQuery();
 			if(result.next()){

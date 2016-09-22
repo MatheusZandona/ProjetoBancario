@@ -111,8 +111,8 @@ public class Login extends JFrame{
 							Funcoes.msgAviso("Usuário/senha não encontrados.");
 						}
 					}else{
-						DaoProfissional dao = new DaoProfissional();
-						if(dao.validarLogin(txtUsername.getText(), txtSenha.getText())){
+						DaoProfissional daoP = new DaoProfissional();
+						if(daoP.validarLogin(txtUsername.getText(), txtSenha.getText())){
 							TelaPadrao painelBancario = new TelaPadrao(TipoLogin.BANCARIO, new PrincipalBancario());
 							painelBancario.setSize(600, 500);
 							painelBancario.setLocationRelativeTo(null);
@@ -122,6 +122,7 @@ public class Login extends JFrame{
 						}
 						
 					}
+					dispose();
 					
 			}
 		});

@@ -13,7 +13,7 @@ public class Hash {
 	}
 	
 	public String hashSHA256(String texto) throws NoSuchAlgorithmException{
-		MessageDigest m=MessageDigest.getInstance("SHA256");
+		MessageDigest m=MessageDigest.getInstance("SHA-256");
 	    m.update(texto.getBytes(),0,texto.length());
 	    return new BigInteger(1,m.digest()).toString(16);
 	}
