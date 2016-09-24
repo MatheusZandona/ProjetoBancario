@@ -10,6 +10,8 @@ import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
 import br.univel.classes.abstratas.PanelFilhoMenu;
 import br.univel.classes.dao.DaoMovimentacao;
+import br.univel.enuns.TipoLogin;
+import br.univel.enuns.TipoMovimentacao;
 import br.univel.funcoes.Funcoes;
 import br.univel.observable.Saldo;
 
@@ -71,11 +73,12 @@ public class TransferenciaCliente extends PanelFilhoMenu{
 		JButton btnConfirme = new JButton("Confirme");
 		btnConfirme.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				transferir();
-				limparCampos();
-				if(!Funcoes.msgConfirma("Deseja efetuar outra transferencia ?")){
-					getTelaPadrao().dispose();
-				}
+				BigDecimal valor = new BigDecimal(txtValor.getText());
+				if(valor.compareTo(new BigDecimal(0.00)) > 0){
+					confirmaOperacao();
+				}else{
+					Funcoes.msgAviso("Valor inválido.");
+				}	
 			}
 		});
 		btnConfirme.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -147,22 +150,46 @@ public class TransferenciaCliente extends PanelFilhoMenu{
 		);
 		setLayout(groupLayout);
 	}
+		
+	public void limparCampos(){
+		txtAgencia.setText("");
+		txtConta.setText("");
+		txtValor.setText("0.00");
+		txtTitular.setText("");
+		setOperacaoAprovada(false);
+	}
 	
-	public void transferir(){
-		DaoMovimentacao daoMov = new DaoMovimentacao();
-		daoMov.transferir(new BigDecimal(txtValor.getText()), txtConta.getText(), txtAgencia.getText(), TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero(), "10");
+	private void confirmaOperacao(){
+		TecladoSenhaCliente  teclado = new TecladoSenhaCliente(this);
+		teclado.setSize(540, 200);
+		teclado.setLocationRelativeTo(null);
+		teclado.setVisible(true);
+		
+		if(isOperacaoAprovada()){
+			if(transferir()){
+				TelaPadrao telaConfirma = new TelaPadrao(TipoLogin.CLIENTE, new ConfirmaOperacao(TipoMovimentacao.TRANSFERENCIA, new BigDecimal(txtValor.getText())));
+				telaConfirma.setSize(600, 450);
+				telaConfirma.setLocationRelativeTo(null);
+				telaConfirma.setVisible(true);
+
+				limparCampos();								
+			}			
+		}else{
+			Funcoes.msgAviso("Não foi possível realizar a transferência devido a falta de confirmação.");
+		}
+	}		
+	
+	private boolean transferir(){
+		DaoMovimentacao daoMov =  new DaoMovimentacao();
+		boolean resultado = false;
+		
+		resultado = daoMov.transferir(new BigDecimal(txtValor.getText()), txtConta.getText(), txtAgencia.getText(), TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero());
 		
 		Saldo saldo = new Saldo();
 		saldo.addObservers(getTelaPadrao());
 		saldo.addObservers(getTelaMenu());
 		saldo.alterarSaldo();
 		
-	}
-	
-	public void limparCampos(){
-		txtAgencia.setText("");
-		txtConta.setText("");
-		txtValor.setText("0.00");
-		txtTitular.setText("");
-	}
+		return resultado;
+	}		
 }

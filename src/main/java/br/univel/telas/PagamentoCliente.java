@@ -12,7 +12,11 @@ import javax.swing.SwingConstants;
 
 import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.abstratas.PanelFilhoMenu;
+import br.univel.classes.dao.DaoAgencia;
+import br.univel.classes.dao.DaoConta;
 import br.univel.classes.dao.DaoMovimentacao;
+import br.univel.enuns.TipoLogin;
+import br.univel.enuns.TipoMovimentacao;
 import br.univel.funcoes.Funcoes;
 import br.univel.observable.Saldo;
 
@@ -50,9 +54,17 @@ public class PagamentoCliente extends PanelFilhoMenu{
 		JButton btnConfirme = new JButton("Confirme");
 		btnConfirme.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				pagar();
-				if(!Funcoes.msgConfirma("Deseja efetuar outro pagamento ?")){
-					getTelaPadrao().dispose();
+				BigDecimal valor = new BigDecimal(txtValor.getText());
+				boolean temDoc = !txtCodigoBarras.getText().isEmpty();		
+				
+				if(temDoc){
+					if(valor.compareTo(new BigDecimal(0.00)) > 0){
+						confirmaOperacao();
+					}else{
+						Funcoes.msgAviso("Valor inválido.");
+					}	
+				}else{
+					Funcoes.msgAviso("Informe o código de barras do boleto.");
 				}
 			}
 		});
@@ -92,18 +104,44 @@ public class PagamentoCliente extends PanelFilhoMenu{
 		);
 		setLayout(groupLayout);
 	}
-	protected void pagar() {
-		DaoMovimentacao daoM = new DaoMovimentacao();
-		daoM.pagar(txtCodigoBarras.getText(), new BigDecimal(txtValor.getText()));
+	
+	private void limparCampos(){
+		txtCodigoBarras.setText("");
+		txtValor.setText("0.00");
+		setOperacaoAprovada(false);
+	}
+	
+	private void confirmaOperacao(){
+		TecladoSenhaCliente  teclado = new TecladoSenhaCliente(this);
+		teclado.setSize(540, 200);
+		teclado.setLocationRelativeTo(null);
+		teclado.setVisible(true);
+		
+		if(isOperacaoAprovada()){
+			if(pagar()){
+				TelaPadrao telaConfirma = new TelaPadrao(TipoLogin.CLIENTE, new ConfirmaOperacao(TipoMovimentacao.PAGAMENTO, new BigDecimal(txtValor.getText())));
+				telaConfirma.setSize(600, 450);
+				telaConfirma.setLocationRelativeTo(null);
+				telaConfirma.setVisible(true);
+
+				limparCampos();								
+			}			
+		}else{
+			Funcoes.msgAviso("Não foi possível realizar o pagamento devido a falta de confirmação.");
+		}
+	}		
+	
+	private boolean pagar(){
+		DaoMovimentacao daoMov =  new DaoMovimentacao();
+		boolean resultado = false;
+		
+		resultado = daoMov.pagar(txtCodigoBarras.getText(), new BigDecimal(txtValor.getText()));
 		
 		Saldo saldo = new Saldo();
 		saldo.addObservers(getTelaPadrao());
 		saldo.addObservers(getTelaMenu());
 		saldo.alterarSaldo();
-	}
-	
-	private void limparCampos(){
-		txtCodigoBarras.setText("");
-		txtValor.setText("0.00");
-	}
+		
+		return resultado;
+	}	
 }

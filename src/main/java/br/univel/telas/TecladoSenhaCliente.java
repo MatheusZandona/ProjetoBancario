@@ -7,22 +7,23 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+
 import java.awt.Font;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import br.univel.classes.abstratas.PanelFilhoMenu;
 import br.univel.classes.dao.DaoConta;
 import br.univel.classes.dao.DaoProfissional;
-import br.univel.enuns.TipoLogin;
 import br.univel.funcoes.Funcoes;
 
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class TecladoSenhaCliente extends JFrame{
+public class TecladoSenhaCliente extends JDialog{
 	private JPasswordField txtSenha;
-	private TelaPadrao     telaAnterior; 
 	
 	public JPasswordField getTxtSenha() {
 		return txtSenha;
@@ -32,15 +33,9 @@ public class TecladoSenhaCliente extends JFrame{
 		this.txtSenha = txtSenha;
 	}
 
-	public TelaPadrao getTelaAnterior() {
-		return telaAnterior;
-	}
-
-	public void setTelaAnterior(TelaPadrao telaAnterior) {
-		this.telaAnterior = telaAnterior;
-	}
-
-	public TecladoSenhaCliente() {
+	public TecladoSenhaCliente(PanelFilhoMenu panelAnterior) {
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setModal(true);
 		
 		txtSenha = new JPasswordField();
 		txtSenha.setEditable(false);
@@ -65,7 +60,7 @@ public class TecladoSenhaCliente extends JFrame{
 				
 				boolean resultado = false;
 				
-				if(telaAnterior.getTipoLogin() == TipoLogin.BANCARIO){					
+				if(TelaPadrao.conta == null){					
 					DaoProfissional daoProfissional = new DaoProfissional();
 					resultado = daoProfissional.validarLogin(TelaPadrao.profissional.getUsername(), txtSenha.getText());															
 				}else{
@@ -78,7 +73,7 @@ public class TecladoSenhaCliente extends JFrame{
 				}else{
 					Funcoes.msgAviso("Usuário/Senha inválidos.");
 				}				
-				
+				panelAnterior.setOperacaoAprovada(resultado);
 			}
 		});
 		btnConfirmar.setFont(new Font("Tahoma", Font.BOLD, 11));

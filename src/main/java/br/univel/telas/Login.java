@@ -90,39 +90,41 @@ public class Login extends JFrame{
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					if(RBCliente.isSelected()){
-						DaoConta daoC = new DaoConta();
-						if(daoC.validarLogin(txtUsername.getText(), txtSenha.getText())){
-							DaoMovimentacao daoMov = new DaoMovimentacao();
-							
-							Conta c = new Conta();
-							
-							c = daoC.buscarLogin(txtUsername.getText(), txtSenha.getText());
-							
-							TelaPadrao.conta = new Conta();
-							TelaPadrao.conta = c;
-							
-							TelaPadrao.conta.setSaldo(daoMov.saldoAtual(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero()));
-							TelaPadrao painelCliente = new TelaPadrao(TipoLogin.CLIENTE, new PrincipalCliente(TelaPadrao.conta.getTipoConta()));
-							painelCliente.setSize(600, 500);
-							painelCliente.setLocationRelativeTo(null);
-							painelCliente.setVisible(true);
-						}else{
-							Funcoes.msgAviso("Usuário/senha não encontrados.");
-						}
-					}else{
-						DaoProfissional daoP = new DaoProfissional();
-						if(daoP.validarLogin(txtUsername.getText(), txtSenha.getText())){
-							TelaPadrao painelBancario = new TelaPadrao(TipoLogin.BANCARIO, new PrincipalBancario());
-							painelBancario.setSize(600, 500);
-							painelBancario.setLocationRelativeTo(null);
-							painelBancario.setVisible(true);
-						}else{
-							Funcoes.msgAviso("Usuário/senha não encontrados.");
-						}
+				
+				if(RBCliente.isSelected()){
+					
+					DaoConta daoC = new DaoConta();
+					if(daoC.validarLogin(txtUsername.getText(), txtSenha.getText())){
+						DaoMovimentacao daoMov = new DaoMovimentacao();
 						
+						TelaPadrao.profissional = null;
+						TelaPadrao.conta = daoC.buscarLogin(txtUsername.getText(), txtSenha.getText());						
+						TelaPadrao.conta.setSaldo(daoMov.saldoAtual(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero()));
+						TelaPadrao painelCliente = new TelaPadrao(TipoLogin.CLIENTE, new PrincipalCliente(TelaPadrao.conta.getTipoConta()));
+						painelCliente.setSize(600, 500);
+						painelCliente.setLocationRelativeTo(null);
+						painelCliente.setVisible(true);							
+
+						dispose();
+					}else{
+						Funcoes.msgAviso("Usuário/senha não encontrados.");
 					}
-					dispose();
+				}else{
+					TelaPadrao.conta = null;
+					
+					DaoProfissional daoP = new DaoProfissional();
+					if(daoP.validarLogin(txtUsername.getText(), txtSenha.getText())){
+						TelaPadrao painelBancario = new TelaPadrao(TipoLogin.BANCARIO, new PrincipalBancario());
+						painelBancario.setSize(600, 500);
+						painelBancario.setLocationRelativeTo(null);
+						painelBancario.setVisible(true);
+
+						dispose();
+					}else{
+						Funcoes.msgAviso("Usuário/senha não encontrados.");
+					}
+					
+				}
 					
 			}
 		});

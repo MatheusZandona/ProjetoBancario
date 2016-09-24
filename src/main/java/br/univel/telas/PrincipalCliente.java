@@ -199,9 +199,9 @@ public class PrincipalCliente extends PanelAbstrato{
 
 			if(saldoAtual.compareTo(new BigDecimal("0.00")) > 0){
 				if(Funcoes.msgConfirma("Você tem um crédito de ".concat(saldoAtual.toString()).concat(". Para "
-						+ "finalizar sua conta é necessário ter um saldo de 0.00 ! Deseja sacar esse valor ?"))){
-					daoM.sacar(saldoAtual, TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero(), "");
-					if(Funcoes.msgConfirma("Tem certeza que deseja finalizar sua conta ?")){
+						+ "finalizar sua conta é necessário ter um saldo de 0.00. Deseja sacar esse valor ?"))){
+					daoM.sacar(saldoAtual, TelaPadrao.conta, TelaPadrao.conta.getAgencia());
+					if(Funcoes.msgConfirma("Tem certeza que deseja finalizar sua conta?")){
 						daoC.excluir(TelaPadrao.conta.getNumero());
 						getTelaPadrao().dispose();
 					}
@@ -211,16 +211,16 @@ public class PrincipalCliente extends PanelAbstrato{
 			BigDecimal saldoAtual = daoM.saldoAtual(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero());
 			if(saldoAtual.compareTo(new BigDecimal("0.00")) < 0){
 				if(Funcoes.msgConfirma("Você tem um défite de R$ ".concat(saldoAtual.toString()).concat(". Para "
-						+ "finalizar sua conta é necessário ter um saldo de 0.00 ! Deseja depositar esse valor ?"))){
+						+ "finalizar sua conta é necessário ter um saldo de 0.00. Deseja depositar esse valor ?"))){
 					saldoAtual = saldoAtual.multiply(new BigDecimal(-1));
-					daoM.depositar(saldoAtual, TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero());
-					if(Funcoes.msgConfirma("Tem certeza que deseja finalizar sua conta ?")){
+					daoM.depositar(saldoAtual, TelaPadrao.conta, TelaPadrao.conta.getAgencia());
+					if(Funcoes.msgConfirma("Tem certeza que deseja finalizar sua conta?")){
 						daoC.excluir(TelaPadrao.conta.getNumero());
 						getTelaPadrao().dispose();
 					}
 				}
 			}else{
-				if(Funcoes.msgConfirma("Tem certeza que deseja finalizar sua conta ?")){
+				if(Funcoes.msgConfirma("Tem certeza que deseja finalizar sua conta?")){
 					daoC.excluir(TelaPadrao.conta.getNumero());
 					getTelaPadrao().dispose();
 				}

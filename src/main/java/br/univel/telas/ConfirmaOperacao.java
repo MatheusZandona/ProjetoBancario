@@ -10,23 +10,51 @@ import javax.swing.JFrame;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.univel.classes.abstratas.PanelAbstrato;
+import br.univel.enuns.TipoMovimentacao;
 
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.awt.event.ActionEvent;
 
 public class ConfirmaOperacao extends PanelAbstrato{
-	public ConfirmaOperacao(JFrame frame) {
+	
+	private TipoMovimentacao tipoMovimentacao;
+	private BigDecimal valor;			
+	
+	public TipoMovimentacao getTipoMovimentacao() {
+		return tipoMovimentacao;
+	}
+
+	public void setTipoMovimentacao(TipoMovimentacao tipoMovimentacao) {
+		this.tipoMovimentacao = tipoMovimentacao;
+	}
+
+	public BigDecimal getValor() {
+		return valor;
+	}
+
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
+	}
+
+	public ConfirmaOperacao(TipoMovimentacao tipoMovimentacao, BigDecimal valor) {
+		this.tipoMovimentacao = tipoMovimentacao;
+		this.valor			  = valor;
+		NumberFormat formatNumber = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 		
-		JLabel lblOperacao = new JLabel("Opera\u00E7\u00E3o $opera\u00E7\u00E3o realizada com sucesso!");
+		
+		JLabel lblOperacao = new JLabel("Opera\u00E7\u00E3o ".concat(this.tipoMovimentacao.getDescricao()).concat(" realizada com sucesso!"));
 		lblOperacao.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		JLabel lblValor = new JLabel("Valor: R$ $valor");
+		JLabel lblValor = new JLabel("Valor: ".concat(formatNumber.format(valor)));
 		lblValor.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		JButton btnRetornar = new JButton("Retornar");
 		btnRetornar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.dispose();
+				getTelaPadrao().dispose();
 			}
 		});
 		

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import com.mysql.jdbc.PreparedStatement;
+
+import br.univel.classes.Agencia;
 import br.univel.classes.Conta;
 import br.univel.classes.Movimentacao;
 import br.univel.classes.bd.ConexaoBD;
@@ -17,58 +19,59 @@ import br.univel.telas.TelaPadrao;
 public class DaoMovimentacao implements DaoMov{
 	
 	@Override
-	public void sacar(BigDecimal valor, String numConta, String agencia, String senha){
+	public boolean sacar(BigDecimal valor, Conta conta, Agencia agencia){
 		
 		DaoConta daoC = new DaoConta();
-		Conta conta = new Conta(); 
+		boolean resultado = false;
 		
-		conta = daoC.buscar(numConta);
-		if(conta.getTipoConta() != TipoConta.ELETRONICA){
-			if(daoC.existeConta(numConta)){			
-				if(temSaldo(numConta, agencia)){
-					BigDecimal saldoAtual = new BigDecimal(0.0);
-					saldoAtual = saldoAtual(numConta, agencia);
-					if(saldoAtual.compareTo(valor) >= 0){
-						try {
-							PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-									.clientPrepareStatement("INSERT INTO CONTAS_MOVIMENTO (CONTA_NUMERO,TIPO_MOVIMENTO,DATA,HORA,VALOR,DESCRICAO) VALUES (?,?,?,?,?,?)");
-							ps.setString(1, numConta);
-							ps.setString(2, "S");
-							Date d = new Date();
-							ps.setDate(3, new java.sql.Date(d.getTime()));
-							ps.setTime(4, new java.sql.Time(d.getTime()));
-							valor = valor.subtract(valor.add(valor));  // kkkk adaptação técnica
-							ps.setBigDecimal(5, valor);
-							ps.setString(6, "SAQUE");
-							ps.executeUpdate();
-							Funcoes.msgInforma("Saque efetuado com sucesso !");
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}else{
-						Funcoes.msgAviso("Saldo insuficiente !");
+		if(daoC.existeConta(conta.getNumero())){			
+			if(temSaldo(conta.getNumero(), agencia.getNumero())){
+				
+				BigDecimal saldoAtual = BigDecimal.ZERO;
+				saldoAtual = saldoAtual(conta.getNumero(), agencia.getNumero());
+				
+				if(saldoAtual.compareTo(valor) >= 0){
+					try {
+						PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+								.clientPrepareStatement("INSERT INTO CONTAS_MOVIMENTO (CONTA_NUMERO,TIPO_MOVIMENTO,DATA,HORA,VALOR,DESCRICAO) VALUES (?,?,?,?,?,?)");
+						ps.setString(1, conta.getNumero());
+						ps.setString(2, "S");
+						Date d = new Date();
+						ps.setDate(3, new java.sql.Date(d.getTime()));
+						ps.setTime(4, new java.sql.Time(d.getTime()));
+						valor = valor.subtract(valor.add(valor));  
+						ps.setBigDecimal(5, valor);
+						ps.setString(6, "Saque");
+						ps.executeUpdate();
+						
+						resultado = true;
+						
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}else{
-					Funcoes.msgAviso("Saldo insuficiente !");
+					Funcoes.msgAviso("Saldo insuficiente.");
 				}
 			}else{
-				Funcoes.msgErro("Conta inexistente !");
+				Funcoes.msgAviso("Saldo insuficiente.");
 			}
-		}else if (conta.getTipoConta() == TipoConta.POUPANÇA) {
-			Funcoes.msgAviso("Não é possivel efetuar saque em conta poupança.");
-		}else if (conta.getTipoConta() == TipoConta.POUPANÇA) {
-			Funcoes.msgAviso("Não é possivel efetuar saque em conta eletronica.");
+		}else{
+			Funcoes.msgErro("Conta inexistente.");
 		}
+		
+		return resultado;
 	}
 	
 	@Override
-	public void depositar(BigDecimal valor, String conta, String agencia){
+	public boolean depositar(BigDecimal valor, Conta conta, Agencia agencia){
+		boolean resultado = false;
+		
 		try {
 			DaoConta daoC = new DaoConta();
-			if(daoC.existeConta(conta)){
+			if(daoC.existeConta(conta.getNumero())){
 				PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
 						.clientPrepareStatement("INSERT INTO CONTAS_MOVIMENTO (CONTA_NUMERO,TIPO_MOVIMENTO,DATA,HORA,VALOR,DESCRICAO) VALUES (?,?,?,?,?,?)");
-				ps.setString(1, conta);
+				ps.setString(1, conta.getNumero());
 				ps.setString(2, "D");
 				Date d = new Date();
 				ps.setDate(3, new java.sql.Date(d.getTime()));
@@ -76,13 +79,15 @@ public class DaoMovimentacao implements DaoMov{
 				ps.setBigDecimal(5, valor);
 				ps.setString(6, "Depósito");
 				ps.executeUpdate();
-				Funcoes.msgInforma("Depósito efetuado com sucesso !");
+				resultado = true;
 			}else{
-				Funcoes.msgErro("Conta inexistente !");
+				Funcoes.msgErro("Conta inexistente.");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		return resultado;
 	}
 	
 	@Override
@@ -133,16 +138,15 @@ public class DaoMovimentacao implements DaoMov{
 	}
 
 	@Override
-	public void transferir(BigDecimal valor, String contaDest, String agenciaDest, String contaOri, String agenciaOri, String senha) {
+	public boolean transferir(BigDecimal valor, String contaDest, String agenciaDest, String contaOri, String agenciaOri) {
 		//sacar contaOrigem
 		DaoConta daoConta = new DaoConta();
-		Conta conta = new Conta(); 
+		boolean resultado = false;
 		
-		conta = daoConta.buscar(contaOri);
 		if(daoConta.existeConta(contaOri) && daoConta.existeConta(contaDest)){			
-			if(temSaldo(contaOri, contaOri)){
+			if(temSaldo(contaOri, agenciaOri)){
 				BigDecimal saldoAtual = new BigDecimal(0.0);
-				saldoAtual = saldoAtual(contaOri, contaOri);
+				saldoAtual = saldoAtual(contaOri, agenciaOri);
 				if(saldoAtual.compareTo(valor) >= 0){
 					try {
 						PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
@@ -166,20 +170,21 @@ public class DaoMovimentacao implements DaoMov{
 						ps.setString(6, "Transferencia recebida da conta ".concat(contaOri).concat(" agencia ").concat(agenciaOri));
 						ps.executeUpdate();
 						
-
-						Funcoes.msgInforma("Transferência efetuada com sucesso!");
+						resultado = true;
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}else{
-					Funcoes.msgAviso("Saldo insuficiente !");
+					Funcoes.msgAviso("Saldo insuficiente.");
 				}
 			}else{
-				Funcoes.msgAviso("Saldo insuficiente !");
+				Funcoes.msgAviso("Saldo insuficiente.");
 			}
 		}else{
-			Funcoes.msgErro("Conta inexistente !");
+			Funcoes.msgErro("Conta inexistente.");
 		}		
+		
+		return resultado;
 	}
 
 	@Override 
@@ -251,7 +256,9 @@ public class DaoMovimentacao implements DaoMov{
 	}
 
 	@Override
-	public void pagar(String codigoBarras, BigDecimal valor) {
+	public boolean pagar(String codigoBarras, BigDecimal valor) {
+		boolean resultado = false;
+		
 		try {
 			DaoConta daoC = new DaoConta();
 			if(temSaldo(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero())){
@@ -270,16 +277,18 @@ public class DaoMovimentacao implements DaoMov{
 					ps.setBigDecimal(5, valor);
 					ps.setString(6, "Pagamento do documento ".concat(codigoBarras));
 					ps.executeUpdate();
-					Funcoes.msgInforma("Pagamento efetuado com sucesso !");
+					resultado = true;
 				}else{
-					Funcoes.msgAviso("Saldo insuficiente !");
+					Funcoes.msgAviso("Saldo insuficiente.");
 				}
 			}else{
-				Funcoes.msgAviso("Não consta saldo na sua conta !");	
+				Funcoes.msgAviso("Não consta saldo na sua conta.");	
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		return resultado;
 	}
 	
 }

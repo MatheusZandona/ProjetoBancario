@@ -10,6 +10,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.univel.classes.abstratas.PanelFilhoMenu;
 import br.univel.classes.dao.DaoMovimentacao;
+import br.univel.enuns.TipoLogin;
+import br.univel.enuns.TipoMovimentacao;
 import br.univel.funcoes.Funcoes;
 import br.univel.observable.Saldo;
 
@@ -30,10 +32,7 @@ public class SaqueCliente extends PanelFilhoMenu{
 		JButton btn50reais = new JButton("R$ 50,00");
 		btn50reais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Sacar(new BigDecimal(50.00));
-				if(!Funcoes.msgConfirma("Deseja efetuar outro saque ?")){
-					getTelaPadrao().dispose();
-				}
+				confirmaOperacao(new BigDecimal(50.00));
 			}
 		});
 		btn50reais.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -41,10 +40,7 @@ public class SaqueCliente extends PanelFilhoMenu{
 		JButton btn100reais = new JButton("R$ 100,00");
 		btn100reais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Sacar(new BigDecimal(100.00));
-				if(!Funcoes.msgConfirma("Deseja efetuar outro saque ?")){
-					getTelaPadrao().dispose();
-				}
+				confirmaOperacao(new BigDecimal(100.00));
 			}
 		});
 		btn100reais.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -52,10 +48,7 @@ public class SaqueCliente extends PanelFilhoMenu{
 		JButton btn500reais = new JButton("R$ 500,00");
 		btn500reais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Sacar(new BigDecimal(500.00));
-				if(!Funcoes.msgConfirma("Deseja efetuar outro saque ?")){
-					getTelaPadrao().dispose();
-				}
+				confirmaOperacao(new BigDecimal(500.00));
 			}
 		});
 		btn500reais.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -78,10 +71,12 @@ public class SaqueCliente extends PanelFilhoMenu{
 		JButton btnConfirme = new JButton("Confirme");
 		btnConfirme.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Sacar(new BigDecimal(txtValor.getText()));	
+				BigDecimal valor = new BigDecimal(txtValor.getText());
 				
-				if(!Funcoes.msgConfirma("Deseja efetuar outro saque ?")){
-					getTelaPadrao().dispose();
+				if(valor.compareTo(new BigDecimal(0.00)) > 0){
+					confirmaOperacao(valor);
+				}else{
+					Funcoes.msgAviso("Valor inválido.");
 				}
 			}
 		});
@@ -90,10 +85,7 @@ public class SaqueCliente extends PanelFilhoMenu{
 		JButton btn300reais = new JButton("R$ 300,00");
 		btn300reais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Sacar(new BigDecimal(300.00));
-				if(!Funcoes.msgConfirma("Deseja efetuar outro saque ?")){
-					getTelaPadrao().dispose();
-				}
+				confirmaOperacao(new BigDecimal(300.00));
 			}
 		});
 		btn300reais.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -101,11 +93,7 @@ public class SaqueCliente extends PanelFilhoMenu{
 		JButton btn200reais = new JButton("R$ 200,00");
 		btn200reais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Sacar(new BigDecimal(200.00));	
-				limparCampos();
-				if(!Funcoes.msgConfirma("Deseja efetuar outro saque ?")){
-					getTelaPadrao().dispose();
-				}
+				confirmaOperacao(new BigDecimal(200.00));
 			}
 		});
 		btn200reais.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -166,14 +154,35 @@ public class SaqueCliente extends PanelFilhoMenu{
 	protected void limparCampos() {
 		txtValor.setText("0.00");
 	}
+	
+	private void confirmaOperacao(BigDecimal valor){
+		TecladoSenhaCliente  teclado = new TecladoSenhaCliente(this);
+		teclado.setSize(540, 200);
+		teclado.setLocationRelativeTo(null);
+		teclado.setVisible(true);
+		
+		if(isOperacaoAprovada()){
+			if(Sacar(valor)){
+				TelaPadrao telaConfirma = new TelaPadrao(TipoLogin.CLIENTE, new ConfirmaOperacao(TipoMovimentacao.SAQUE, valor));
+				telaConfirma.setSize(600, 450);
+				telaConfirma.setLocationRelativeTo(null);
+				telaConfirma.setVisible(true);
+			}
+			
+		}else{
+			Funcoes.msgAviso("Não foi possível realizar o saque devido a falta de confirmação.");
+		}
+	}	
 
-	private void Sacar( BigDecimal valor ){
+	private boolean Sacar( BigDecimal valor ){
 		DaoMovimentacao daoMov = new DaoMovimentacao();
-		daoMov.sacar(valor, TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero(), "11");
+		boolean resultado = daoMov.sacar(valor, TelaPadrao.conta, TelaPadrao.conta.getAgencia());
 					
 		Saldo saldo = new Saldo();
 		saldo.addObservers(getTelaPadrao());
 		saldo.addObservers(getTelaMenu());
 		saldo.alterarSaldo();
+		
+		return resultado;
 	}
 }

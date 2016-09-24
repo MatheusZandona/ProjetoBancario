@@ -7,7 +7,11 @@ import javax.swing.JCheckBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.univel.classes.abstratas.PanelFilhoMenu;
+import br.univel.classes.dao.DaoAgencia;
+import br.univel.classes.dao.DaoConta;
 import br.univel.classes.dao.DaoMovimentacao;
+import br.univel.enuns.TipoLogin;
+import br.univel.enuns.TipoMovimentacao;
 import br.univel.funcoes.Funcoes;
 import br.univel.observable.Saldo;
 
@@ -30,20 +34,15 @@ public class DepositoCliente extends PanelFilhoMenu{
 	private JTextField txtConta;
 	private JTextField txtTitular;
 	private JComboBox cbbTipoConta;
-	JFormattedTextField txtValor;
-	
-	private TelaPadrao tp;
-	
-	public void setTp(TelaPadrao tp) {
-		this.tp = tp;
-	}
+	private JFormattedTextField txtValor;
+	private JCheckBox chkContaLogada;
 	
 	public DepositoCliente() {
 		
 		JLabel lblNewLabel = new JLabel("Informe o valor a ser depositado:");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
-		JCheckBox chkContaLogada = new JCheckBox("Conta logada");
+		chkContaLogada = new JCheckBox("Conta logada");
 		chkContaLogada.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -86,35 +85,13 @@ public class DepositoCliente extends PanelFilhoMenu{
 		JButton btnConfirme = new JButton("Confirme");
 		btnConfirme.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				DaoMovimentacao daoMov =  new DaoMovimentacao();
-				if(chkContaLogada.isSelected()){					
-					daoMov.depositar(new BigDecimal(txtValor.getText()), TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero());
-					
+				BigDecimal valor = new BigDecimal(txtValor.getText());
+				
+				if(valor.compareTo(new BigDecimal(0.00)) > 0){
+					confirmaOperacao();
 				}else{
-					if(!txtConta.getText().equals("") && !txtAgencia.getText().equals("")){
-						daoMov.depositar(new BigDecimal(txtValor.getText()), txtConta.getText(), txtAgencia.getText());
-						getTelaPadrao().dispose();
-						
-						Saldo saldo = new Saldo();
-						saldo.addObservers(getTelaPadrao());
-						saldo.addObservers(getTelaMenu());
-						saldo.alterarSaldo();
-					}else{
-						Funcoes.msgAviso("É necessário informar conta e agência.");
-					}
-				}
-				
-				limparCampos();
-				
-				Saldo saldo = new Saldo();
-				saldo.addObservers(getTelaPadrao());
-				saldo.addObservers(getTelaMenu());
-				saldo.alterarSaldo();
-				
-				if(!Funcoes.msgConfirma("Deseja efetuar outro depósito ?")){
-					getTelaPadrao().dispose();
-				}
-				
+					Funcoes.msgAviso("Valor inválido.");
+				}				
 			}
 		});
 		btnConfirme.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -192,6 +169,7 @@ public class DepositoCliente extends PanelFilhoMenu{
 		txtTitular.setText("");
 		txtValor.setText("0.00");
 		cbbTipoConta.setSelectedIndex(-1);
+		this.setOperacaoAprovada(false);
 	}
 	
 	private void setDestLogado(){
@@ -213,6 +191,51 @@ public class DepositoCliente extends PanelFilhoMenu{
 		txtConta.setEditable(true);
 		txtTitular.setEditable(true);
 		cbbTipoConta.setEnabled(true);
+	}
+	
+	private void confirmaOperacao(){
+		TecladoSenhaCliente  teclado = new TecladoSenhaCliente(this);
+		teclado.setSize(540, 200);
+		teclado.setLocationRelativeTo(null);
+		teclado.setVisible(true);
+		
+		if(isOperacaoAprovada()){
+			if(depositar()){
+				TelaPadrao telaConfirma = new TelaPadrao(TipoLogin.CLIENTE, new ConfirmaOperacao(TipoMovimentacao.DEPOSITO, new BigDecimal(txtValor.getText())));
+				telaConfirma.setSize(600, 450);
+				telaConfirma.setLocationRelativeTo(null);
+				telaConfirma.setVisible(true);
+
+				limparCampos();
+								
+			}
+			
+		}else{
+			Funcoes.msgAviso("Não foi possível realizar o depósito devido a falta de confirmação.");
+		}
+	}		
+	
+	private boolean depositar(){
+		DaoMovimentacao daoMov =  new DaoMovimentacao();
+		boolean resultado = false;
+		
+		if(chkContaLogada.isSelected()){					
+			resultado = daoMov.depositar(new BigDecimal(txtValor.getText()), TelaPadrao.conta, TelaPadrao.conta.getAgencia());
+			
+		}else{
+			if(!txtConta.getText().equals("") && !txtAgencia.getText().equals("")){
+				resultado = daoMov.depositar(new BigDecimal(txtValor.getText()), new DaoConta().buscar(txtConta.getText()), new DaoAgencia().buscar(txtAgencia.getText()));
+			}else{
+				Funcoes.msgAviso("É necessário informar conta e agência.");
+			}
+		}
+		
+		Saldo saldo = new Saldo();
+		saldo.addObservers(getTelaPadrao());
+		saldo.addObservers(getTelaMenu());
+		saldo.alterarSaldo();
+		
+		return resultado;
 	}
 	
 }
