@@ -138,12 +138,6 @@ public class DaoProfissional implements Dao<Profissional, String>{
 			
 			ResultSet result =  ps.executeQuery();
 			if(result.next()){
-				TelaPadrao.profissional = new Profissional();
-				TelaPadrao.profissional.setUsername(result.getString("username"));
-				TelaPadrao.profissional.setNome(result.getString("nome"));
-				TelaPadrao.profissional.setIdade(result.getInt("idade"));
-				TelaPadrao.profissional.setSenhaAcesso(result.getString("senha_acesso"));
-				TelaPadrao.profissional.setSenhaOperacoes(result.getString("senha_op"));
 				resultado = true;
 			}
 		} catch (Exception e) {
