@@ -93,14 +93,14 @@ public class Login extends JFrame{
 				
 				if(RBCliente.isSelected()){
 					
-					DaoConta daoC = new DaoConta();
+					DaoConta daoC = DaoConta.getInstance();
+					
 					if(daoC.validarLogin(txtUsername.getText(), txtSenha.getText())){
-						DaoMovimentacao daoMov = new DaoMovimentacao();
 						
 						TelaPadrao.profissional = null;
-						TelaPadrao.conta = daoC.buscarLogin(txtUsername.getText(), txtSenha.getText());						
-						TelaPadrao.conta.setSaldo(daoMov.saldoAtual(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero()));
-						TelaPadrao painelCliente = new TelaPadrao(TipoLogin.CLIENTE, new PrincipalCliente(TelaPadrao.conta.getTipoConta()));
+						TelaPadrao.conta = daoC.buscarLogin(txtUsername.getText(), txtSenha.getText());	
+						
+						TelaPadrao painelCliente = new TelaPadrao(TipoLogin.CLIENTE, new PrincipalCliente());						
 						painelCliente.setSize(600, 500);
 						painelCliente.setLocationRelativeTo(null);
 						painelCliente.setVisible(true);							
@@ -109,9 +109,11 @@ public class Login extends JFrame{
 					}else{
 						Funcoes.msgAviso("Usuário/senha não encontrados.");
 					}
+					
 				}else{
 					
-					DaoProfissional daoP = new DaoProfissional();
+					DaoProfissional daoP = DaoProfissional.getInstance();
+					
 					if(daoP.validarLogin(txtUsername.getText(), txtSenha.getText())){
 						
 						TelaPadrao.conta = null;

@@ -1,24 +1,24 @@
 package br.univel.classes.dao;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
-import javax.swing.JOptionPane;
-
 import com.mysql.jdbc.PreparedStatement;
-
 import br.univel.classes.Hash;
 import br.univel.classes.Profissional;
 import br.univel.classes.bd.ConexaoBD;
-import br.univel.enuns.TipoLogin;
 import br.univel.interfaces.Dao;
-import br.univel.telas.PrincipalBancario;
-import br.univel.telas.TelaPadrao;
 
 public class DaoProfissional implements Dao<Profissional, String>{
+	
+	private static DaoProfissional dao;
+	
+	public static DaoProfissional getInstance(){
+		if (dao == null){
+			dao = new DaoProfissional();
+		}				
+		return dao;
+	}	
 
 	@Override
 	public void salvar(Profissional t) {
@@ -26,10 +26,10 @@ public class DaoProfissional implements Dao<Profissional, String>{
 			
 			PreparedStatement ps1 = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
 									.clientPrepareStatement("INSERT INTO PROFISSIONAIS(USERNAME, NOME, IDADE, SENHA_ACESSO, SENHA_OP) VALUES (?,?,?,?,?)");
-			ps1.setString(1, t.getUsername());
-			ps1.setString(2, t.getNome());
+			ps1.setString(1, t.getUsername().toUpperCase());
+			ps1.setString(2, t.getNome().toUpperCase());
 			ps1.setInt(3, t.getIdade());
-			ps1.setString(4,  new Hash().hashMD5(t.getSenhaAcesso()));
+			ps1.setString(4,  new Hash().hashSHA256(t.getUsername().concat(t.getSenhaAcesso())));
 			ps1.setString(5, t.getSenhaOperacoes());
 			ps1.executeUpdate();
 		} catch (Exception e) {
@@ -39,14 +39,15 @@ public class DaoProfissional implements Dao<Profissional, String>{
 
 	@Override
 	public Profissional buscar(String k) {
-		Profissional profissional = new Profissional();
+		Profissional profissional = null;
 		
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
 									.clientPrepareStatement("SELECT * FROM PROFISSIONAIS WHERE USERNAME = ?");
-			ps.setString(1, k);
+			ps.setString(1, k.toUpperCase());
 			ResultSet result =  ps.executeQuery();
 			while(result.next()){
+				profissional = new Profissional();
 				profissional.setUsername(result.getString("username"));
 				profissional.setNome(result.getString("nome"));
 				profissional.setIdade(result.getInt("idade"));
@@ -70,11 +71,11 @@ public class DaoProfissional implements Dao<Profissional, String>{
 			PreparedStatement ps1 = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
 					.clientPrepareStatement("UPDATE PROFISSIONAIS SET NOME = ?, IDADE = ?, SENHA_ACESSO = ?, SENHA_OP = ?, USERNAME = ? WHERE ID = ?");
 			
-			ps1.setString(1, t.getNome());
+			ps1.setString(1, t.getNome().toUpperCase());
 			ps1.setInt(2, t.getIdade());		
 			ps1.setString(3, new Hash().hashSHA256(t.getUsername().concat(t.getSenhaAcesso())));
 			ps1.setString(4, t.getSenhaOperacoes());
-			ps1.setString(5, t.getUsername());
+			ps1.setString(5, t.getUsername().toUpperCase());
 			ps1.setInt(6, t.getId());
 			
 			ps1.executeUpdate();
@@ -133,8 +134,7 @@ public class DaoProfissional implements Dao<Profissional, String>{
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
 					.clientPrepareStatement("SELECT * FROM PROFISSIONAIS WHERE USERNAME = ? AND SENHA_ACESSO = ?");
 			ps.setString(1, username);
-//			ps.setString(2, senha);
-			ps.setString(2, new Hash().hashMD5(senha));
+			ps.setString(2, new Hash().hashSHA256(username.concat(senha)));
 			
 			ResultSet result =  ps.executeQuery();
 			if(result.next()){

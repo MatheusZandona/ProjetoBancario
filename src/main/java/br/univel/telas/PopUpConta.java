@@ -73,7 +73,7 @@ public class PopUpConta extends JFrame{
 					TelaPadrao.conta.setTipoConta(c.getTipoConta());
 					
 					
-					TelaPadrao painelCliente = new TelaPadrao(TipoLogin.CLIENTE, new PrincipalCliente(TelaPadrao.conta.getTipoConta()));
+					TelaPadrao painelCliente = new TelaPadrao(TipoLogin.CLIENTE, new PrincipalCliente());
 					painelCliente.setSize(600, 500);
 					painelCliente.setLocationRelativeTo(null);
 					painelCliente.setVisible(true);

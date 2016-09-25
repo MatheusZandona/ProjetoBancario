@@ -18,6 +18,15 @@ import br.univel.telas.TelaPadrao;
 
 public class DaoMovimentacao implements DaoMov{
 	
+	private static DaoMovimentacao dao;
+	
+	public static DaoMovimentacao getInstance(){
+		if (dao == null){
+			dao = new DaoMovimentacao();
+		}				
+		return dao;
+	}			
+	
 	@Override
 	public boolean sacar(BigDecimal valor, Conta conta, Agencia agencia){
 		

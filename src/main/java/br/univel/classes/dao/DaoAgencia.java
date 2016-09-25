@@ -11,6 +11,15 @@ import br.univel.classes.bd.ConexaoBD;
 import br.univel.interfaces.Dao;
 
 public class DaoAgencia implements Dao<Agencia, String>{
+	
+	private static DaoAgencia dao;
+	
+	public static DaoAgencia getInstance(){
+		if (dao == null){
+			dao = new DaoAgencia();
+		}				
+		return dao;
+	}		
 
 	@Override
 	public void salvar(Agencia t) {

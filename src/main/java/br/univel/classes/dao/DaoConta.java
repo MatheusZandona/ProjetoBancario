@@ -1,27 +1,28 @@
 package br.univel.classes.dao;
 
-import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JOptionPane;
-
 import com.mysql.jdbc.PreparedStatement;
 import br.univel.classes.Agencia;
 import br.univel.classes.Conta;
 import br.univel.classes.Hash;
 import br.univel.classes.bd.ConexaoBD;
 import br.univel.enuns.TipoConta;
-import br.univel.enuns.TipoLogin;
-import br.univel.funcoes.Funcoes;
 import br.univel.interfaces.Dao;
-import br.univel.telas.PrincipalCliente;
-import br.univel.telas.TelaPadrao;
 
 public class DaoConta implements Dao<Conta, String>{
+	
+	private static DaoConta dao;
+	
+	public static DaoConta getInstance(){
+		if (dao == null){
+			dao = new DaoConta();
+		}				
+		return dao;
+	}			
+		
 
 	@Override
 	public void salvar(Conta t) {
@@ -35,7 +36,7 @@ public class DaoConta implements Dao<Conta, String>{
 			ps.setString(5, t.getCpf());
 			ps.setString(6, t.getAgencia().getNumero());
 			ps.setDate(7, new java.sql.Date(t.getDtAbertura().getTime()));
-			ps.setString(8,new Hash().hashSHA256(t.getCpf().concat(t.getSenhaAcesso())));
+			ps.setString(8, new Hash().hashMD5(t.getSenhaAcesso()));
 			ps.setString(9, t.getSenhaOperacoes());
 			ps.setInt(10, 0);
 			ps.executeUpdate();
@@ -46,9 +47,8 @@ public class DaoConta implements Dao<Conta, String>{
 
 	@Override
 	public Conta buscar(String k) {
-		Conta conta = new Conta();
-		DaoAgencia daoAG = new DaoAgencia();
-		Agencia ag;
+		Conta conta = null;
+		
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
 									.clientPrepareStatement("SELECT * FROM CONTAS WHERE NUMERO = ?");
@@ -56,15 +56,12 @@ public class DaoConta implements Dao<Conta, String>{
 			ResultSet result =  ps.executeQuery();
 			
 			while(result.next()){
+				conta = new Conta();
 				conta.setNumero(result.getString("numero"));
 				conta.setNome(result.getString("nome_titular"));
 				conta.setIdade(result.getInt("idade"));
 				conta.setCpf(result.getString("cpf"));				
-
-				ag = new Agencia();
-				ag = daoAG.buscar(result.getString("agencia"));
-				conta.setAgencia(ag);
-
+				conta.setAgencia(DaoAgencia.getInstance().buscar(result.getString("agencia")));
 				conta.setDtAbertura(result.getDate("dt_abertura"));
 				
 				switch (result.getInt("tipo")) {
@@ -246,15 +243,16 @@ public class DaoConta implements Dao<Conta, String>{
 					.clientPrepareStatement("SELECT * FROM CONTAS WHERE CPF = ? AND SENHA_ACESSO = ? "
 							+ " AND STATUS = 0");
 			ps.setString(1, username);
-			ps.setString(2, new Hash().hashSHA256(username.concat(senha)));
+			ps.setString(2, new Hash().hashMD5(senha));
 			ResultSet result =  ps.executeQuery();
-			if(result.next()){
-				
+			if(result.next()){				
 				resultado = true;
 			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return resultado;
 	}
 	
@@ -297,27 +295,23 @@ public class DaoConta implements Dao<Conta, String>{
 	}
 	
 	public Conta buscarLogin(String user, String password){
-		Conta conta = new Conta();
-		DaoAgencia daoAG = new DaoAgencia();
-		Agencia ag;
+		Conta conta = null;
+
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
 					.clientPrepareStatement("SELECT * FROM CONTAS WHERE CPF = ? AND SENHA_ACESSO = ? "
 							+ " AND STATUS = 0");
 			ps.setString(1, user);
-			ps.setString(2, new Hash().hashSHA256(user.concat(password)));
+			ps.setString(2, new Hash().hashMD5(password));
 			ResultSet result =  ps.executeQuery();
 			
 			while(result.next()){
+				conta = new Conta();
 				conta.setNumero(result.getString("numero"));
 				conta.setNome(result.getString("nome_titular"));
 				conta.setIdade(result.getInt("idade"));
 				conta.setCpf(result.getString("cpf"));				
-
-				ag = new Agencia();
-				ag = daoAG.buscar(result.getString("agencia"));
-				conta.setAgencia(ag);
-
+				conta.setAgencia(DaoAgencia.getInstance().buscar(result.getString("agencia")));
 				conta.setDtAbertura(result.getDate("dt_abertura"));
 				
 				switch (result.getInt("tipo")) {

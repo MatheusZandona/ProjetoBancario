@@ -17,6 +17,8 @@ import br.univel.funcoes.Funcoes;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class CadastroProfissional extends PanelAbstrato{
 	
@@ -40,6 +42,15 @@ public class CadastroProfissional extends PanelAbstrato{
 		JLabel label_1 = new JLabel("Idade");
 		
 		txtIdade = new JTextField();
+		txtIdade.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				String caracteres="0987654321";
+				if(!caracteres.contains(e.getKeyChar()+"")){
+					e.consume();
+				}				
+			}
+		});
 		txtIdade.setColumns(10);
 		
 		JLabel label_2 = new JLabel("Senha opera\u00E7\u00F5es");
@@ -163,29 +174,62 @@ public class CadastroProfissional extends PanelAbstrato{
 
 		
 	public boolean validarCampos(){  
+		boolean temNumero = false;
+		boolean temLetra = false;
+		
+		//verifica se tem letra e numero		
+		if(!txtSenhaConta.getText().isEmpty()){
+			
+			char[] caracter = txtSenhaConta.getText().toCharArray();
+
+			for(int x = 0; x < caracter.length; x++){
+				
+				if((!temNumero) && (Character.isDigit(caracter[x]))){
+					temNumero = true;
+				}
+				
+				if((!temLetra) && (Character.isAlphabetic(caracter[x]))){
+					temLetra = true;
+				}
+				
+				if(temLetra && temNumero){
+					break;
+				}
+			}
+		}
+		
+		
 		if(txtNome.getText().equals("")){
 			txtNome.setFocusable(true);
-			Funcoes.msgAviso("Nome deve conter ao menos 1 caracter.");
+			Funcoes.msgAviso("Nome é obrigatório.");
 			return false;
 		}else if (txtIdade.getText().equals("")) {
 			txtIdade.setFocusable(true);
-			Funcoes.msgAviso("Idade deve conter ao menos 1 caracter.");
+			Funcoes.msgAviso("Idade é obrigatória.");
 			return false;
 		}else if (txtUserName.getText().equals("")) {
 			txtUserName.setFocusable(true);
-			Funcoes.msgAviso("UserName deve conter ao menos 1 caracter.");
+			Funcoes.msgAviso("UserName é obrigatório.");
+			return false;
+		}else if (DaoProfissional.getInstance().buscar(txtUserName.getText()) != null) {
+			Funcoes.msgAviso("Username já se encontra em uso. Favor informar outro username.");
+			txtUserName.setFocusable(true);
 			return false;
 		}else if (txtSenhaConta.getText().equals("")) {
 			txtSenhaConta.setFocusable(true);
-			Funcoes.msgAviso("Senha Conta deve conter ao menos 1 caracter.");
+			Funcoes.msgAviso("Senha de acesso é obrigatório.");
 			return false;
-		}else if (txtSenhaOp.getText().equals("")) {
-			txtSenhaOp.setFocusable(true);
-			Funcoes.msgAviso("Senha Op deve conter ao menos 1 caracter.");
+		}else if (!temNumero) {
+			txtSenhaConta.setFocusable(true);
+			Funcoes.msgAviso("Senha de acesso deve conter ao menos um número.");
+			return false;
+		}else if (!temLetra) {
+			txtSenhaConta.setFocusable(true);
+			Funcoes.msgAviso("Senha de acesso deve conter ao menos uma letra.");
 			return false;
 		}else if (txtSenhaOp.getText().length() != 8) {
 			txtSenhaOp.setFocusable(true);
-			Funcoes.msgAviso("Senha Op deve conter 8 digitos.");
+			Funcoes.msgAviso("Senha Operações deve conter 8 digitos.");
 			return false;
 		}else{
 			return true;

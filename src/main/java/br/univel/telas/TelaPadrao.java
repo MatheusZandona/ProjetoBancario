@@ -184,7 +184,7 @@ public class TelaPadrao extends JFrame implements SaldoObserver{
 	@Override
 	public void atualizaSaldo(){
 		
-		DaoMovimentacao dao = new DaoMovimentacao();
+		DaoMovimentacao dao = DaoMovimentacao.getInstance();
 		conta.setSaldo(dao.saldoAtual(conta.getNumero(), conta.getAgencia().getNumero()));
 		
 		if (conta.getSaldo() == null){

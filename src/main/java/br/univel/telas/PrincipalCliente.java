@@ -25,9 +25,9 @@ public class PrincipalCliente extends PanelAbstrato{
 	private JButton btnPagamentos;
 	private JButton btnFinalizar;
 	
-	private void habilitarBotoes(TipoConta tipo){
+	private void habilitarBotoes(){
 
-		switch (tipo) {
+		switch (TelaPadrao.conta.getTipoConta()) {
 			case CORRENTE:
 				btnSaque.setEnabled(true);
 				btnSaldo.setEnabled(true);
@@ -60,7 +60,7 @@ public class PrincipalCliente extends PanelAbstrato{
 		}
 	}
 	
-	public PrincipalCliente(TipoConta tipo) {
+	public PrincipalCliente() {
 		setSize(558, 284);
 
 		btnSaque = new JButton("1 - Saques");
@@ -141,7 +141,6 @@ public class PrincipalCliente extends PanelAbstrato{
 				
 				Saldo saldo = new Saldo();
 				saldo.addObservers(getTelaPadrao());
-//				saldo.addObservers(getTelaMenu());
 				saldo.alterarSaldo();
 			}
 		});
@@ -185,7 +184,7 @@ public class PrincipalCliente extends PanelAbstrato{
 		setLayout(groupLayout);
 		
 		// $hide>>$
-		habilitarBotoes(tipo);
+		habilitarBotoes();
 		// $hide<<$			
 
 	}
