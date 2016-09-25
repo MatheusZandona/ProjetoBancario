@@ -36,7 +36,7 @@ public class DaoConta implements Dao<Conta, String>{
 			ps.setString(5, t.getCpf());
 			ps.setString(6, t.getAgencia().getNumero());
 			ps.setDate(7, new java.sql.Date(t.getDtAbertura().getTime()));
-			ps.setString(8, new Hash().hashMD5(t.getSenhaAcesso()));
+			ps.setString(8, new Hash().hashSHA256(t.getCpf().concat(t.getSenhaAcesso())));
 			ps.setString(9, t.getSenhaOperacoes());
 			ps.setInt(10, 0);
 			ps.executeUpdate();
@@ -107,7 +107,7 @@ public class DaoConta implements Dao<Conta, String>{
 			
 			
 			if(!t.getSenhaAcesso().equals("")){
-				ps.setString(6, new Hash().hashMD5(t.getSenhaAcesso()));
+				ps.setString(6, new Hash().hashSHA256(t.getCpf().concat(t.getSenhaAcesso())));
 			}
 			
 			if(!t.getSenhaOperacoes().equals("")){
@@ -243,7 +243,7 @@ public class DaoConta implements Dao<Conta, String>{
 					.clientPrepareStatement("SELECT * FROM CONTAS WHERE CPF = ? AND SENHA_ACESSO = ? "
 							+ " AND STATUS = 0");
 			ps.setString(1, username);
-			ps.setString(2, new Hash().hashMD5(senha));
+			ps.setString(2, new Hash().hashSHA256(username.concat(senha)));
 			ResultSet result =  ps.executeQuery();
 			if(result.next()){				
 				resultado = true;
@@ -274,12 +274,13 @@ public class DaoConta implements Dao<Conta, String>{
 		return resultado;
 	}
 	
-	public boolean validarSenhaOP(String senha){
+	public boolean validarSenhaOP(String user, String senha){
 		boolean resultado = false;
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("SELECT * FROM CONTAS WHERE SENHA_OP = ?");
-			ps.setString(1, senha);
+					.clientPrepareStatement("SELECT * FROM CONTAS WHERE CPF = ? AND SENHA_OP = ?");
+			ps.setString(1, user);
+			ps.setString(2, senha);
 			ResultSet result =  ps.executeQuery();
 			if(result.next()){
 				if(senha.equals(result.getString("SENHA_OP"))){
@@ -302,7 +303,7 @@ public class DaoConta implements Dao<Conta, String>{
 					.clientPrepareStatement("SELECT * FROM CONTAS WHERE CPF = ? AND SENHA_ACESSO = ? "
 							+ " AND STATUS = 0");
 			ps.setString(1, user);
-			ps.setString(2, new Hash().hashMD5(password));
+			ps.setString(2, new Hash().hashSHA256(user.concat(password)));
 			ResultSet result =  ps.executeQuery();
 			
 			while(result.next()){

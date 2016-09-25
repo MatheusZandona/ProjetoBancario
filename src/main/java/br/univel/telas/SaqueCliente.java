@@ -163,7 +163,7 @@ public class SaqueCliente extends PanelFilhoMenu{
 		
 		if(isOperacaoAprovada()){
 			if(Sacar(valor)){
-				TelaPadrao telaConfirma = new TelaPadrao(TipoLogin.CLIENTE, new ConfirmaOperacao(TipoMovimentacao.SAQUE, valor));
+				TelaPadrao telaConfirma = new TelaPadrao(TipoLogin.CLIENTE, new ConfirmaOperacao(this.getTelaPadrao(), TipoMovimentacao.SAQUE, valor));
 				telaConfirma.setSize(600, 450);
 				telaConfirma.setLocationRelativeTo(null);
 				telaConfirma.setVisible(true);

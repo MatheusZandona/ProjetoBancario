@@ -37,6 +37,15 @@ public class TransferenciaCliente extends PanelFilhoMenu{
 		JLabel label = new JLabel("AG:");
 		
 		txtAgencia = new JTextField();
+		txtAgencia.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				String caracteres="0987654321-";
+				if(!caracteres.contains(e.getKeyChar()+"")){
+					e.consume();
+				}				
+			}
+		});
 		txtAgencia.setColumns(10);
 		
 		JLabel label_1 = new JLabel("Tipo Conta");
@@ -47,6 +56,15 @@ public class TransferenciaCliente extends PanelFilhoMenu{
 		cbbTipoConta.setMaximumRowCount(3);
 		
 		txtConta = new JTextField();
+		txtConta.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				String caracteres="0987654321-";
+				if(!caracteres.contains(e.getKeyChar()+"")){
+					e.consume();
+				}								
+			}
+		});
 		txtConta.setColumns(10);
 		
 		JLabel label_3 = new JLabel("Titular");
@@ -167,12 +185,11 @@ public class TransferenciaCliente extends PanelFilhoMenu{
 		
 		if(isOperacaoAprovada()){
 			if(transferir()){
-				TelaPadrao telaConfirma = new TelaPadrao(TipoLogin.CLIENTE, new ConfirmaOperacao(TipoMovimentacao.TRANSFERENCIA, new BigDecimal(txtValor.getText())));
+				TelaPadrao telaConfirma = new TelaPadrao(TipoLogin.CLIENTE, new ConfirmaOperacao(this.getTelaPadrao(), TipoMovimentacao.TRANSFERENCIA, new BigDecimal(txtValor.getText())));
 				telaConfirma.setSize(600, 450);
 				telaConfirma.setLocationRelativeTo(null);
 				telaConfirma.setVisible(true);
-
-				limparCampos();								
+				
 			}			
 		}else{
 			Funcoes.msgAviso("Não foi possível realizar a transferência devido a falta de confirmação.");

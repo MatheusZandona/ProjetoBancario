@@ -56,16 +56,14 @@ public class TecladoSenhaCliente extends JDialog{
 		
 		JButton btnConfirmar = new JButton("Confirmar");
 		btnConfirmar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent arg0) {			
 				
 				boolean resultado = false;
 				
-				if(TelaPadrao.conta == null){					
-					DaoProfissional daoProfissional = new DaoProfissional();
-					resultado = daoProfissional.validarLogin(TelaPadrao.profissional.getUsername(), txtSenha.getText());															
+				if(TelaPadrao.profissional != null){					
+					resultado = DaoProfissional.getInstance().validarSenhaOP(TelaPadrao.profissional.getUsername(), txtSenha.getText());															
 				}else{
-					DaoConta daoConta = new DaoConta();
-					resultado = daoConta.validarLogin(TelaPadrao.conta.getCpf(), txtSenha.getText());
+					resultado = DaoConta.getInstance().validarSenhaOP(TelaPadrao.conta.getCpf(), txtSenha.getText());
 				}
 				
 				if(resultado){

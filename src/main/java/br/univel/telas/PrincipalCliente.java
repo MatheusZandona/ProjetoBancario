@@ -1,10 +1,10 @@
 package br.univel.telas;
 
 import javax.swing.JButton;
+
 import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.dao.DaoConta;
 import br.univel.classes.dao.DaoMovimentacao;
-import br.univel.enuns.TipoConta;
 import br.univel.enuns.TipoLogin;
 import br.univel.funcoes.Funcoes;
 import br.univel.observable.Saldo;

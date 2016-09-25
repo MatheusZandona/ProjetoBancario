@@ -35,6 +35,15 @@ public class PagamentoCliente extends PanelFilhoMenu{
 		JLabel lblCdigoDeBarras = new JLabel("C\u00F3digo de Barras");
 		
 		txtCodigoBarras = new JTextField();
+		txtCodigoBarras.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				String caracteres="0987654321";
+				if(!caracteres.contains(e.getKeyChar()+"")){
+					e.consume();
+				}					
+			}
+		});
 		txtCodigoBarras.setColumns(10);
 		
 		txtValor = new JFormattedTextField();
@@ -119,12 +128,10 @@ public class PagamentoCliente extends PanelFilhoMenu{
 		
 		if(isOperacaoAprovada()){
 			if(pagar()){
-				TelaPadrao telaConfirma = new TelaPadrao(TipoLogin.CLIENTE, new ConfirmaOperacao(TipoMovimentacao.PAGAMENTO, new BigDecimal(txtValor.getText())));
+				TelaPadrao telaConfirma = new TelaPadrao(TipoLogin.CLIENTE, new ConfirmaOperacao(this.getTelaPadrao(), TipoMovimentacao.PAGAMENTO, new BigDecimal(txtValor.getText())));
 				telaConfirma.setSize(600, 450);
 				telaConfirma.setLocationRelativeTo(null);
 				telaConfirma.setVisible(true);
-
-				limparCampos();								
 			}			
 		}else{
 			Funcoes.msgAviso("Não foi possível realizar o pagamento devido a falta de confirmação.");

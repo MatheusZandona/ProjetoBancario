@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.2.final using JasperReports Library version 6.2.2  -->
+<!-- 2016-09-25T17:26:34 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="confirmaOperacao" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6f40237f-9fa9-4c7b-895c-3370cda7226d">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="Operacao" class="java.lang.String"/>
+	<parameter name="Valor" class="java.lang.String"/>
+	<parameter name="conta" class="java.lang.String"/>
+	<parameter name="agencia" class="java.lang.String"/>
+	<parameter name="saldo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="107" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="420" y="0" width="70" height="20" uuid="35724c35-9f08-478f-9288-b4c0715f954d"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="HH:mm">
+				<reportElement x="490" y="0" width="70" height="20" uuid="e1fc0a53-722e-4b7c-a760-8d29a00ac665"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="200" height="30" uuid="2735ce33-33ae-4445-a93e-bf9acdf9dd9f"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BANCO TADS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="80" width="220" height="20" uuid="b6f33f50-15ab-40a6-96d2-2472e0b4805b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Tahoma" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Comprovante de Operação]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="200" height="20" uuid="a06e27de-eece-43c9-8ecc-9466e4dfca04"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Aqui sua nota não vai ser zero!]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="400" y="40" width="160" height="17" uuid="c60bb478-f4cb-4d66-812c-600876129ffa"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{conta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="57" width="160" height="17" uuid="0315a570-d7b8-470e-9fc1-3bd13740a8b1"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{saldo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="23" width="160" height="17" uuid="1aea0403-414c-4acf-9eaa-7cdd8eaded61"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{agencia}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="91" splitType="Stretch">
+			<textField>
+				<reportElement x="14" y="30" width="406" height="20" uuid="d15b256b-80c7-48d2-8449-ac94e417a0a8"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{Operacao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="60" width="406" height="20" uuid="45a448be-988c-407d-af79-b16e59f22164"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{Valor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+</jasperReport>

@@ -28,6 +28,8 @@ import java.math.BigDecimal;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class DepositoCliente extends PanelFilhoMenu{
 	private JTextField txtAgencia;
@@ -59,17 +61,44 @@ public class DepositoCliente extends PanelFilhoMenu{
 		chkContaLogada.setSelected(true);
 		
 		txtValor = new JFormattedTextField();
+		txtValor.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				String caracteres="0987654321.";
+				if(!caracteres.contains(e.getKeyChar()+"")){
+					e.consume();
+				}				
+			}
+		});
 		txtValor.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtValor.setHorizontalAlignment(SwingConstants.RIGHT);
-		txtValor.setText("0,00");
+		txtValor.setText("0.00");
 		
 		JLabel lblAg = new JLabel("AG:");
 		
 		txtAgencia = new JTextField();
+		txtAgencia.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				String caracteres="0987654321-";
+				if(!caracteres.contains(e.getKeyChar()+"")){
+					e.consume();
+				}					
+			}
+		});
 		txtAgencia.setEditable(false);
 		txtAgencia.setColumns(10);
 		
 		txtConta = new JTextField();
+		txtConta.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				String caracteres="0987654321-";
+				if(!caracteres.contains(e.getKeyChar()+"")){
+					e.consume();
+				}						
+			}
+		});
 		txtConta.setEditable(false);
 		txtConta.setColumns(10);
 		
@@ -161,6 +190,8 @@ public class DepositoCliente extends PanelFilhoMenu{
 					.addContainerGap(97, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
+		setDestLogado();
+		desabilitaCampos();
 	}
 	
 	private void limparCampos(){
@@ -201,13 +232,10 @@ public class DepositoCliente extends PanelFilhoMenu{
 		
 		if(isOperacaoAprovada()){
 			if(depositar()){
-				TelaPadrao telaConfirma = new TelaPadrao(TipoLogin.CLIENTE, new ConfirmaOperacao(TipoMovimentacao.DEPOSITO, new BigDecimal(txtValor.getText())));
+				TelaPadrao telaConfirma = new TelaPadrao(TipoLogin.CLIENTE, new ConfirmaOperacao(this.getTelaPadrao(), TipoMovimentacao.DEPOSITO, new BigDecimal(txtValor.getText())));
 				telaConfirma.setSize(600, 450);
 				telaConfirma.setLocationRelativeTo(null);
-				telaConfirma.setVisible(true);
-
-				limparCampos();
-								
+				telaConfirma.setVisible(true);								
 			}
 			
 		}else{

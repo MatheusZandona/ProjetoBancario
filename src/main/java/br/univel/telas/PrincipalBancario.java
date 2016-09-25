@@ -6,11 +6,13 @@ import br.univel.enuns.TipoLogin;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class PrincipalBancario extends PanelAbstrato{
+	
 	public PrincipalBancario() {
 		
 		JButton btnInfo = new JButton("1 - Info. de Contas");

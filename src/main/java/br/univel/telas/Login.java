@@ -90,17 +90,21 @@ public class Login extends JFrame{
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+				TelaPadrao.profissional = null;
+				TelaPadrao.conta = null;			
 				
 				if(RBCliente.isSelected()){
 					
 					DaoConta daoC = DaoConta.getInstance();
 					
+					//verifica login conta
 					if(daoC.validarLogin(txtUsername.getText(), txtSenha.getText())){
 						
-						TelaPadrao.profissional = null;
 						TelaPadrao.conta = daoC.buscarLogin(txtUsername.getText(), txtSenha.getText());	
 						
-						TelaPadrao painelCliente = new TelaPadrao(TipoLogin.CLIENTE, new PrincipalCliente());						
+						TelaPadrao painelCliente = new TelaPadrao(TipoLogin.CLIENTE, new PrincipalCliente());
+						painelCliente.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 						painelCliente.setSize(600, 500);
 						painelCliente.setLocationRelativeTo(null);
 						painelCliente.setVisible(true);							
@@ -114,12 +118,13 @@ public class Login extends JFrame{
 					
 					DaoProfissional daoP = DaoProfissional.getInstance();
 					
+					//verifica login profissional
 					if(daoP.validarLogin(txtUsername.getText(), txtSenha.getText())){
 						
-						TelaPadrao.conta = null;
 						TelaPadrao.profissional = daoP.buscar(txtUsername.getText());
 						
 						TelaPadrao painelBancario = new TelaPadrao(TipoLogin.BANCARIO, new PrincipalBancario());
+						painelBancario.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 						painelBancario.setSize(600, 500);
 						painelBancario.setLocationRelativeTo(null);
 						painelBancario.setVisible(true);
