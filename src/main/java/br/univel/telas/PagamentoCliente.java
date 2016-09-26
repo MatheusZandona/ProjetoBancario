@@ -1,6 +1,5 @@
 package br.univel.telas;
 
-import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
@@ -10,10 +9,7 @@ import javax.swing.JFormattedTextField;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.abstratas.PanelFilhoMenu;
-import br.univel.classes.dao.DaoAgencia;
-import br.univel.classes.dao.DaoConta;
 import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.enuns.TipoLogin;
 import br.univel.enuns.TipoMovimentacao;
@@ -139,7 +135,7 @@ public class PagamentoCliente extends PanelFilhoMenu{
 	}		
 	
 	private boolean pagar(){
-		DaoMovimentacao daoMov =  new DaoMovimentacao();
+		DaoMovimentacao daoMov =  DaoMovimentacao.getInstance();
 		boolean resultado = false;
 		
 		resultado = daoMov.pagar(txtCodigoBarras.getText(), new BigDecimal(txtValor.getText()));

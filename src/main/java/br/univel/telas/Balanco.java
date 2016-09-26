@@ -46,7 +46,7 @@ public class Balanco extends PanelAbstrato{
 	private SimpleDateFormat format; 	
 	private Calendar  calendar;
 	private List<Movimentacao> lista = new ArrayList<Movimentacao>();
-	private DaoMovimentacao dao  = new DaoMovimentacao();
+	private DaoMovimentacao dao  = DaoMovimentacao.getInstance();
 	private NumberFormat formatNumber = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 	private JComboBox cbbAgencia;
 	private JLabel lblSaldo;

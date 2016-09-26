@@ -29,6 +29,8 @@ public class TransferenciaCliente extends PanelFilhoMenu{
 	private JTextField txtConta;
 	private JTextField txtTitular;
 	private JFormattedTextField txtValor;
+	
+	
 	public TransferenciaCliente() {
 		
 		JLabel lblContaDeDestinocrdito = new JLabel("Conta de destino/Cr\u00E9dito");
@@ -197,7 +199,7 @@ public class TransferenciaCliente extends PanelFilhoMenu{
 	}		
 	
 	private boolean transferir(){
-		DaoMovimentacao daoMov =  new DaoMovimentacao();
+		DaoMovimentacao daoMov =  DaoMovimentacao.getInstance();
 		boolean resultado = false;
 		
 		resultado = daoMov.transferir(new BigDecimal(txtValor.getText()), txtConta.getText(), txtAgencia.getText(), TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero());

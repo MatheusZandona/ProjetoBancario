@@ -26,7 +26,7 @@ public class PsqContas extends PanelAbstrato{
 	
 	private JTable tbGrid;
 	private List<Conta> lista = new ArrayList<Conta>();
-	private DaoConta dao  = new DaoConta();
+	private DaoConta dao  = DaoConta.getInstance();
 	
 	
 	public PsqContas() {

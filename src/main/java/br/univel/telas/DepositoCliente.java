@@ -244,7 +244,7 @@ public class DepositoCliente extends PanelFilhoMenu{
 	}		
 	
 	private boolean depositar(){
-		DaoMovimentacao daoMov =  new DaoMovimentacao();
+		DaoMovimentacao daoMov =  DaoMovimentacao.getInstance();
 		boolean resultado = false;
 		
 		if(chkContaLogada.isSelected()){					

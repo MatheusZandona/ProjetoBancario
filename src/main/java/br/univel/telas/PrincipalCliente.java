@@ -190,8 +190,8 @@ public class PrincipalCliente extends PanelAbstrato{
 	}
 
 	protected void finalizar() {
-		DaoConta daoC = new DaoConta();
-		DaoMovimentacao daoM = new DaoMovimentacao();
+		DaoConta daoC = DaoConta.getInstance();
+		DaoMovimentacao daoM = DaoMovimentacao.getInstance();
 		
 		if(daoM.temSaldo(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero())){
 			BigDecimal saldoAtual = daoM.saldoAtual(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero());

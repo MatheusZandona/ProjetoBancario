@@ -48,10 +48,9 @@ public class CadastroAgencia extends PanelAbstrato{
 	}
 	
 	public void carregarDados(String numero){
-		DaoAgencia dao = new DaoAgencia();
 		Agencia agencia = new Agencia();
 		
-		agencia = dao.buscar(numero);
+		agencia = DaoAgencia.getInstance().buscar(numero);
 		txtNome.setText(agencia.getNome());
 		txtNumero.setText(agencia.getNumero());
 		txtCidade.setText(agencia.getCidade());

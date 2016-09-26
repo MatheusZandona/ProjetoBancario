@@ -23,7 +23,7 @@ public class PsqProfissionais extends PanelAbstrato{
 	
 	private JTable tbGrid;
 	private List<Profissional> lista = new ArrayList<Profissional>();
-	private DaoProfissional dao  = new DaoProfissional();
+	private DaoProfissional dao  = DaoProfissional.getInstance();
 	private CadastroProfissional telaCadastro = null;
 	
 	public CadastroProfissional getTelaCadastro() {		

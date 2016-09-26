@@ -11,7 +11,6 @@ import br.univel.classes.Agencia;
 import br.univel.classes.Conta;
 import br.univel.classes.Movimentacao;
 import br.univel.classes.bd.ConexaoBD;
-import br.univel.enuns.TipoConta;
 import br.univel.funcoes.Funcoes;
 import br.univel.interfaces.DaoMov;
 import br.univel.telas.TelaPadrao;
@@ -30,10 +29,9 @@ public class DaoMovimentacao implements DaoMov{
 	@Override
 	public boolean sacar(BigDecimal valor, Conta conta, Agencia agencia){
 		
-		DaoConta daoC = new DaoConta();
 		boolean resultado = false;
 		
-		if(daoC.existeConta(conta.getNumero())){			
+		if(DaoConta.getInstance().existeConta(conta.getNumero())){			
 			if(temSaldo(conta.getNumero(), agencia.getNumero())){
 				
 				BigDecimal saldoAtual = BigDecimal.ZERO;
@@ -76,8 +74,7 @@ public class DaoMovimentacao implements DaoMov{
 		boolean resultado = false;
 		
 		try {
-			DaoConta daoC = new DaoConta();
-			if(daoC.existeConta(conta.getNumero())){
+			if(DaoConta.getInstance().existeConta(conta.getNumero())){
 				PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
 						.clientPrepareStatement("INSERT INTO CONTAS_MOVIMENTO (CONTA_NUMERO,TIPO_MOVIMENTO,DATA,HORA,VALOR,DESCRICAO) VALUES (?,?,?,?,?,?)");
 				ps.setString(1, conta.getNumero());
@@ -149,7 +146,7 @@ public class DaoMovimentacao implements DaoMov{
 	@Override
 	public boolean transferir(BigDecimal valor, String contaDest, String agenciaDest, String contaOri, String agenciaOri) {
 		//sacar contaOrigem
-		DaoConta daoConta = new DaoConta();
+		DaoConta daoConta = DaoConta.getInstance();
 		boolean resultado = false;
 		
 		if(daoConta.existeConta(contaOri) && daoConta.existeConta(contaDest)){			
@@ -165,7 +162,6 @@ public class DaoMovimentacao implements DaoMov{
 						Date d = new Date();
 						ps.setDate(3, new java.sql.Date(d.getTime()));
 						ps.setTime(4, new java.sql.Time(d.getTime()));
-						  // kkkk adaptação técnica
 						ps.setBigDecimal(5, valor.subtract(valor.add(valor)));
 						ps.setString(6, "Transferencia para conta ".concat(contaDest).concat(" agencia ").concat(agenciaDest));
 						ps.executeUpdate();
@@ -199,7 +195,6 @@ public class DaoMovimentacao implements DaoMov{
 	@Override 
 	public List<Movimentacao> listarOperacoesConta(Date dataInicial, Date dataFinal) {
 		ArrayList<Movimentacao> listaOperacoes = new ArrayList<>();
-		DaoMovimentacao dao = new DaoMovimentacao();
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
 									.clientPrepareStatement("SELECT * FROM CONTAS_MOVIMENTO WHERE CONTA_NUMERO = ? AND DATA BETWEEN ? AND ?");
@@ -233,7 +228,6 @@ public class DaoMovimentacao implements DaoMov{
 	@Override
 	public List<Movimentacao> listarOperacoesAgencia(String agencia, Date dataInicial, Date dataFinal) {
 		ArrayList<Movimentacao> listaOperacoes = new ArrayList<>();
-		DaoMovimentacao dao = new DaoMovimentacao();
 		try {
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
 									.clientPrepareStatement("SELECT CM.*, C.AGENCIA FROM CONTAS_MOVIMENTO CM INNER JOIN CONTAS C ON C.NUMERO = CM.CONTA_NUMERO WHERE AGENCIA = ? AND DATA BETWEEN ? AND ?");
@@ -269,7 +263,6 @@ public class DaoMovimentacao implements DaoMov{
 		boolean resultado = false;
 		
 		try {
-			DaoConta daoC = new DaoConta();
 			if(temSaldo(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero())){
 				BigDecimal saldoAtual = new BigDecimal(0.0);
 				saldoAtual = saldoAtual(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero());
@@ -282,7 +275,7 @@ public class DaoMovimentacao implements DaoMov{
 					Date d = new Date();
 					ps.setDate(3, new java.sql.Date(d.getTime()));
 					ps.setTime(4, new java.sql.Time(d.getTime()));
-					valor = valor.subtract(valor.add(valor));  // kkkk adaptação técnica
+					valor = valor.subtract(valor.add(valor)); 
 					ps.setBigDecimal(5, valor);
 					ps.setString(6, "Pagamento do documento ".concat(codigoBarras));
 					ps.executeUpdate();

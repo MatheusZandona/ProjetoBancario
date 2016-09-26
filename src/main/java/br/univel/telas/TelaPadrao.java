@@ -9,12 +9,9 @@ import javax.swing.border.BevelBorder;
 import br.univel.classes.Conta;
 import br.univel.classes.Profissional;
 import br.univel.classes.abstratas.PanelAbstrato;
-import br.univel.classes.abstratas.PanelFilhoMenu;
-import br.univel.classes.dao.DaoConta;
 import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.enuns.TipoLogin;
 import br.univel.interfaces.SaldoObserver;
-import br.univel.observable.Saldo;
 
 import javax.swing.JLabel;
 

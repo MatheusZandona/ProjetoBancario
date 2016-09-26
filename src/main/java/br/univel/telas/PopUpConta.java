@@ -25,6 +25,7 @@ public class PopUpConta extends JFrame{
 	private JTextField txtAgencia;
 	private JTextField txtConta;
 	private JTextField txtTitular;
+	
 	public PopUpConta() {
 		
 		txtAgencia = new JTextField();

@@ -24,7 +24,7 @@ public class PsqAgencias extends PanelAbstrato{
 	
 	private JTable tbGrid;
 	private List<Agencia> lista = new ArrayList<Agencia>();
-	private DaoAgencia dao  = new DaoAgencia();
+	private DaoAgencia dao  = DaoAgencia.getInstance();
 	private CadastroAgencia telaCadastro = null;
 	
 	public CadastroAgencia getTelaCadastro() {

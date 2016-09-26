@@ -175,8 +175,7 @@ public class SaqueCliente extends PanelFilhoMenu{
 	}	
 
 	private boolean Sacar( BigDecimal valor ){
-		DaoMovimentacao daoMov = new DaoMovimentacao();
-		boolean resultado = daoMov.sacar(valor, TelaPadrao.conta, TelaPadrao.conta.getAgencia());
+		boolean resultado = DaoMovimentacao.getInstance().sacar(valor, TelaPadrao.conta, TelaPadrao.conta.getAgencia());
 					
 		Saldo saldo = new Saldo();
 		saldo.addObservers(getTelaPadrao());

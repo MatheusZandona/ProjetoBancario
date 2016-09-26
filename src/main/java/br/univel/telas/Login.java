@@ -2,41 +2,22 @@ package br.univel.telas;
 
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPasswordField;
 import javax.swing.LayoutStyle.ComponentPlacement;
-
-import com.mysql.jdbc.PreparedStatement;
-
-import br.univel.classes.Agencia;
-import br.univel.classes.Conta;
-import br.univel.classes.Profissional;
-import br.univel.classes.bd.ConexaoBD;
-import br.univel.classes.dao.DaoAgencia;
 import br.univel.classes.dao.DaoConta;
-import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.classes.dao.DaoProfissional;
-import br.univel.enuns.TipoConta;
 import br.univel.enuns.TipoLogin;
 import br.univel.funcoes.Funcoes;
-import br.univel.interfaces.DaoMov;
-
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.Window.Type;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.math.BigDecimal;
-import java.sql.ResultSet;
 
 import javax.swing.ButtonGroup;
 

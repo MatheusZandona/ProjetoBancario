@@ -62,8 +62,7 @@ public class CadastroConta extends PanelAbstrato{
 			resultado = false;			
 		}		
 		
-		DaoAgencia dao = new DaoAgencia();
-		if(dao.buscar(txtAgencia.getText().trim()) == null){
+		if(DaoAgencia.getInstance().buscar(txtAgencia.getText().trim()) == null){
 			Funcoes.msgAviso("Agência não encontrada.");
 			resultado = false;					
 		}		
@@ -136,7 +135,7 @@ public class CadastroConta extends PanelAbstrato{
 				if(validarCampos()){
 					String numero = "";
 					
-					DaoConta dao = new DaoConta();
+					DaoConta dao = DaoConta.getInstance();
 					ContaBuilder builder = new ContaBuilder();
 					
 					numero = dao.gerarProximoNumConta();
@@ -146,7 +145,7 @@ public class CadastroConta extends PanelAbstrato{
 						.setIdade(Integer.parseInt(txtIdade.getText()))
 						.setCpf(txtCPF.getText())
 						.setNumero(numero)
-						.setAgencia(new DaoAgencia().buscar(txtAgencia.getText()))
+						.setAgencia(DaoAgencia.getInstance().buscar(txtAgencia.getText()))
 						.setDtAbertura(new Date())
 					
 						.setSenhaAcesso(txtSenhaConta.getText())

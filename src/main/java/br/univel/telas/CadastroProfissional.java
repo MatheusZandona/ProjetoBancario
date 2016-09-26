@@ -137,7 +137,7 @@ public class CadastroProfissional extends PanelAbstrato{
 	
 	public void carregarDados(){
 		
-		profissional =  new DaoProfissional().buscar(profissional.getUsername());	
+		profissional =  DaoProfissional.getInstance().buscar(profissional.getUsername());	
 		
 		if(editando){
 			txtNome.setText(profissional.getNome());
@@ -147,8 +147,6 @@ public class CadastroProfissional extends PanelAbstrato{
 	}
 	
 	private void salvarProfissional(){
-	
-		DaoProfissional daoP = new DaoProfissional();
 		
 		if(!editando){
 			profissional = new Profissional();
@@ -166,9 +164,9 @@ public class CadastroProfissional extends PanelAbstrato{
 				
 		
 		if(editando){
-			daoP.atualizar(builder.build());
+			DaoProfissional.getInstance().atualizar(builder.build());
 		}else{
-			daoP.salvar(builder.build());
+			DaoProfissional.getInstance().salvar(builder.build());
 		}
 	}
 
