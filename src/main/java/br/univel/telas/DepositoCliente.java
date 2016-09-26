@@ -6,12 +6,12 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JCheckBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import br.univel.classes.Conta;
 import br.univel.classes.abstratas.PanelFilhoMenu;
-import br.univel.classes.dao.DaoAgencia;
 import br.univel.classes.dao.DaoConta;
-import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.enuns.TipoLogin;
 import br.univel.enuns.TipoMovimentacao;
+import br.univel.facade.DepositoFacade;
 import br.univel.funcoes.Funcoes;
 import br.univel.observable.Saldo;
 
@@ -244,15 +244,15 @@ public class DepositoCliente extends PanelFilhoMenu{
 	}		
 	
 	private boolean depositar(){
-		DaoMovimentacao daoMov =  DaoMovimentacao.getInstance();
 		boolean resultado = false;
 		
 		if(chkContaLogada.isSelected()){					
-			resultado = daoMov.depositar(new BigDecimal(txtValor.getText()), TelaPadrao.conta, TelaPadrao.conta.getAgencia());
+			resultado = new DepositoFacade(TelaPadrao.conta, new BigDecimal(txtValor.getText())).execute();									
 			
 		}else{
-			if(!txtConta.getText().equals("") && !txtAgencia.getText().equals("")){
-				resultado = daoMov.depositar(new BigDecimal(txtValor.getText()), new DaoConta().buscar(txtConta.getText()), new DaoAgencia().buscar(txtAgencia.getText()));
+			if(!txtConta.getText().equals("") && !txtAgencia.getText().equals("")){				
+				Conta conta = DaoConta.getInstance().buscar(txtConta.getText());
+				resultado = new DepositoFacade(conta, new BigDecimal(txtValor.getText())).execute();
 			}else{
 				Funcoes.msgAviso("É necessário informar conta e agência.");
 			}

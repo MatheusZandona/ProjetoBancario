@@ -8,10 +8,14 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
+
+import br.univel.classes.Conta;
 import br.univel.classes.abstratas.PanelFilhoMenu;
+import br.univel.classes.dao.DaoConta;
 import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.enuns.TipoLogin;
 import br.univel.enuns.TipoMovimentacao;
+import br.univel.facade.TransferenciaFacade;
 import br.univel.funcoes.Funcoes;
 import br.univel.observable.Saldo;
 
@@ -201,8 +205,10 @@ public class TransferenciaCliente extends PanelFilhoMenu{
 	private boolean transferir(){
 		DaoMovimentacao daoMov =  DaoMovimentacao.getInstance();
 		boolean resultado = false;
+		Conta contaDest = DaoConta.getInstance().buscar(txtConta.getText());
 		
-		resultado = daoMov.transferir(new BigDecimal(txtValor.getText()), txtConta.getText(), txtAgencia.getText(), TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero());
+		resultado = new TransferenciaFacade(TelaPadrao.conta, contaDest, new BigDecimal(txtValor.getText())).execute(); 
+		
 		
 		Saldo saldo = new Saldo();
 		saldo.addObservers(getTelaPadrao());

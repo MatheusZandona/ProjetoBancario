@@ -1,5 +1,6 @@
 package br.univel.classes.dao;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -342,4 +343,25 @@ public class DaoConta implements Dao<Conta, String>{
 		}
 		return conta;
 	}
+	
+	public BigDecimal saldoAtual(Conta conta, Agencia agencia){
+		BigDecimal saldo = BigDecimal.ZERO;
+		try {
+			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+					.clientPrepareStatement("SELECT SUM(CONTAS_MOVIMENTO.VALOR) AS SALDO FROM CONTAS_MOVIMENTO "
+							+ "INNER JOIN CONTAS ON CONTAS.NUMERO = CONTAS_MOVIMENTO.CONTA_NUMERO "
+							+ "WHERE CONTAS_MOVIMENTO.CONTA_NUMERO = ? AND CONTAS.AGENCIA = ?");
+			ps.setString(1, conta.getNumero());
+			ps.setString(2, agencia.getNumero());
+			ResultSet result =  ps.executeQuery();
+			if(result.next()){
+				saldo = result.getBigDecimal("saldo");
+				
+			}		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return saldo;
+	}
+	
 }

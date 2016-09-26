@@ -9,9 +9,9 @@ import java.math.BigDecimal;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.univel.classes.abstratas.PanelFilhoMenu;
-import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.enuns.TipoLogin;
 import br.univel.enuns.TipoMovimentacao;
+import br.univel.facade.SaqueFacade;
 import br.univel.funcoes.Funcoes;
 import br.univel.observable.Saldo;
 
@@ -175,8 +175,8 @@ public class SaqueCliente extends PanelFilhoMenu{
 	}	
 
 	private boolean Sacar( BigDecimal valor ){
-		boolean resultado = DaoMovimentacao.getInstance().sacar(valor, TelaPadrao.conta, TelaPadrao.conta.getAgencia());
-					
+		boolean resultado = new SaqueFacade(valor).execute();			
+		
 		Saldo saldo = new Saldo();
 		saldo.addObservers(getTelaPadrao());
 		saldo.addObservers(getTelaMenu());

@@ -20,6 +20,7 @@ public class Movimentacao {
 		this.conta = conta;
 		return this;
 	}
+		
 	public String getTipoM() {
 		return tipoM;
 	}
@@ -55,4 +56,16 @@ public class Movimentacao {
 		this.descricao = descricao;
 		return this;
 	}
+	
+	public Movimentacao(Conta conta, String tipoM, BigDecimal valor, String descricao) {
+		this.conta = conta;
+		this.valor = valor;
+		this.descricao = descricao;
+		this.tipoM     = tipoM;
+	}
+	
+	public Movimentacao(){
+		
+	}
+	
 }

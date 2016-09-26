@@ -10,9 +10,9 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import br.univel.classes.abstratas.PanelFilhoMenu;
-import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.enuns.TipoLogin;
 import br.univel.enuns.TipoMovimentacao;
+import br.univel.facade.PagamentoFacade;
 import br.univel.funcoes.Funcoes;
 import br.univel.observable.Saldo;
 
@@ -135,10 +135,10 @@ public class PagamentoCliente extends PanelFilhoMenu{
 	}		
 	
 	private boolean pagar(){
-		DaoMovimentacao daoMov =  DaoMovimentacao.getInstance();
 		boolean resultado = false;
+		BigDecimal valor = new BigDecimal(txtValor.getText());
 		
-		resultado = daoMov.pagar(txtCodigoBarras.getText(), new BigDecimal(txtValor.getText()));
+		resultado = new PagamentoFacade(txtCodigoBarras.getText(), valor).execute();
 		
 		Saldo saldo = new Saldo();
 		saldo.addObservers(getTelaPadrao());

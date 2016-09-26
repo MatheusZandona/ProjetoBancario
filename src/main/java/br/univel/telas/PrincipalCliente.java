@@ -6,6 +6,8 @@ import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.dao.DaoConta;
 import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.enuns.TipoLogin;
+import br.univel.facade.DepositoFacade;
+import br.univel.facade.SaqueFacade;
 import br.univel.funcoes.Funcoes;
 import br.univel.observable.Saldo;
 
@@ -192,27 +194,31 @@ public class PrincipalCliente extends PanelAbstrato{
 	protected void finalizar() {
 		DaoConta daoC = DaoConta.getInstance();
 		DaoMovimentacao daoM = DaoMovimentacao.getInstance();
+		BigDecimal saldoAtual = DaoConta.getInstance().saldoAtual(TelaPadrao.conta, TelaPadrao.conta.getAgencia());
 		
-		if(daoM.temSaldo(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero())){
-			BigDecimal saldoAtual = daoM.saldoAtual(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero());
+		if(saldoAtual.compareTo(new BigDecimal("0.00")) > 0){
 
 			if(saldoAtual.compareTo(new BigDecimal("0.00")) > 0){
 				if(Funcoes.msgConfirma("Você tem um crédito de ".concat(saldoAtual.toString()).concat(". Para "
 						+ "finalizar sua conta é necessário ter um saldo de 0.00. Deseja sacar esse valor ?"))){
-					daoM.sacar(saldoAtual, TelaPadrao.conta, TelaPadrao.conta.getAgencia());
+					
+					new SaqueFacade(saldoAtual);
+					
 					if(Funcoes.msgConfirma("Tem certeza que deseja finalizar sua conta?")){
 						daoC.excluir(TelaPadrao.conta.getNumero());
 						getTelaPadrao().dispose();
 					}
+					
 				}
 			}
 		}else{
-			BigDecimal saldoAtual = daoM.saldoAtual(TelaPadrao.conta.getNumero(), TelaPadrao.conta.getAgencia().getNumero());
 			if(saldoAtual.compareTo(new BigDecimal("0.00")) < 0){
 				if(Funcoes.msgConfirma("Você tem um défite de R$ ".concat(saldoAtual.toString()).concat(". Para "
 						+ "finalizar sua conta é necessário ter um saldo de 0.00. Deseja depositar esse valor ?"))){
-					saldoAtual = saldoAtual.multiply(new BigDecimal(-1));
-					daoM.depositar(saldoAtual, TelaPadrao.conta, TelaPadrao.conta.getAgencia());
+
+					saldoAtual = saldoAtual.negate();					
+					new DepositoFacade(TelaPadrao.conta, saldoAtual);
+					
 					if(Funcoes.msgConfirma("Tem certeza que deseja finalizar sua conta?")){
 						daoC.excluir(TelaPadrao.conta.getNumero());
 						getTelaPadrao().dispose();
