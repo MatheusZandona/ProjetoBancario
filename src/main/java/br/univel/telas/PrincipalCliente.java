@@ -5,9 +5,10 @@ import javax.swing.JButton;
 import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.dao.DaoConta;
 import br.univel.classes.dao.DaoMovimentacao;
+import br.univel.command.DepositoCommand;
+import br.univel.command.MovimentarConta;
+import br.univel.command.SaqueCommand;
 import br.univel.enuns.TipoLogin;
-import br.univel.facade.DepositoFacade;
-import br.univel.facade.SaqueFacade;
 import br.univel.funcoes.Funcoes;
 import br.univel.observable.Saldo;
 
@@ -202,7 +203,7 @@ public class PrincipalCliente extends PanelAbstrato{
 				if(Funcoes.msgConfirma("Você tem um crédito de ".concat(saldoAtual.toString()).concat(". Para "
 						+ "finalizar sua conta é necessário ter um saldo de 0.00. Deseja sacar esse valor ?"))){
 					
-					new SaqueFacade(saldoAtual);
+					new MovimentarConta(new SaqueCommand(saldoAtual)).executaAcao();
 					
 					if(Funcoes.msgConfirma("Tem certeza que deseja finalizar sua conta?")){
 						daoC.excluir(TelaPadrao.conta.getNumero());
@@ -217,7 +218,7 @@ public class PrincipalCliente extends PanelAbstrato{
 						+ "finalizar sua conta é necessário ter um saldo de 0.00. Deseja depositar esse valor ?"))){
 
 					saldoAtual = saldoAtual.negate();					
-					new DepositoFacade(TelaPadrao.conta, saldoAtual);
+					new MovimentarConta(new DepositoCommand(TelaPadrao.conta, saldoAtual)).executaAcao();
 					
 					if(Funcoes.msgConfirma("Tem certeza que deseja finalizar sua conta?")){
 						daoC.excluir(TelaPadrao.conta.getNumero());

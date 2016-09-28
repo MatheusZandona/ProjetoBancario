@@ -13,10 +13,12 @@ import br.univel.classes.Conta;
 import br.univel.classes.abstratas.PanelFilhoMenu;
 import br.univel.classes.dao.DaoConta;
 import br.univel.classes.dao.DaoMovimentacao;
+import br.univel.command.MovimentarConta;
+import br.univel.command.TransferenciaCommand;
 import br.univel.enuns.TipoLogin;
 import br.univel.enuns.TipoMovimentacao;
-import br.univel.facade.TransferenciaFacade;
 import br.univel.funcoes.Funcoes;
+import br.univel.interfaces.MovimentacaoCommand;
 import br.univel.observable.Saldo;
 
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -207,7 +209,8 @@ public class TransferenciaCliente extends PanelFilhoMenu{
 		boolean resultado = false;
 		Conta contaDest = DaoConta.getInstance().buscar(txtConta.getText());
 		
-		resultado = new TransferenciaFacade(TelaPadrao.conta, contaDest, new BigDecimal(txtValor.getText())).execute(); 
+		MovimentacaoCommand command = new TransferenciaCommand(TelaPadrao.conta, contaDest, new BigDecimal(txtValor.getText()));
+		resultado = new MovimentarConta(command).executaAcao();
 		
 		
 		Saldo saldo = new Saldo();

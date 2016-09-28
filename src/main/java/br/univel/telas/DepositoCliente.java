@@ -9,9 +9,10 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import br.univel.classes.Conta;
 import br.univel.classes.abstratas.PanelFilhoMenu;
 import br.univel.classes.dao.DaoConta;
+import br.univel.command.DepositoCommand;
+import br.univel.command.MovimentarConta;
 import br.univel.enuns.TipoLogin;
 import br.univel.enuns.TipoMovimentacao;
-import br.univel.facade.DepositoFacade;
 import br.univel.funcoes.Funcoes;
 import br.univel.observable.Saldo;
 
@@ -245,18 +246,21 @@ public class DepositoCliente extends PanelFilhoMenu{
 	
 	private boolean depositar(){
 		boolean resultado = false;
+		DepositoCommand depositoCommand = null;
 		
 		if(chkContaLogada.isSelected()){					
-			resultado = new DepositoFacade(TelaPadrao.conta, new BigDecimal(txtValor.getText())).execute();									
-			
+			depositoCommand = new DepositoCommand(TelaPadrao.conta, new BigDecimal(txtValor.getText()));			
 		}else{
-			if(!txtConta.getText().equals("") && !txtAgencia.getText().equals("")){				
+			if(!txtConta.getText().equals("") && !txtAgencia.getText().equals("")){
+				
 				Conta conta = DaoConta.getInstance().buscar(txtConta.getText());
-				resultado = new DepositoFacade(conta, new BigDecimal(txtValor.getText())).execute();
+				depositoCommand = new DepositoCommand(conta, new BigDecimal(txtValor.getText()));					
 			}else{
 				Funcoes.msgAviso("É necessário informar conta e agência.");
 			}
 		}
+		
+		resultado = new MovimentarConta(depositoCommand).executaAcao();
 		
 		Saldo saldo = new Saldo();
 		saldo.addObservers(getTelaPadrao());

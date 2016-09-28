@@ -10,10 +10,12 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import br.univel.classes.abstratas.PanelFilhoMenu;
+import br.univel.command.MovimentarConta;
+import br.univel.command.PagamentoCommand;
 import br.univel.enuns.TipoLogin;
 import br.univel.enuns.TipoMovimentacao;
-import br.univel.facade.PagamentoFacade;
 import br.univel.funcoes.Funcoes;
+import br.univel.interfaces.MovimentacaoCommand;
 import br.univel.observable.Saldo;
 
 import javax.swing.JButton;
@@ -138,7 +140,9 @@ public class PagamentoCliente extends PanelFilhoMenu{
 		boolean resultado = false;
 		BigDecimal valor = new BigDecimal(txtValor.getText());
 		
-		resultado = new PagamentoFacade(txtCodigoBarras.getText(), valor).execute();
+		MovimentacaoCommand command = new PagamentoCommand(txtCodigoBarras.getText(), valor);
+		resultado = new MovimentarConta(command).executaAcao();
+		
 		
 		Saldo saldo = new Saldo();
 		saldo.addObservers(getTelaPadrao());

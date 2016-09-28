@@ -6,6 +6,8 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JPasswordField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import br.univel.classes.Hash;
 import br.univel.classes.dao.DaoConta;
 import br.univel.classes.dao.DaoProfissional;
 import br.univel.enuns.TipoLogin;
@@ -18,6 +20,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.security.NoSuchAlgorithmException;
 
 import javax.swing.ButtonGroup;
 
@@ -74,13 +77,23 @@ public class Login extends JFrame{
 
 				TelaPadrao.profissional = null;
 				TelaPadrao.conta = null;			
+				Hash hash = new Hash();
+				String senha = "";
 				
 				if(RBCliente.isSelected()){
 					
 					DaoConta daoC = DaoConta.getInstance();
+
+					try {
+						senha = hash.hashSHA256(txtUsername.getText().concat(txtSenha.getText()));
+					} catch (NoSuchAlgorithmException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					
 					
 					//verifica login conta
-					if(daoC.validarLogin(txtUsername.getText(), txtSenha.getText())){
+					if(daoC.validarLogin(txtUsername.getText(), senha)){
 						
 						TelaPadrao.conta = daoC.buscarLogin(txtUsername.getText(), txtSenha.getText());	
 						
@@ -99,8 +112,16 @@ public class Login extends JFrame{
 					
 					DaoProfissional daoP = DaoProfissional.getInstance();
 					
+					try {
+						senha = hash.hashMD5(txtSenha.getText());
+					} catch (NoSuchAlgorithmException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+										
+					
 					//verifica login profissional
-					if(daoP.validarLogin(txtUsername.getText(), txtSenha.getText())){
+					if(daoP.validarLogin(txtUsername.getText(), senha)){
 						
 						TelaPadrao.profissional = daoP.buscar(txtUsername.getText());
 						

@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import br.univel.classes.Hash;
 import br.univel.classes.Profissional;
 import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.builder.ProfissionalBuilder;
@@ -19,6 +20,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.security.NoSuchAlgorithmException;
 
 public class CadastroProfissional extends PanelAbstrato{
 	
@@ -155,12 +157,20 @@ public class CadastroProfissional extends PanelAbstrato{
 		
 		ProfissionalBuilder builder = new ProfissionalBuilder();
 		
-		builder.setId(profissional.getId()).
-				setIdade(Integer.parseInt(txtIdade.getText())).
-				setNome(txtNome.getText()).
-				setSenhaAcesso(txtSenhaConta.getText()). 
-				setSenhaOperacoes(txtSenhaOp.getText()). 
-				setUsername(txtUserName.getText());				
+		try {
+			builder.setId(profissional.getId()).
+					setIdade(Integer.parseInt(txtIdade.getText())).
+					setNome(txtNome.getText()).
+					setSenhaAcesso(new Hash().hashMD5(txtSenhaConta.getText())). 
+					setSenhaOperacoes(txtSenhaOp.getText()). 
+					setUsername(txtUserName.getText());
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}				
 				
 		
 		if(editando){

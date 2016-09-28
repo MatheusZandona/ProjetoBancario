@@ -1,4 +1,4 @@
-package br.univel.facade;
+package br.univel.command;
 
 import java.math.BigDecimal;
 
@@ -7,9 +7,9 @@ import br.univel.classes.Movimentacao;
 import br.univel.classes.dao.DaoConta;
 import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.funcoes.Funcoes;
-import br.univel.interfaces.MovimentacaoFacade;
+import br.univel.interfaces.MovimentacaoCommand;
 
-public class TransferenciaFacade implements MovimentacaoFacade{
+public class TransferenciaCommand implements MovimentacaoCommand{
 
 	
 	private Movimentacao movimentacaoOrigem;
@@ -20,7 +20,7 @@ public class TransferenciaFacade implements MovimentacaoFacade{
 	private Conta contaDestino;
 	
 	
-	public TransferenciaFacade(Conta contaOrigem, Conta contaDestino, BigDecimal valor){
+	public TransferenciaCommand(Conta contaOrigem, Conta contaDestino, BigDecimal valor){
 		this.contaDestino = contaDestino;
 		this.contaOrigem  = contaOrigem;
 		this.valor = valor; 

@@ -1,4 +1,4 @@
-package br.univel.facade;
+package br.univel.command;
 
 import java.math.BigDecimal;
 
@@ -7,10 +7,10 @@ import br.univel.classes.dao.DaoConta;
 import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.enuns.TipoMovimentacao;
 import br.univel.funcoes.Funcoes;
-import br.univel.interfaces.MovimentacaoFacade;
+import br.univel.interfaces.MovimentacaoCommand;
 import br.univel.telas.TelaPadrao;
 
-public class PagamentoFacade implements MovimentacaoFacade{
+public class PagamentoCommand implements MovimentacaoCommand{
 	
 	private Movimentacao movimentacao;
 	private String codBarra;
@@ -18,7 +18,7 @@ public class PagamentoFacade implements MovimentacaoFacade{
 	private DaoMovimentacao daoMov = DaoMovimentacao.getInstance();
 
 
-	public PagamentoFacade(String codBarra, BigDecimal valor) {
+	public PagamentoCommand(String codBarra, BigDecimal valor) {
 		this.codBarra = codBarra;
 		this.valor = valor;
 	}

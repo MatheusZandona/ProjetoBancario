@@ -1,6 +1,6 @@
 package br.univel.interfaces;
 
-public interface MovimentacaoFacade {
+public interface MovimentacaoCommand {
 
 	void criarMovimentacao();
 	

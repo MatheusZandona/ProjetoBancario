@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import com.mysql.jdbc.PreparedStatement;
-import br.univel.classes.Hash;
 import br.univel.classes.Profissional;
 import br.univel.classes.bd.ConexaoBD;
 import br.univel.interfaces.Dao;
@@ -29,7 +28,7 @@ public class DaoProfissional implements Dao<Profissional, String>{
 			ps1.setString(1, t.getUsername().toUpperCase());
 			ps1.setString(2, t.getNome().toUpperCase());
 			ps1.setInt(3, t.getIdade());
-			ps1.setString(4,  new Hash().hashMD5(t.getSenhaAcesso()));
+			ps1.setString(4,  t.getSenhaAcesso());
 			ps1.setString(5, t.getSenhaOperacoes());
 			ps1.executeUpdate();
 		} catch (Exception e) {
@@ -73,7 +72,7 @@ public class DaoProfissional implements Dao<Profissional, String>{
 			
 			ps1.setString(1, t.getNome().toUpperCase());
 			ps1.setInt(2, t.getIdade());		
-			ps1.setString(3, new Hash().hashMD5(t.getSenhaAcesso()));
+			ps1.setString(3, t.getSenhaAcesso());
 			ps1.setString(4, t.getSenhaOperacoes());
 			ps1.setString(5, t.getUsername().toUpperCase());
 			ps1.setInt(6, t.getId());
@@ -134,7 +133,7 @@ public class DaoProfissional implements Dao<Profissional, String>{
 			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
 					.clientPrepareStatement("SELECT * FROM PROFISSIONAIS WHERE USERNAME = ? AND SENHA_ACESSO = ?");
 			ps.setString(1, username);
-			ps.setString(2, new Hash().hashMD5(senha));
+			ps.setString(2, senha);
 			
 			ResultSet result =  ps.executeQuery();
 			if(result.next()){

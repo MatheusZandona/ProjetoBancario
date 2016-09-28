@@ -1,4 +1,4 @@
-package br.univel.facade;
+package br.univel.command;
 
 import java.math.BigDecimal;
 
@@ -7,16 +7,16 @@ import br.univel.classes.dao.DaoConta;
 import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.enuns.TipoMovimentacao;
 import br.univel.funcoes.Funcoes;
-import br.univel.interfaces.MovimentacaoFacade;
+import br.univel.interfaces.MovimentacaoCommand;
 import br.univel.telas.TelaPadrao;
 
-public class SaqueFacade implements MovimentacaoFacade{
+public class SaqueCommand implements MovimentacaoCommand{
 	
 	private Movimentacao movimentacao;	
 	private BigDecimal valor;
 	private DaoMovimentacao dao = DaoMovimentacao.getInstance();
 	
-	public SaqueFacade(BigDecimal valor) {
+	public SaqueCommand(BigDecimal valor) {
 		this.valor = valor;
 	}	
 	

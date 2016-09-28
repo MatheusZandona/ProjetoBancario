@@ -11,6 +11,7 @@ import java.awt.Font;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
+import br.univel.classes.Hash;
 import br.univel.classes.abstratas.PanelAbstrato;
 import br.univel.classes.builder.ContaBuilder;
 import br.univel.classes.dao.DaoAgencia;
@@ -23,6 +24,7 @@ import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.security.NoSuchAlgorithmException;
 
 public class CadastroConta extends PanelAbstrato{
 	private JTextField txtNome;
@@ -141,15 +143,23 @@ public class CadastroConta extends PanelAbstrato{
 					numero = dao.gerarProximoNumConta();
 					
 					
-					builder.setNome(txtNome.getText().toUpperCase())
-						.setIdade(Integer.parseInt(txtIdade.getText()))
-						.setCpf(txtCPF.getText())
-						.setNumero(numero)
-						.setAgencia(DaoAgencia.getInstance().buscar(txtAgencia.getText()))
-						.setDtAbertura(new Date())
-					
-						.setSenhaAcesso(txtSenhaConta.getText())
-						.setSenhaOperacoes(txtSenhaOp.getText());
+					try {
+						builder.setNome(txtNome.getText().toUpperCase())
+							.setIdade(Integer.parseInt(txtIdade.getText()))
+							.setCpf(txtCPF.getText())
+							.setNumero(numero)
+							.setAgencia(DaoAgencia.getInstance().buscar(txtAgencia.getText()))
+							.setDtAbertura(new Date())						
+							.setSenhaAcesso(new Hash().hashSHA256(txtCPF.getText().concat(txtSenhaConta.getText())))
+							.setSenhaOperacoes(txtSenhaOp.getText());
+						
+					} catch (NumberFormatException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NoSuchAlgorithmException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					
 					switch(cbbTipoConta.getSelectedIndex()){
 						case 0:
