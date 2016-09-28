@@ -87,7 +87,7 @@ public class CadastroConta extends PanelAbstrato{
 			resultado = false;			
 		} else {
 			if(txtSenhaOp.getPassword().length != 6){								
-				Funcoes.msgAviso("A senha de acesso deve conter 6 dígitos.");
+				Funcoes.msgAviso("A senha de operações deve conter 6 dígitos.");
 				resultado = false;			
 			}			
 		}			

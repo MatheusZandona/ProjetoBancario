@@ -7,6 +7,7 @@ import br.univel.classes.Movimentacao;
 import br.univel.classes.dao.DaoConta;
 import br.univel.classes.dao.DaoMovimentacao;
 import br.univel.enuns.TipoMovimentacao;
+import br.univel.funcoes.Funcoes;
 import br.univel.interfaces.MovimentacaoCommand;
 
 public class DepositoCommand implements MovimentacaoCommand {
@@ -40,10 +41,13 @@ public class DepositoCommand implements MovimentacaoCommand {
 	@Override
 	public Boolean execute() {		
 		boolean resultado = false;
-
-		if(DaoConta.getInstance().existeConta(conta.getNumero())){		
+		DaoConta daoConta = DaoConta.getInstance();
+		
+		if((conta != null) && (daoConta.existeConta(conta.getNumero()))){		
 			criarMovimentacao();
 			resultado = dao.gravarMovimentacao(movimentacao);
+		}else{
+			Funcoes.msgAviso("Conta para depósito inexistente.");
 		}
 		
 		return resultado;	

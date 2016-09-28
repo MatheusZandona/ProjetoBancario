@@ -57,10 +57,10 @@ public class TransferenciaCommand implements MovimentacaoCommand{
 		DaoConta daoConta = DaoConta.getInstance(); 
 		BigDecimal saldoAtual = daoConta.saldoAtual(contaOrigem, contaOrigem.getAgencia());
 		
-		if(!daoConta.existeConta(contaOrigem.getNumero())){
+		if((contaDestino == null) || (!daoConta.existeConta(contaOrigem.getNumero()))){
 			Funcoes.msgAviso("Conta origem inexistente.");
 			
-		}else if(!daoConta.existeConta(contaDestino.getNumero())){
+		}else if((contaDestino == null) || (!daoConta.existeConta(contaDestino.getNumero()))){
 			Funcoes.msgAviso("Conta destino inexistente.");
 			
 		}else if(saldoAtual.compareTo(new BigDecimal(0.00)) <= 0){

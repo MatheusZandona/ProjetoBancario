@@ -22,7 +22,7 @@ public class SaqueCommand implements MovimentacaoCommand{
 	
 	@Override
 	public void criarMovimentacao() {
-		this.movimentacao = new Movimentacao(TelaPadrao.conta, getSiglaMov(), this.valor, getDescricao());
+		this.movimentacao = new Movimentacao(TelaPadrao.conta, getSiglaMov(), this.valor.negate(), getDescricao());
 	}
 
 	@Override
@@ -39,8 +39,10 @@ public class SaqueCommand implements MovimentacaoCommand{
 	public Boolean execute() {
 		Boolean resultado = false;
 		BigDecimal saldoAtual = DaoConta.getInstance().saldoAtual(TelaPadrao.conta, TelaPadrao.conta.getAgencia());
+
+		DaoConta daoConta = DaoConta.getInstance();
 		
-		if(DaoConta.getInstance().existeConta(TelaPadrao.conta.getNumero())){
+		if((TelaPadrao.conta != null) || (daoConta.existeConta(TelaPadrao.conta.getNumero()))){		
 			if(saldoAtual.compareTo(new BigDecimal(0.00)) > 0){
 				
 				if(saldoAtual.compareTo(valor) >= 0){

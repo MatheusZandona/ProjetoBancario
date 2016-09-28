@@ -176,7 +176,7 @@ public class SaqueCliente extends PanelFilhoMenu{
 	}	
 
 	private boolean Sacar( BigDecimal valor ){
-		boolean resultado = new  MovimentarConta(new SaqueCommand(valor.negate())).executaAcao();			
+		boolean resultado = new  MovimentarConta(new SaqueCommand(valor)).executaAcao();			
 		
 		Saldo saldo = new Saldo();
 		saldo.addObservers(getTelaPadrao());

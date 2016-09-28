@@ -251,18 +251,21 @@ public class DaoConta implements Dao<Conta, String>{
 	
 	public boolean existeConta(String conta){
 		boolean resultado = false;
-		try {
-			PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
-					.clientPrepareStatement("SELECT * FROM CONTAS WHERE NUMERO = ? AND STATUS = 0");
-			ps.setString(1, conta);
-			ResultSet result =  ps.executeQuery();
-			if(result.next()){
-				resultado = true;
+		
+		if(conta != null){
+			try {
+				PreparedStatement ps = (PreparedStatement) ConexaoBD.getInstance().abrirConexao()
+						.clientPrepareStatement("SELECT * FROM CONTAS WHERE NUMERO = ? AND STATUS = 0");
+				ps.setString(1, conta);
+				ResultSet result =  ps.executeQuery();
+				if(result.next()){
+					resultado = true;
+				}
+				ps.close();
+				result.close();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			ps.close();
-			result.close();
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		return resultado;
 	}
